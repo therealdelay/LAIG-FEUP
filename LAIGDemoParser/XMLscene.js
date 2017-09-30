@@ -31,7 +31,7 @@ XMLscene.prototype.init = function(application) {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
-	this.quad = new MyQuad(this,0,1,0,1);    
+	this.rec = new MyRectangle(this,0,1,0,1);    
     this.axis = new CGFaxis(this);
 }
 
@@ -113,7 +113,7 @@ XMLscene.prototype.display = function() {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 	
-	this.quad.display();
+	//this.rec.display();
 
     this.pushMatrix();
     
