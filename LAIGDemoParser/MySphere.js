@@ -1,8 +1,8 @@
 /**
- * MyLamp
+ * MySfere
  * @constructor
  */
- function MyLamp(scene, slices, stacks) {
+ function MySphere(scene, slices, stacks) {
     CGFobject.call(this,scene);
    
     this.slices = slices;
@@ -11,10 +11,10 @@
     this.initBuffers();
  };
  
- MyLamp.prototype = Object.create(CGFobject.prototype);
- MyLamp.prototype.constructor = MyLamp;
+ MySphere.prototype = Object.create(CGFobject.prototype);
+ MySphere.prototype.constructor = MySphere;
  
- MyLamp.prototype.initBuffers = function() {
+ MySphere.prototype.initBuffers = function() {
   
     var angle = (2*Math.PI)/this.slices;
  	var last = 0;
