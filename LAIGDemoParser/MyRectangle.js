@@ -4,13 +4,18 @@
  * @constructor 
  */
 
-function MyRectangle(scene,minS,maxS,minT,maxT) {
+function MyRectangle(scene,leftTopX,leftTopY,rightBottomX,rightBottomY) {
 	CGFobject.call(this,scene);
+	
+	this.leftTopX = leftTopX;
+	this.leftTopY = leftTopY;
+	this.rightBottomX = rightBottomX;
+	this.rightBottomY = rightBottomY;
 
-	this.minS = minS;
-	this.maxS = maxS;
-	this.minT = minT;
-	this.maxT = maxT;
+	this.minS = 0;
+	this.maxS = 1;
+	this.minT = 0;
+	this.maxT = 1;
 
 	this.initBuffers();
 };
@@ -20,10 +25,10 @@ MyRectangle.prototype.constructor=MyRectangle;
 
 MyRectangle.prototype.initBuffers = function () {
 	this.vertices = [
- 		-0.5, -0.5, 0,
- 		0.5, -0.5, 0,
- 		-0.5, 0.5, 0,
- 		0.5, 0.5, 0
+ 		this.leftTopX, this.rightBottomY, 0,
+ 		this.rightBottomX, this.rightBottomY, 0,
+ 		this.leftTopX, this.leftTopY, 0,
+ 		this.rightBottomX, this.leftTopY, 0
  	];
 
  	this.indices = [

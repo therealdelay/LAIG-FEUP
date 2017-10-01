@@ -1,10 +1,13 @@
-function MyCylinder(scene, slices, stacks) {
-    CGFobject.call(this,scene);
-   
-    this.slices = slices;
-    this.stacks = stacks;
- 
-    this.initBuffers();
+function MyCylinder(scene, height, botRad, topRad, stacks, slices) {
+	CGFobject.call(this,scene);
+	
+	this.height = height;
+	this.botRad = botRad/1;
+	this.topRad = topRad/1;
+	this.slices = slices;
+	this.stacks = stacks;
+	
+	this.initBuffers();
 };
 
 MyCylinder.prototype = Object.create(CGFobject.prototype);
@@ -18,19 +21,18 @@ MyCylinder.prototype.initBuffers = function() {
  	this.indices = [];
  	this.normals = [];
 	this.texCoords = [];
+	var radius = this.botRad;
+	var radDelta = (this.topRad - this.botRad) / this.stacks;
+	console.log("RAIO");
+	console.log(radius);
  	indice = 0;
 
  	for(s = 0; s <= this.stacks; s++)
 	{
-		this.vertices.push(1, 0, s / this.stacks);
-		this.normals.push(1, 0, 0);
-		this.texCoords.push(0, s / this.stacks);
-		indice += 1;
-
-		for(i = 1; i <= this.slices; i++)
+		for(i = 0; i <= this.slices; i++)
 		{
 			last += angle;
-			this.vertices.push(Math.cos(last), Math.sin(last), s / this.stacks);
+			this.vertices.push((radius+s*radDelta)*Math.cos(last), (radius+s*radDelta)*Math.sin(last), this.height*s/this.stacks);
 			this.normals.push(Math.cos(last), Math.sin(last), 0);
 			this.texCoords.push(i / this.slices, s / this.stacks);
 			indice++;

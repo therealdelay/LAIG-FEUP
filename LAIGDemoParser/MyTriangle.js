@@ -1,9 +1,20 @@
-function MyTriangle(scene,minS,maxS,minT,maxT) {
+function MyTriangle(scene,vert1X, vert1Y, vert1Z, vert2X, vert2Y, vert2Z, vert3X, vert3Y, vert3Z) {
 	CGFobject.call(this,scene);
-	this.minS = minS || 0;
-	this.maxS = maxS || 1;
-	this.minT = minT || 0;
-	this.maxT = maxT || 1;
+	
+	this.vert1X = vert1X;
+	this.vert1Y = vert1Y;
+	this.vert1Z = vert1Z;
+	this.vert2X = vert2X;
+	this.vert2Y = vert2Y;
+	this.vert2Z = vert2Z;
+	this.vert3X = vert3X;
+	this.vert3Y = vert3Y;
+	this.vert3Z = vert3Z;
+	
+	this.minS = 0;
+	this.maxS = 1;
+	this.minT = 0;
+	this.maxT = 1;
 
 	this.initBuffers();
 };
@@ -13,9 +24,9 @@ MyTriangle.prototype.constructor=MyTriangle;
 
 MyTriangle.prototype.initBuffers = function () {
 	this.vertices = [
- 		-0.5, -0.5, 0,
- 		0.5, -0.5, 0,
- 		-0.5, 0.5, 0,
+ 		this.vert1X, this.vert1Y, this.vert1Z,
+ 		this.vert2X, this.vert2Y, this.vert2Z,
+ 		this.vert3X, this.vert3Y, this.vert3Z
  	];
 
  	this.indices = [
