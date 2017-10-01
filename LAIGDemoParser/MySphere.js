@@ -17,37 +17,64 @@ MySphere.prototype.constructor = MySphere;
  
 MySphere.prototype.initBuffers = function() {
   
-   	var angle = (2*Math.PI)/this.slices;
-	var last = 0;
-   	var angle2 = (Math.PI/2)/this.stacks;
-    var last2 = 0;
+ this.vertices = [];
+  this.indices = [];
+  this.normals = [];
+  this.texCoords = [];
 
-    this.vertices = [];
- 	this.indices = [];
- 	this.normals = [];
-	this.texCoords = [];
- 	indice = 0;
+  var index = 0;
+  
+  var ang = 0.0;
+  var ang_incr = 2 * Math.PI / this.slices;
 
- 	for(s = 0; s <= this.stacks; s++)
-	{
-		for(i = 0; i <= this.slices; i++)
-		{
-			last += angle;
-			this.vertices.push(Math.cos(last)*Math.cos(last2)*this.radius, Math.sin(last)*Math.cos(last2)*this.radius, Math.sin(last2)*this.radius);
-			this.normals.push(Math.cos(last)*Math.cos(last2), Math.sin(last)*Math.cos(last2), Math.sin(last2));
-			this.texCoords.push(Math.asin(Math.cos(last2))/Math.PI+0.5, Math.asin(Math.sin(last) * (Math.cos(last2)))/Math.PI +0.5);
-			indice++;
+  var ang_sphere = 0.0;
+  var ang_aux = (Math.PI/2) / this.stacks;
 
-			if(s > 0 && i > 0)
-			{
-				this.indices.push(indice-1, indice-2, indice-this.slices-2);
-				this.indices.push(indice-this.slices-3, indice-this.slices-2, indice-2);
-			}
-		}
-		last = 0;
-		last2 += angle2;
-	}
+  var height = Math.sin(ang_sphere);
+  var coord_x = Math.cos(ang_sphere);
+  var coord_y = Math.sin(ang_sphere);
+
+  var index_incr = this.stacks+1;
+
+  for(var i = 0; i <= this.slices; i++) 
+  {
+    for(var j = 0; j <= this.stacks+1; j++)
+    {
+
+      this.vertices.push(coord_x*this.radius, coord_y*this.radius, height*this.radius);
+      this.normals.push(2*coord_x, 2*coord_y, 2*height);
+      this.texCoords.push((0.5*coord_x) + 0.5,0.5 - (0.5*coord_y));
+
+      if(i !== 0 && j !== 0) {
+             this.indices.push(index,index-index_incr-1,index-1);
+             this.indices.push(index,index-index_incr,index-index_incr-1);
+      }
+
+      index++;
+      
+      height=Math.sin(ang_sphere);
+      coord_x = Math.cos(ang_sphere)* Math.cos(ang);
+      coord_y = Math.cos(ang_sphere)*Math.sin(ang);
+      ang_sphere+=ang_aux;
+      
+    }
+    ang += ang_incr;
+    ang_sphere = 0.0;
+    height = 0;
+    coord_x = Math.cos(ang);
+    coord_y = Math.sin(ang);    
+}
 	
 	this.primitiveType = this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
  };
+
+ MySphere.prototype.setTexCoordsAmp = function (amplif_factor_S,amplif_factor_T) {
+  /**this.texCoords = [
+    0, this.height/amplif_factor_T,
+    this.width/amplif_factor_S, this.height/amplif_factor_T,
+    this.width/amplif_factor_S, 0,
+    0,0
+  ];
+  this.updateTexCoordsGLBuffers();**/
+};

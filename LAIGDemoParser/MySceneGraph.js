@@ -32,6 +32,8 @@ function MySceneGraph(filename, scene) {
   this.axisCoords['y'] = [0, 1, 0];
   this.axisCoords['z'] = [0, 0, 1];
 
+  this.textures = [];
+
   // File reading
   this.reader = new CGFXMLreader();
 
@@ -853,7 +855,7 @@ MySceneGraph.prototype.parseLights = function(lightsNode) {
 */
 MySceneGraph.prototype.parseTextures = function(texturesNode) {
 
-  this.textures = [];
+  
 
   var eachTexture = texturesNode.children;
   // Each texture.
@@ -1489,4 +1491,6 @@ MySceneGraph.prototype.tex_top = function(){
 
 MySceneGraph.prototype.mat_top = function(){
   return this.mat_stack[this.mat_stack.length-1];
-};
+}; 
+
+
