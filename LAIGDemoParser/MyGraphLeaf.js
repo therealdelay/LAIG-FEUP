@@ -4,7 +4,7 @@
  **/
 
  function MyGraphLeaf(graph, xmlelem) {
-  this.graph=graph;
+  this.graph = graph;
   this.part = null;
   var type = graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle']);
   var args = graph.reader.getString(xmlelem, 'args');
@@ -33,28 +33,10 @@
 
 MyGraphLeaf.prototype.display = function () {
 
-  /**
-  this.id_tex = this.graph.tex_top();
+  var tex = this.graph.textures[this.graph.tex_top()] ;
 
-  var i = 0;
-  var found = false;
-  while(i < this.graph.textures.length && !found) {
+  if(tex != null)
+    this.part.setTexCoordsAmp(tex[1], tex[2]);
 
-  if(this.graph.textures[i] == this.id_tex)
-    found = true;
-  else
-    i++;
-  }
-
-  console.log("i", i);
-  console.log("textures size", this.graph.textures.length);
-  //this.tex_info = this.textures[this.tex_top()];
-
-
-console.log("tipo", typeof this.graph.textures[i]);*/
-
-
-  //this.part.setTexCoordsAmp(this.graph.textures[i][1], this.graph.textures[i][2]);
-
- this.part.display();
+  this.part.display();
 };
