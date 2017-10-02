@@ -159,6 +159,7 @@
 
             <NODEREF id="luzes" />    
             <NODEREF id="chao" />
+            <NODEREF id="paredes" />
             <NODEREF id="bancos" />
         </DESCENDANTS>
 
@@ -177,6 +178,19 @@
         <DESCENDANTS>
 					<LEAF  type="rectangle" args="0 1 1 0" />        
 				</DESCENDANTS>
+
+    </NODE>
+
+        <!-- The wall -->
+    <NODE id="paredes">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+              
+        <SCALE sx="25" sy="15" sz="25" />
+
+        <DESCENDANTS>
+                    <LEAF  type="rectangle" args="0 1 1 0" />        
+                </DESCENDANTS>
 
     </NODE>
     
@@ -290,7 +304,8 @@
         <MATERIAL id="null" />     
         <TEXTURE id="null" />       			
 
-        <TRANSLATION x="7.5" y="-2" z="21" />
+        <TRANSLATION x="4" y="-2" z="4" />
+        <ROTATION axis="y" angle="-90"/>
         
         <DESCENDANTS>
             <NODEREF id="banco" /> 
@@ -301,10 +316,11 @@
     <!-- Another bench -->
      <NODE id="banco1">      
         <MATERIAL id="null" />     
-        <TEXTURE id="null" />       			
+        <TEXTURE id="null" />  
 
-        <TRANSLATION x="7.5" y="-2" z="4" />
-
+        <TRANSLATION x="14" y="-2" z="4" />
+        <ROTATION axis="y" angle="-90"/> 
+        
         <DESCENDANTS>
             <NODEREF id="banco" />      
         </DESCENDANTS>
