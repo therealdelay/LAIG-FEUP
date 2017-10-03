@@ -23,8 +23,6 @@ MyCylinder.prototype.initBuffers = function() {
 	this.texCoords = [];
 	var radius = this.botRad;
 	var radDelta = (this.topRad - this.botRad) / this.stacks;
-	console.log("RAIO");
-	console.log(radius);
  	indice = 0;
 
  	for(s = 0; s <= this.stacks; s++)

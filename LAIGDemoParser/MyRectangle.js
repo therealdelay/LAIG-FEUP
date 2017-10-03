@@ -20,13 +20,13 @@
  	this.deltaX = this.rightBottomX - this.leftTopX;
  	this.deltaY = this.leftTopY - this.rightBottomY;
 
- 	console.log("deltaX", this.deltaX);
+ 	/*console.log("deltaX", this.deltaX);
  	console.log("deltaY", this.deltaY);
 
  	console.log("leftTopX", this.leftTopX);
  	console.log("leftTopX", this.leftTopY);
  	console.log("rightBottomX", this.rightBottomX);
- 	console.log("rightBottomY", this.rightBottomY);
+ 	console.log("rightBottomY", this.rightBottomY);*/
 
  	this.initBuffers();
  };
@@ -69,13 +69,13 @@
  MyRectangle.prototype.setTexCoordsAmp = function (amplif_factor_S, amplif_factor_T) {
 
 
- 	console.log("vou alterar as texCoords: maxT", this.deltaY/amplif_factor_T);
+ 	/*console.log("vou alterar as texCoords: maxT", this.deltaY/amplif_factor_T);
  	console.log("vou alterar as texCoords: maxS", this.deltaX/amplif_factor_S);
  	console.log("amplif_factor_T", amplif_factor_T);
  	console.log("amplif_factor_S", amplif_factor_S);
 
  	console.log("deltaX", this.deltaX);
- 	console.log("deltaY", this.deltaY);
+ 	console.log("deltaY", this.deltaY);*/
  	
  	this.texCoords = [
  	0, this.deltaY/amplif_factor_T,
