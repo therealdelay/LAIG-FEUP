@@ -181,12 +181,38 @@
 
     </NODE>
 
-        <!-- The wall -->
+        <!-- The walls -->
     <NODE id="paredes">      
         <MATERIAL id="null" />      
         <TEXTURE id="clear" />                  
               
         <SCALE sx="25" sy="15" sz="25" />
+
+        <DESCENDANTS>
+            <NODEREF id="parede1" />           
+            <NODEREF id="parede2" />                            
+        </DESCENDANTS>
+
+    </NODE>
+
+        <NODE id="parede1">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+
+        <ROTATION axis="z" angle="180"/>
+        <ROTATION axis="y" angle="-90"/>
+        <TRANSLATION x="0" y="-1" z="0" />
+
+
+        <DESCENDANTS>
+                    <LEAF  type="rectangle" args="0 1 1 0" />        
+                </DESCENDANTS>
+
+    </NODE>
+
+        <NODE id="parede2">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
 
         <DESCENDANTS>
                     <LEAF  type="rectangle" args="0 1 1 0" />        
