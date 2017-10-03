@@ -79,6 +79,18 @@
         <amplif_factor s="0.7" t="0.7" />   
     </TEXTURE>
 
+    <!-- Vidro -->
+    <TEXTURE id="vidro">
+        <file path="images/vidro.jpg" />                
+        <amplif_factor s="1" t="1" />   
+    </TEXTURE>
+
+	<!-- Metal -->
+    <TEXTURE id="metal">
+        <file path="images/metal.jpg" />                
+        <amplif_factor s="0.5" t="0.5" />   
+    </TEXTURE>
+
 </TEXTURES>
 
 
@@ -161,6 +173,7 @@
             <NODEREF id="chao" />
             <NODEREF id="paredes" />
             <NODEREF id="sofas" />
+            <NODEREF id="janelas" />
         </DESCENDANTS>
 
     </NODE>
@@ -185,41 +198,275 @@
     <NODE id="paredes">      
         <MATERIAL id="null" />      
         <TEXTURE id="clear" />                  
-              
-        <SCALE sx="25" sy="15" sz="25" />
 
         <DESCENDANTS>
             <NODEREF id="parede1" />           
-            <NODEREF id="parede2" />                            
+            <NODEREF id="parede2" />   
+            <NODEREF id="parede3" />
+            <NODEREF id="parede4" />
+            <NODEREF id="parede5" />
+            <NODEREF id="parede6" />
         </DESCENDANTS>
-
-    </NODE>
-
-        <NODE id="parede1">      
-        <MATERIAL id="null" />      
-        <TEXTURE id="clear" />                  
-
-        <ROTATION axis="z" angle="180"/>
-        <ROTATION axis="y" angle="-90"/>
-        <TRANSLATION x="0" y="-1" z="0" />
-
-
-        <DESCENDANTS>
-                    <LEAF  type="rectangle" args="0 1 1 0" />        
-                </DESCENDANTS>
-
-    </NODE>
-
-        <NODE id="parede2">      
-        <MATERIAL id="null" />      
-        <TEXTURE id="clear" />                  
-
-        <DESCENDANTS>
-                    <LEAF  type="rectangle" args="0 1 1 0" />        
-                </DESCENDANTS>
-
     </NODE>
     
+    <NODE id="parede1">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+		
+		<TRANSLATION x="0" y="11.5" z="11" />
+		<SCALE sx="1" sy="6.5" sz="3" />
+        <ROTATION axis="z" angle="180"/>
+        <ROTATION axis="y" angle="-90"/>
+
+        <DESCENDANTS>
+       		<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />    
+		</DESCENDANTS>
+    </NODE>
+
+    <NODE id="parede3">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+		
+		<TRANSLATION x="0" y="11.5" z="0" />
+		<SCALE sx="1" sy="6.5" sz="3" />
+        <ROTATION axis="z" angle="180"/>
+        <ROTATION axis="y" angle="-90"/>
+
+        <DESCENDANTS>
+       		<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />    
+            </DESCENDANTS>
+    </NODE>
+
+	<NODE id="parede4">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+		
+		<TRANSLATION x="0" y="11.5" z="22" />
+		<SCALE sx="1" sy="6.5" sz="3" />
+        <ROTATION axis="z" angle="180"/>
+        <ROTATION axis="y" angle="-90"/>
+
+        <DESCENDANTS>
+       		<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />    
+		</DESCENDANTS>
+    </NODE>    
+
+    <NODE id="parede5">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+		
+		<TRANSLATION x="0" y="15" z="0" />
+		<SCALE sx="1" sy="3.5" sz="25" />
+        <ROTATION axis="z" angle="180"/>
+        <ROTATION axis="y" angle="-90"/>
+
+        <DESCENDANTS>
+       		<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />    
+		</DESCENDANTS>
+    </NODE>    
+	
+	<NODE id="parede6">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+		
+		<TRANSLATION x="0" y="5" z="0" />
+		<SCALE sx="1" sy="5" sz="25" />
+        <ROTATION axis="z" angle="180"/>
+        <ROTATION axis="y" angle="-90"/>
+
+        <DESCENDANTS>
+       		<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />    
+		</DESCENDANTS>
+    </NODE>    
+
+    <NODE id="parede2">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="clear" />                  
+
+		<TRANSLATION x="-1" y="0" z="0" />
+		<SCALE sx="26" sy="15" sz="1" />
+		
+        <DESCENDANTS>
+			<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <!-- Windows -->
+    <NODE id="janelas">
+    	<MATERIAL id="defaultMaterial" />
+    	<TEXTURE id="clear" />
+
+    	<DESCENDANTS>
+    		<NODEREF id="janela1" />
+    		<NODEREF id="janela2" />
+		</DESCENDANTS>
+	</NODE>
+	
+	<NODE id="janela1" >
+		<MATERIAL id="null" />
+		<TEXTURE id="clear" />
+		<DESCENDANTS>
+			<NODEREF id="caixilho" />
+			<NODEREF id="vidro" />
+		</DESCENDANTS>
+	</NODE>
+
+	<NODE id="vidro" >
+		<MATERIAL id="null" />
+		<TEXTURE id="vidro" />
+		
+		<TRANSLATION x="-0.5" y="5.5" z="10.75" />
+		<SCALE sx="1" sy="5.5" sz="7.5" />
+		<ROTATION axis="y" angle="90" />
+
+		<DESCENDANTS>
+			<NODEREF id="faceCubo1" />
+		</DESCENDANTS>
+	</NODE>
+
+	<NODE id="janela2" >
+		<MATERIAL id="null" />
+		<TEXTURE id="clear" />
+
+		<TRANSLATION x="0" y="0" z="11" />
+		<DESCENDANTS>
+			<NODEREF id="caixilho" />
+			<NODEREF id="vidro" />
+		</DESCENDANTS>
+	</NODE>
+
+	<NODE id="caixilho">
+		<MATERIAL id="defaultMaterial" />
+		<TEXTURE id="metal" />
+
+		<DESCENDANTS>
+			<NODEREF id="parte1" />
+			<NODEREF id="parte2" />
+			<NODEREF id="parte3" />
+			<NODEREF id="parte4" />
+			<NODEREF id="parte5" />
+		</DESCENDANTS>
+	</NODE>
+
+	<NODE id="parte1">
+		<MATERIAL id="null" />
+		<TEXTURE id="metal" />
+		
+		<TRANSLATION x="-1" y="5" z="3" />
+		<ROTATION axis="y" angle="-90"/>
+		<SCALE sx="8" sy="0.5" sz="1" />
+
+		<DESCENDANTS>
+			<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />
+		</DESCENDANTS>
+	</NODE>
+	
+	<NODE id="parte2">
+		<MATERIAL id="null" />
+		<TEXTURE id="metal" />
+	
+		<TRANSLATION x="-1" y="11" z="3" />
+		<ROTATION axis="y" angle="-90"/>
+		<SCALE sx="8" sy="0.5" sz="1" />
+
+		<DESCENDANTS>
+			<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />
+		</DESCENDANTS>
+	</NODE>
+
+	<NODE id="parte3">
+		<MATERIAL id="null" />
+		<TEXTURE id="metal" />
+	
+		<TRANSLATION x="0" y="5" z="3.5" />
+		<ROTATION axis="z" angle="90" />
+
+		<SCALE sx="6" sy="1" sz="0.5" />
+
+		<DESCENDANTS>
+			<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />
+		</DESCENDANTS>
+	</NODE>
+
+	<NODE id="parte4">
+		<MATERIAL id="null" />
+		<TEXTURE id="metal" />
+
+		<TRANSLATION x="0" y="5" z="11" />
+		<ROTATION axis="z" angle="90" />
+		<SCALE sx="6" sy="1" sz="0.5" />
+		<DESCENDANTS>
+			<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />
+		</DESCENDANTS>
+	</NODE>
+
+	<NODE id="parte5">
+		<MATERIAL id="null" />
+		<TEXTURE id="metal" />
+		
+		<TRANSLATION x="0" y="5" z="7.25" />
+		<ROTATION axis="z" angle="90" />
+		<SCALE sx="6" sy="1" sz="0.5" />
+		<DESCENDANTS>
+			<NODEREF id="faceCubo1" />
+            <NODEREF id="faceCubo2" />
+            <NODEREF id="faceCubo3" />
+            <NODEREF id="faceCubo4" />
+            <NODEREF id="faceCubo5" />
+            <NODEREF id="faceCubo6" />
+		</DESCENDANTS>
+	</NODE>
+
     <!-- The lights -->
      <NODE id="luzes">       
         <MATERIAL id="lightMaterial" />    
