@@ -122,6 +122,12 @@
         <file path="images/glass.png" />                
         <amplif_factor s="1" t="1" />   
     </TEXTURE>
+
+    <!-- Box tv -->
+    <TEXTURE id="boxTexture">
+        <file path="images/box.png" />                
+        <amplif_factor s="1" t="1" />   
+    </TEXTURE>
 </TEXTURES>
 
 
@@ -207,7 +213,7 @@
         <emission r="0.7" g="0.7" b="0.7" a="1" />        
     </MATERIAL>
 
-        <!-- Light bulb material -->
+    <!-- Light bulb material -->
     <MATERIAL id="glassMaterial">                                  
         <shininess value="100" />
         <specular r="0.3" g="0.3" b="0.5" a="0.5" />       
@@ -275,6 +281,7 @@
       <NODEREF id="baseSuperior1"/>
       <NODEREF id="baseSuperior2"/>
       <NODEREF id="vidroMesa"/>
+      <NODEREF id="esquinasMesa"/> 
   </DESCENDANTS>
 </NODE>
 
@@ -349,12 +356,105 @@
   </DESCENDANTS>
 </NODE>
 
+<NODE id="esquinasMesa">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />  
+
+    <DESCENDANTS>
+      <NODEREF id="esquinaMesa1" />
+      <NODEREF id="esquinaMesa2" />
+      <NODEREF id="esquinaMesa3" />
+      <NODEREF id="esquinaMesa4" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="esquinaMesa1">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />  
+
+    <TRANSLATION x="5" y="0.1" z="0" /> 
+    <ROTATION axis="y" angle="-90"/>
+
+    <DESCENDANTS>
+      <LEAF id="cylinder" type="cylinder" args="5 0.1 0.1 20 20" />
+      <NODEREF id="circulo3" />
+      <NODEREF id="circulo4" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="esquinaMesa2">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />  
+
+    <TRANSLATION x="5" y="1.6" z="0" /> 
+    <ROTATION axis="y" angle="-90"/>
+    
+    <DESCENDANTS>
+      <LEAF id="cylinder" type="cylinder" args="5 0.1 0.1 20 20" />
+      <NODEREF id="circulo3" />
+      <NODEREF id="circulo4" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="esquinaMesa3">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />  
+
+    <TRANSLATION x="5" y="0.1" z="-6" /> 
+    <ROTATION axis="y" angle="-90"/>
+
+    <DESCENDANTS>
+      <LEAF id="cylinder" type="cylinder" args="5 0.1 0.1 20 20" />
+      <NODEREF id="circulo3" />
+      <NODEREF id="circulo4" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="esquinaMesa4">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />  
+
+    <TRANSLATION x="5" y="1.6" z="-6" /> 
+    <ROTATION axis="y" angle="-90"/>
+    
+    <DESCENDANTS>
+      <LEAF id="cylinder" type="cylinder" args="5 0.1 0.1 20 20" />
+      <NODEREF id="circulo3" />
+      <NODEREF id="circulo4" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="circulo3">
+  <MATERIAL id="null" />
+  <TEXTURE id="null" />
+  
+  <SCALE sx="0.1" sy="0.1" sz="1" />
+  <ROTATION axis="y" angle="-180"/>  
+  <DESCENDANTS>
+    <LEAF id="circle1" type="circle" args="20" />
+</DESCENDANTS>
+</NODE>
+
+<NODE id="circulo4">
+  <MATERIAL id="null" />
+  <TEXTURE id="null" />
+
+  <TRANSLATION x="0" y="0" z="5" />
+  <SCALE sx="0.1" sy="0.1" sz="1" />  
+  <DESCENDANTS>
+    <LEAF id="circle1" type="circle" args="20" />
+</DESCENDANTS>
+</NODE>
+
+
+
+
 <!-- candeeiro de pé -->
 <NODE id="candeeiro">       
     <MATERIAL id="lightMaterial" />
     <TEXTURE id="metal" />                  
 
-    <TRANSLATION x="18.5" y="4.8" z="5" />
+    <TRANSLATION x="18.5" y="4.7" z="5" />
     <ROTATION axis="y" angle="-60"/>
     <SCALE sx="0.8" sy="0.8" sz="0.8" />
 
@@ -363,6 +463,8 @@
         <NODEREF id="peCandeeiro2" />
         <NODEREF id="baseCandeeiro" />
         <NODEREF id="baseLuz" />
+        <NODEREF id="ligacao" />
+
     </DESCENDANTS>
 </NODE>
 
@@ -370,11 +472,23 @@
     <MATERIAL id="null" />
     <TEXTURE id="null" />                  
 
+    <TRANSLATION x="0" y="-0.05" z="-0.05" />
     <ROTATION axis="x" angle="70"/>
-    <SCALE sx="0.2" sy="0.2" sz="1.5" />
+    <SCALE sx="0.15" sy="0.15" sz="1.5" />
 
     <DESCENDANTS>
         <LEAF id="cylinder1" type="cylinder" args="4 1 1 20 20" />
+    </DESCENDANTS>
+</NODE>
+
+<NODE id="ligacao">       
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />                  
+
+    <TRANSLATION x="0" y="-0.05" z="-0.05" />
+
+    <DESCENDANTS>
+         <LEAF id="sphere1" type="sphere" args="0.17 20 20" />
     </DESCENDANTS>
 </NODE>
 
@@ -382,9 +496,8 @@
     <MATERIAL id="null" />
     <TEXTURE id="null" />                  
     
-    <TRANSLATION x="0" y="-0.17" z="-0.1" />
     <ROTATION axis="x" angle="-60"/>
-    <SCALE sx="0.2" sy="0.2" sz="1" />
+    <SCALE sx="0.15" sy="0.15" sz="1" />
 
     <DESCENDANTS>
         <LEAF id="cylinder1" type="cylinder" args="4 1 1 20 20" />
@@ -446,7 +559,7 @@
     <MATERIAL id="null" />
     <TEXTURE id="null" />                  
 
-    <TRANSLATION x="0" y="3.2" z="2.2" />
+    <TRANSLATION x="0" y="3.3" z="2.2" />
     <SCALE sx="0.4" sy="0.7" sz="0.6" />
 
     <DESCENDANTS>
@@ -1090,6 +1203,7 @@
    <NODEREF id="wallObject3" />
    <NODEREF id="colunas" />
    <NODEREF id="televisao" />
+   <NODEREF id="box" />
    <NODEREF id="movel" />
 </DESCENDANTS>
 </NODE>
@@ -1251,7 +1365,7 @@
 </NODE>
 
 <NODE id="televisao" >
-  <MATERIAL id="null" />
+  <MATERIAL id="blackMaterial" />
   <TEXTURE id="null" />
 
   <DESCENDANTS>
@@ -1266,6 +1380,18 @@
 
   <TRANSLATION x="6.5" y="3" z="-0.2" />
   <SCALE sx="8" sy="4" sz="0.3" />
+
+  <DESCENDANTS>
+    <NODEREF id="cubo" />
+</DESCENDANTS>
+</NODE>
+
+<NODE id="box" >
+  <MATERIAL id="blackMaterial" />
+  <TEXTURE id="boxTexture" />
+
+  <TRANSLATION x="9" y="1.5" z="-0.2" />
+  <SCALE sx="2.5" sy="0.8" sz="0.7" />
 
   <DESCENDANTS>
     <NODEREF id="cubo" />
