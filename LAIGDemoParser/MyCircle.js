@@ -29,12 +29,4 @@ MyCircle.prototype.initBuffers = function () {
     this.initGLBuffers();
 }
 
-MyCircle.prototype.setTexCoordsAmp = function (amplif_factor_S,amplif_factor_T) {
- /** this.texCoords = [
-    0, this.height/amplif_factor_T,
-    this.width/amplif_factor_S, this.height/amplif_factor_T,
-    this.width/amplif_factor_S, 0,
-    0,0
-  ];
-  this.updateTexCoordsGLBuffers();**/
-};
+MyCircle.prototype.setTexCoordsAmp = function (amplif_factor_S,amplif_factor_T) {};
