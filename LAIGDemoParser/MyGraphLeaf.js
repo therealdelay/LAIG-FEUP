@@ -6,7 +6,7 @@
  function MyGraphLeaf(graph, xmlelem) {
   this.graph = graph;
   this.part = null;
-  var type = graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle']);
+  var type = graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'circle']);
   var args = graph.reader.getString(xmlelem, 'args');
 
   console.log("isto são args", args);
@@ -24,6 +24,9 @@
  }
  else if(type == 'sphere'){
    this.part = new MySphere(graph.scene,args[0],args[1], args[2], args[3]);
+ }
+ else if(type == 'circle'){
+   this.part = new MyCircle(graph.scene,args[0]);
  }
  else{
    this.part = new MyRectangle(graph.scene,0,0,0,0);
