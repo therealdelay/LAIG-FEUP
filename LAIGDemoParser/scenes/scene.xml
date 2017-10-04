@@ -766,11 +766,25 @@
 <!-- Generic bench -->
 <NODE id="assento">       
     <MATERIAL id="null" />     
-    <TEXTURE id="null" />       			
-    <SCALE sx="3.5" sy="1.5" sz="10" />
+    <TEXTURE id="null" />       	
+    <TRANSLATION x="-4" y="0" z="0" />
+    <SCALE sx="3.5" sy="1.6" sz="10" />
     <ROTATION axis="y" angle="90" />
+    <ROTATION axis="x" angle="90" />
     <DESCENDANTS>
         <NODEREF id="cubo"/>
+        <NODEREF id="curvaAssento"/>
+    </DESCENDANTS>
+</NODE>
+
+<NODE id="curvaAssento">       
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />                  
+    
+    <TRANSLATION x="0.5" y="1" z="-1" />
+    <SCALE sx="0.5" sy="0.12" sz="1" />
+    <DESCENDANTS>
+        <NODEREF id="curva" />
     </DESCENDANTS>
 </NODE>
 
@@ -782,6 +796,59 @@
     <SCALE sx="1.5" sy="4" sz="10" />
     <DESCENDANTS>
         <NODEREF id="cubo"/>
+        <NODEREF id="curvaCostas" />
+
+    </DESCENDANTS>
+</NODE>
+
+<NODE id="curvaCostas">       
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />                  
+    
+    <TRANSLATION x="0.5" y="1" z="-1" />
+    <SCALE sx="0.5" sy="0.2" sz="1" />
+    <DESCENDANTS>
+        <NODEREF id="curva" />
+    </DESCENDANTS>
+</NODE>
+
+<NODE id="curva">       
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />                
+    
+    <DESCENDANTS>
+        <NODEREF id="cilindro"/>
+        <NODEREF id="circulo1"/>
+        <NODEREF id="circulo2"/>
+    </DESCENDANTS>
+</NODE>
+
+<NODE id="circulo1">
+  <MATERIAL id="null" />
+  <TEXTURE id="null" />
+  
+  <TRANSLATION x="0" y="0" z="1" />
+  <DESCENDANTS>
+    <LEAF id="circle1" type="circle" args="20" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="circulo2">
+  <MATERIAL id="null" />
+  <TEXTURE id="null" />
+  
+  <ROTATION axis="y" angle="180" />
+  <DESCENDANTS>
+    <LEAF id="circle1" type="circle" args="20" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="cilindro">       
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />                  
+    
+    <DESCENDANTS>
+        <LEAF id="cylinder1" type="cylinder" args="1 1 1 20 20" />
     </DESCENDANTS>
 </NODE>
 
@@ -795,6 +862,17 @@
    </DESCENDANTS>
 </NODE>
 
+<NODE id="curvaBracos">       
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />                  
+    
+    <TRANSLATION x="0.5" y="1" z="-1" />
+    <SCALE sx="0.5" sy="0.2" sz="1" />
+    <DESCENDANTS>
+        <NODEREF id="curva" />
+    </DESCENDANTS>
+</NODE>
+
 <NODE id="braco1">      
     <MATERIAL id="null" />     
     <TEXTURE id="null" />
@@ -802,6 +880,7 @@
     <SCALE sx="4.5" sy="3" sz="1" />
     <DESCENDANTS>
         <NODEREF id="cubo"/>
+        <NODEREF id="curvaBracos" />
     </DESCENDANTS>
 </NODE>
 
@@ -813,6 +892,7 @@
 
     <DESCENDANTS>
         <NODEREF id="cubo"/>
+        <NODEREF id="curvaBracos" />
     </DESCENDANTS>
 </NODE>
 
@@ -827,6 +907,17 @@
    </DESCENDANTS>
 </NODE>
 
+<NODE id="curvaAlmofadas">       
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />                  
+    
+    <TRANSLATION x="0.5" y="1" z="-1" />
+    <SCALE sx="0.5" sy="0.5" sz="1" />
+    <DESCENDANTS>
+        <NODEREF id="curva" />
+    </DESCENDANTS>
+</NODE>
+
 <NODE id="almofada1">      
     <MATERIAL id="null" />     
     <TEXTURE id="null" />
@@ -834,8 +925,10 @@
 
     <DESCENDANTS>
         <NODEREF id="cubo"/>
+        <NODEREF id="curvaAlmofadas"/>
     </DESCENDANTS>
 </NODE>
+
 
 <NODE id="almofada2">      
     <MATERIAL id="null" />     
@@ -845,6 +938,7 @@
 
     <DESCENDANTS>
         <NODEREF id="cubo"/>
+        <NODEREF id="curvaAlmofadas"/>
     </DESCENDANTS>
 </NODE>
 
