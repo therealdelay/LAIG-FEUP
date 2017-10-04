@@ -51,11 +51,16 @@ MyTriangle.prototype.initBuffers = function () {
 };
 
 MyTriangle.prototype.setTexCoordsAmp = function (amplif_factor_S,amplif_factor_T) {
- /** this.texCoords = [
-    0, this.height/amplif_factor_T,
-    this.width/amplif_factor_S, this.height/amplif_factor_T,
-    this.width/amplif_factor_S, 0,
-    0,0
-  ];
-  this.updateTexCoordsGLBuffers();**/
+    var distAB = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));
+    var distBC = Math.sqrt(Math.pow(this.v2x-this.v3x, 2) + Math.pow(this.v2y-this.v3y, 2) + Math.pow(this.v2z-this.v3z, 2));
+    var distAC = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
+    var beta = Math.acos((Math.pow(distBC, 2) + Math.pow(distAB, 2) - Math.pow(distAC, 2))/(2*distAB*distBC));
+    
+    this.texCoords = [
+		this.minS, this.minT,
+		this.maxS, this.minT*distAB/amplif_factor_S,
+		((distAB - distBC*Math.cos(beta))/distAB)*distAB/amplif_factor_S, (distBC*Math.sin(beta)/distAB)*distAB/amplif_factor_T
+    ];	
+	
+	this.updateTexCoordsGLBuffers();
 };
