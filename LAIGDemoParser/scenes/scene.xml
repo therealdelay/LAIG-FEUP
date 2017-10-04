@@ -20,37 +20,37 @@
 
 
     <!-- Lights -->
-    <LIGHTS>	
+    <LIGHTS>    
        <LIGHT id="light0">                                    
-        <enable value ="1" />                   	       
-        <position  x="10" y="10" z="15" w="1" />       	   
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />        	 
+        <enable value ="1" />                              
+        <position  x="10" y="11" z="15" w="1" />           
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />          
         <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />                                        
         <specular r="0.9" g="0.9" b="0.9" a="1.0" />      
     </LIGHT>
 
     <LIGHT id="light1">                                    
-        <enable value ="1" />                   	      
-        <position x="11" y="11" z="11" w="1" />       	   
+        <enable value ="1" />                             
+        <position x="11" y="12" z="11" w="1" />            
         <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
         <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />                                           
         <specular r="0.9" g="0.9" b="0.9" a="1.0" />  
     </LIGHT>
 
     <LIGHT id="light2">                                   
-        <enable value ="1" />                   	       
-        <position x="14" y="10" z="14" w="1" />       		   
+        <enable value ="1" />                              
+        <position x="14" y="11" z="14" w="1" />                
         <ambient r="0.2" g="0.2" b="0.2" a="1.0" />      
         <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />                            
         <specular r="0.9" g="0.9" b="0.9" a="1.0" />     
     </LIGHT>
 
-    <LIGHT id="light3">                                   
-        <enable value ="1" />                           
-        <position x="3" y="3" z="3" w="1" />                 
+<LIGHT id="light3">                                   
+        <enable value ="1" />                          
+        <position x="17" y="7.3" z="5.8"  w="1" />                 
         <ambient r="0.2" g="0.2" b="0.2" a="1.0" />             
-        <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />       
-        <specular r="0.6" g="0.6" b="0.6" a="1.0" />      
+        <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />       
+        <specular r="0.9" g="0.9" b="0.9" a="1.0" />      
     </LIGHT>
     
 </LIGHTS>
@@ -247,7 +247,7 @@
        </DESCENDANTS>
    </NODE>
 
-   <!-- candeeiro de pé -->
+    <!-- candeeiro de pé -->
    <NODE id="candeeiro">       
     <MATERIAL id="defaultMaterial" />
     <TEXTURE id="metal" />                  
@@ -350,7 +350,20 @@
     <DESCENDANTS>
         <NODEREF id="cylinder2" />
         <NODEREF id="tampo1" />
-        <NODEREF id="tampo2" />
+        <NODEREF id="tampoLuz" />
+    </DESCENDANTS>
+</NODE>
+
+<NODE id="tampoLuz">       
+    <MATERIAL id="lightMaterial" />
+    <TEXTURE id="clear" /> 
+
+    <TRANSLATION x="0" y="0.02" z="0" />
+    <ROTATION axis="x" angle="90"/>
+    <SCALE sx="1.5" sy="1.5" sz="0" />
+
+    <DESCENDANTS>
+        <LEAF id="circle1" type="circle" args="20" />
     </DESCENDANTS>
 </NODE>
 
@@ -645,10 +658,10 @@
     <MATERIAL id="null" />    
     <TEXTURE id="null" />     
 
-    <TRANSLATION x="10" y="10" z="15" />  			
+    <TRANSLATION x="10" y="11" z="15" />            
 
     <DESCENDANTS>
-        <NODEREF id="luz_candeeiro" />  
+        <NODEREF id="luz_candeeiro1" />  
     </DESCENDANTS>
 
 </NODE>
@@ -656,12 +669,12 @@
 <!-- The second light -->
 <NODE id="luz2">       
     <MATERIAL id="null" />     
-    <TEXTURE id="null" />       			
+    <TEXTURE id="null" />                   
 
-    <TRANSLATION x="11" y="11" z="11" />
+    <TRANSLATION x="11" y="12" z="11" />
 
     <DESCENDANTS>
-        <NODEREF id="luz_candeeiro" />   
+        <NODEREF id="luz_candeeiro2" />   
     </DESCENDANTS>
 
 </NODE>
@@ -669,34 +682,42 @@
 <!-- The third light -->
 <NODE id="luz3">       
     <MATERIAL id="null" />     
-    <TEXTURE id="null" />       			
+    <TEXTURE id="null" />                   
 
-    <TRANSLATION x="14" y="10" z="14" />
+    <TRANSLATION x="14" y="11" z="14" />
 
     <DESCENDANTS>
-     <NODEREF id="luz_candeeiro" />   
+     <NODEREF id="luz_candeeiro1" />   
  </DESCENDANTS>
 
 </NODE>
 
 <!-- Lamp post -->
-<NODE id="luz_candeeiro">       
+<NODE id="luz_candeeiro1">       
     <MATERIAL id="null" />     
-    <TEXTURE id="null" />       			
+    <TEXTURE id="null" />                   
 
     <DESCENDANTS>
      <NODEREF id="luz_esfera" />       
-     <NODEREF id="luz_suporte" /> 	   
+     <NODEREF id="luz_suporte1" />     
  </DESCENDANTS>
+</NODE>
 
+<NODE id="luz_candeeiro2">       
+    <MATERIAL id="null" />     
+    <TEXTURE id="null" />                   
+
+    <DESCENDANTS>
+     <NODEREF id="luz_esfera" />       
+     <NODEREF id="luz_suporte2" />      
+ </DESCENDANTS>
 </NODE>
 
 <!-- Light bulb -->
 <NODE id="luz_esfera">       
     <MATERIAL id="null" />     
-    <TEXTURE id="null" />       			
+    <TEXTURE id="null" />                   
 
-    <TRANSLATION x="0" y="0" z="0" />
     <SCALE sx="-1" sy="1" sz="1" />
 
     <DESCENDANTS>
@@ -705,17 +726,30 @@
 </NODE>
 
 <!-- The post in the lamp post... -->
-<NODE id="luz_suporte">       
+<NODE id="luz_suporte1">       
     <MATERIAL id="lightPostMaterial" />     
-    <TEXTURE id="null" />       			
+    <TEXTURE id="null" />                   
 
-    <SCALE sx="0.08" sy="2.02" sz="0.08" />
+    <SCALE sx="0.08" sy="1.2" sz="0.08" />
     <ROTATION axis="x" angle="-90" />
+    <TRANSLATION x="0" y="0" z="0.5" />
 
     <DESCENDANTS>
        <LEAF id="cylinder1" type="cylinder" args="4 1 1 20 20" /> 
    </DESCENDANTS>
+</NODE>
 
+<NODE id="luz_suporte2">       
+    <MATERIAL id="lightPostMaterial" />     
+    <TEXTURE id="null" />                   
+
+    <SCALE sx="0.08" sy="1" sz="0.08" />
+    <ROTATION axis="x" angle="-90" />
+    <TRANSLATION x="0" y="0" z="0.5" />
+
+    <DESCENDANTS>
+       <LEAF id="cylinder1" type="cylinder" args="4 1 1 20 20" /> 
+   </DESCENDANTS>
 </NODE>
 
 <!-- Street bench -->
