@@ -1368,10 +1368,11 @@
   <TEXTURE id="null" />
   
   <TRANSLATION x="0" y="0" z="0.999" />
+  <SCALE sx="1" sy="1" sz="0.01" />
   <ROTATION axis="x" angle="90" />
 
   <DESCENDANTS>
-   <LEAF id="sphere1" type="sphere" args="1 2 40" />
+   <LEAF id="sphere1" type="sphere" args="1 40 40" />
  </DESCENDANTS>
 </NODE>
 
@@ -1380,10 +1381,11 @@
   <TEXTURE id="null" />
   
   <TRANSLATION x="0" y="0" z="0.001" />
+  <SCALE sx="1" sy="1" sz="0.01" />
   <ROTATION axis="y" angle="180" />
   <ROTATION axis="x" angle="90" />
   <DESCENDANTS>
-    <LEAF id="sphere1" type="sphere" args="1 2 40" />
+    <LEAF id="sphere1" type="sphere" args="1 40 40" />
   </DESCENDANTS>
 </NODE>
 
