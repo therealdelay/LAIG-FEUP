@@ -1367,7 +1367,7 @@
   <MATERIAL id="null" />
   <TEXTURE id="null" />
   
-  <TRANSLATION x="0" y="0" z="1" />
+  <TRANSLATION x="0" y="0" z="0.999" />
   <ROTATION axis="x" angle="90" />
 
   <DESCENDANTS>
@@ -1379,6 +1379,7 @@
   <MATERIAL id="null" />
   <TEXTURE id="null" />
   
+  <TRANSLATION x="0" y="0" z="0.001" />
   <ROTATION axis="y" angle="180" />
   <ROTATION axis="x" angle="90" />
   <DESCENDANTS>
