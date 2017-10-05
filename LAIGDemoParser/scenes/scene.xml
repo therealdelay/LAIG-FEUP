@@ -1365,6 +1365,7 @@
   
   <TRANSLATION x="0" y="0" z="1" />
   <DESCENDANTS>
+     <!--LEAF id="sphere6" type="sphere" args="0.25 2 40" /-->
     <LEAF id="circle1" type="circle" args="20" />
 </DESCENDANTS>
 </NODE>
