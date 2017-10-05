@@ -256,6 +256,7 @@
             <NODEREF id="candeeiro" />
             <NODEREF id="mesa" />
             <NODEREF id="pillows" />
+            <NODEREF id="curtains" />
         </DESCENDANTS>
 
     </NODE>
@@ -282,6 +283,246 @@
     <DESCENDANTS>
        <NODEREF id="pillowsSofa1" />
        <NODEREF id="pillowsSofa2" />
+   </DESCENDANTS>
+</NODE>
+
+  <NODE id="curtains">      
+      <MATERIAL id="blackMaterial" />    
+      <TEXTURE id="null" />     
+    
+      <DESCENDANTS>
+         <NODEREF id="curtain1" />
+         <NODEREF id="curtain2" />
+     </DESCENDANTS>
+  </NODE>
+
+  <NODE id="curtain1">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <DESCENDANTS>
+       <NODEREF id="topo" />
+       <NODEREF id="lamina1" />
+       <NODEREF id="lamina2" />
+       <NODEREF id="lamina3" />
+       <NODEREF id="lamina4" />
+       <NODEREF id="lamina5" />
+       <NODEREF id="lamina6" />
+       <NODEREF id="lamina7" />
+       <NODEREF id="lamina8" />
+       <NODEREF id="lamina9" />
+       <NODEREF id="lamina10" />
+       <NODEREF id="lamina11" />
+       <NODEREF id="lamina12" />
+       <NODEREF id="lamina13" />
+       <NODEREF id="lamina14" />
+       <NODEREF id="lamina15" />
+   </DESCENDANTS>
+</NODE>
+
+<NODE id="curtain2">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="0" z="11" />
+    <DESCENDANTS>
+       <NODEREF id="topo" />
+       <NODEREF id="lamina1" />
+       <NODEREF id="lamina2" />
+       <NODEREF id="lamina3" />
+       <NODEREF id="lamina4" />
+       <NODEREF id="lamina5" />
+       <NODEREF id="lamina6" />
+       <NODEREF id="lamina7" />
+       <NODEREF id="lamina8" />
+       <NODEREF id="lamina9" />
+       <NODEREF id="lamina10" />
+       <NODEREF id="lamina11" />
+       <NODEREF id="lamina12" />
+       <NODEREF id="lamina13" />
+       <NODEREF id="lamina14" />
+       <NODEREF id="lamina15" />
+   </DESCENDANTS>
+</NODE>
+
+
+<NODE id="topo">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+
+    <TRANSLATION x="0" y="12" z="12" />
+    <SCALE sx="0.5" sy="0.5" sz="10" />
+    
+    <DESCENDANTS>
+       <NODEREF id="cubo" />
+   </DESCENDANTS>
+</NODE>
+
+<NODE id="lamina">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+
+    <TRANSLATION x="0.1" y="0" z="11.5" />
+    <SCALE sx="0.3" sy="0.05" sz="9" />
+    
+    <DESCENDANTS>
+       <NODEREF id="cubo" />
+   </DESCENDANTS>
+</NODE>
+
+<NODE id="lamina1">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="11.7" z="0" />
+
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+
+<NODE id="lamina2">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="11.2" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+
+<NODE id="lamina3">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="10.7" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+
+<NODE id="lamina4">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="10.2" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+
+<NODE id="lamina5">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="9.7" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina6">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="9.2" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina7">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="8.7" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina8">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="8.2" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina9">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="7.7" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina10">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="7.2" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina11">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="6.7" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina12">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="6.2" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina13">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="5.7" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina14">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="5.2" z="0" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
+   </DESCENDANTS>
+</NODE>
+<NODE id="lamina15">      
+    <MATERIAL id="null" />    
+    <TEXTURE id="null" />     
+    
+    <TRANSLATION x="0" y="4.7" z="0" />
+    <SCALE sx="1" sy="5" sz="1" />
+    
+    <DESCENDANTS>
+       <NODEREF id="lamina" />
    </DESCENDANTS>
 </NODE>
 
