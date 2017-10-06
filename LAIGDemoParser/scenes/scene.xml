@@ -318,6 +318,8 @@
    <NODEREF id="lamina13" />
    <NODEREF id="lamina14" />
    <NODEREF id="lamina15" />
+   <NODEREF id="suporte1" />
+   <NODEREF id="suporte2" />
  </DESCENDANTS>
 </NODE>
 
@@ -343,9 +345,36 @@
    <NODEREF id="lamina13" />
    <NODEREF id="lamina14" />
    <NODEREF id="lamina15" />
+   <NODEREF id="suporte1" />
+   <NODEREF id="suporte2" />
  </DESCENDANTS>
 </NODE>
 
+<NODE id="suporte1">      
+  <MATERIAL id="null" />    
+  <TEXTURE id="null" />     
+  
+  <TRANSLATION x="0.2" y="12.5" z="11" />
+  <SCALE sx="0.05" sy="7.6" sz="0.05" />
+  <ROTATION axis="x" angle="90" />
+
+  <DESCENDANTS>
+   <NODEREF id="cilindro" />
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="suporte2">      
+  <MATERIAL id="null" />    
+  <TEXTURE id="null" />     
+  
+  <TRANSLATION x="0.2" y="12.5" z="3" />
+  <SCALE sx="0.05" sy="7.6" sz="0.05" />
+  <ROTATION axis="x" angle="90" />
+
+  <DESCENDANTS>
+   <NODEREF id="cilindro" />
+ </DESCENDANTS>
+</NODE>
 
 <NODE id="topo">      
   <MATERIAL id="null" />    
@@ -827,7 +856,7 @@
   <ROTATION axis="x" angle="90" />
 
   <DESCENDANTS>
-   <LEAF id="sphere1" type="sphere" args="1 2 40" />
+   <LEAF id="sphere1" type="sphere" args="1 40 40" />
  </DESCENDANTS>
 </NODE>
 
@@ -841,7 +870,7 @@
   <ROTATION axis="x" angle="90" />
 
   <DESCENDANTS>
-   <LEAF id="sphere1" type="sphere" args="1 2 40" />
+   <LEAF id="sphere1" type="sphere" args="1 40 40" />
  </DESCENDANTS>
 </NODE>
 
@@ -869,7 +898,7 @@
 <ROTATION axis="x" angle="90" />
 
   <DESCENDANTS>
-     <LEAF id="sphere1" type="sphere" args="1 2 40" />
+     <LEAF id="sphere1" type="sphere" args="1 40 40" />
 </DESCENDANTS>
 </NODE>
 
