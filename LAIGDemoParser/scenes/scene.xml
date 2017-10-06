@@ -61,7 +61,7 @@
   <!-- Hide -->
   <TEXTURE id="sofa">
     <file path="images/sofa.jpg" />                
-    <amplif_factor s="0.7" t="0.7" />   
+    <amplif_factor s="1" t="1" />   
   </TEXTURE>
 
   <!-- Metal -->
@@ -79,13 +79,13 @@
   <!-- Wood -->
   <TEXTURE id="wood">
     <file path="images/wood.png" />                
-    <amplif_factor s="1" t="1" />   
+    <amplif_factor s="0.5" t="0.5" />   
   </TEXTURE>
 
   <!-- Floor -->
   <TEXTURE id="floor">
     <file path="images/parquet.jpg" />                
-    <amplif_factor s="0.5" t="0.5" />   
+    <amplif_factor s="0.25" t="0.25" />   
   </TEXTURE>
 
   <!-- Glass -->
@@ -636,7 +636,7 @@
 
 
 <NODE id="tableSide1">      
-  <MATERIAL id="defaultMaterial" />    
+  <MATERIAL id="null" />    
   <TEXTURE id="null" />                 
 
   <TRANSLATION x="0" y="0.1" z="0.1" />
@@ -649,7 +649,7 @@
 
 
 <NODE id="tableSide2">      
-  <MATERIAL id="defaultMaterial" />    
+  <MATERIAL id="null" />    
   <TEXTURE id="null" />                 
 
   <TRANSLATION x="0" y="0.1" z="-5.8" />
@@ -662,7 +662,7 @@
 
 
 <NODE id="baseBottomTable">      
-  <MATERIAL id="defaultMaterial" />    
+  <MATERIAL id="null" />    
   <TEXTURE id="null" />                 
 
   <SCALE sx="5" sy="0.3" sz="6" />  
@@ -674,7 +674,7 @@
 
 
 <NODE id="baseTopTable1">      
-  <MATERIAL id="defaultMaterial" />    
+  <MATERIAL id="null" />    
   <TEXTURE id="null" />                 
 
   <TRANSLATION x="0" y="1.4" z="0" />
@@ -687,7 +687,7 @@
 
 
 <NODE id="baseTopTable2">      
-  <MATERIAL id="defaultMaterial" />    
+  <MATERIAL id="null" />    
   <TEXTURE id="null" />                 
 
   <TRANSLATION x="0" y="1.4" z="-4" />
@@ -1304,7 +1304,7 @@
 <!-- Holder of globe lamp -->
 <NODE id="lightHolder1">       
   <MATERIAL id="lightPostMaterial" />     
-  <TEXTURE id="null" />                   
+  <TEXTURE id= "metal" />                   
 
   <SCALE sx="0.08" sy="1.2" sz="0.08" />
   <ROTATION axis="x" angle="-90" />
@@ -1318,7 +1318,7 @@
 
 <NODE id="lightHolder2">       
   <MATERIAL id="lightPostMaterial" />     
-  <TEXTURE id="null" />                   
+  <TEXTURE id="metal" />                   
 
   <SCALE sx="0.08" sy="1" sz="0.08" />
   <ROTATION axis="x" angle="-90" />
@@ -1652,7 +1652,7 @@
 
 
 <NODE id="bookcaseLeg1" >
-  <MATERIAL id="null" />
+  <MATERIAL id="lightMaterial" />
   <TEXTURE id="metal" />
 
   <TRANSLATION x="5.7" y="1.7" z="-0.2" />
@@ -1665,7 +1665,7 @@
 
 
 <NODE id="bookcaseLeg2" >
-  <MATERIAL id="null" />
+  <MATERIAL id="lightMaterial" />
   <TEXTURE id="metal" />
 
   <TRANSLATION x="5.7" y="1.7" z="-0.8" />
@@ -1678,7 +1678,7 @@
 
 
 <NODE id="bookcaseLeg3" >
-  <MATERIAL id="null" />
+  <MATERIAL id="lightMaterial" />
   <TEXTURE id="metal" />
 
   <TRANSLATION x="15.3" y="1.7" z="-0.2" />
@@ -1691,7 +1691,7 @@
 
 
 <NODE id="bookcaseLeg4" >
-  <MATERIAL id="null" />
+  <MATERIAL id="lightMaterial" />
   <TEXTURE id="metal" />
 
   <TRANSLATION x="15.3" y="1.7" z="-0.8" />
