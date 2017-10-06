@@ -48,10 +48,10 @@ MyCylinder.prototype.initBuffers = function() {
 	}
 	
 
-	if(this.top)
+	if(this.top == 1)
 		this.addCoverTop();
 	
-	if(this.bottom )
+	if(this.bottom == 1)
 		this.addCoverBottom();
 	
 	this.primitiveType = this.scene.gl.TRIANGLES;
@@ -84,6 +84,8 @@ MyCylinder.prototype.addCoverTop = function() {
 	this.indices = this.indices.concat(indices1);
 	this.normals = this.normals.concat(normals1);
 	this.texCoords = this.texCoords.concat(texCoords1);
+
+	
 };
 
 
