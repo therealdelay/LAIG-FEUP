@@ -228,6 +228,7 @@
       <NODEREF id="table" />
       <NODEREF id="pillows" />
       <NODEREF id="curtains" />
+      <NODEREF id="cilindro" />
     </DESCENDANTS>
 
   </NODE>
@@ -1421,6 +1422,7 @@
 </NODE>
 
 
+<!-- teste -->
 <NODE id="cilindro">       
   <MATERIAL id="null" />
   <TEXTURE id="null" />                  

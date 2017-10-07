@@ -47,6 +47,8 @@ MyCylinder.prototype.initBuffers = function() {
 		last = 0;
 	}
 	
+	this.vertices.push(0, 0, 0);
+	this.vertices.push(0, 0, this.height);
 
 	if(this.top == 1)
 		this.addCoverTop();
@@ -69,7 +71,6 @@ MyCylinder.prototype.addCoverTop = function() {
 	var last = 0;
 	var angle = (2*Math.PI)/this.slices;
 
-	vertices1.push(0, 0, this.height);
 	normals1.push(0, 0, 1);
 	texCoords1.push(0.5, 0.5);
 
@@ -84,8 +85,6 @@ MyCylinder.prototype.addCoverTop = function() {
 	this.indices = this.indices.concat(indices1);
 	this.normals = this.normals.concat(normals1);
 	this.texCoords = this.texCoords.concat(texCoords1);
-
-	
 };
 
 
