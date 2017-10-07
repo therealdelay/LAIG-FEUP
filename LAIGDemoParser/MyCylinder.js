@@ -101,7 +101,7 @@ MyCylinder.prototype.addCoverBottom = function() {
 	texCoords1.push(0.5, 0.5);
 
 	for(var i = this.slices; i > 0 ; i--){
-		indices1.push(this.slices+1, i, i-1);
+		indices1.push((this.stacks+1)*(this.slices+1), i, i-1);
 		normals1.push(0,0,1);
 		texCoords1.push(0.5+0.5*Math.cos(last),0.5-0.5*Math.sin(last));
 	}
