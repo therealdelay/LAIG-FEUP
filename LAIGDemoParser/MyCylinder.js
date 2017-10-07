@@ -52,7 +52,7 @@ MyCylinder.prototype.initBuffers = function() {
 
 	if(this.top == 1)
 		this.addCoverTop();
-	
+
 	if(this.bottom == 1)
 		this.addCoverBottom();
 	
@@ -97,11 +97,36 @@ MyCylinder.prototype.addCoverBottom = function() {
 	var last = 0;
 	var angle = (2*Math.PI)/this.slices;
 
+	normals1.push(0, 0, 1);
+	texCoords1.push(0.5, 0.5);
+
+	for(var i = this.slices; i > 0 ; i--){
+		indices1.push(this.slices+1, i, i-1);
+		normals1.push(0,0,1);
+		texCoords1.push(0.5+0.5*Math.cos(last),0.5-0.5*Math.sin(last));
+	}
+
+	this.indices = this.indices.concat(indices1);
+	this.normals = this.normals.concat(normals1);
+	this.texCoords = this.texCoords.concat(texCoords1);
+
+
+
+
+/*
+	var vertices1 = [];
+	var indices1 = [];
+	var normals1 = [];
+	var texCoords1 = [];
+	var last = 0;
+	var angle = (2*Math.PI)/this.slices;
+
+	vertices1.push(0, 0, 0);
 	normals1.push(0, 0, -1);
 	texCoords1.push(0.5, 0.5);
 
 	for(var i = 0; i < this.slices; i++){
-		vertices1.push(Math.cos(last)*this.botRad,Math.sin(last)*this.botRad, 0);
+		vertices1.push(Math.cos(last)*this.botRad, Math.sin(last)*this.botRad, 0);
 		indices1.push(i+1, i, 0);   
 		normals1.push(0,0,-1);
 		texCoords1.push(0.5+0.5*Math.cos(last),0.5-0.5*Math.sin(last));
@@ -112,5 +137,5 @@ MyCylinder.prototype.addCoverBottom = function() {
 	this.vertices = this.vertices.concat(vertices1);
 	this.indices = this.indices.concat(indices1);
 	this.normals = this.normals.concat(normals1);
-	this.texCoords = this.texCoords.concat(texCoords1);
+	this.texCoords = this.texCoords.concat(texCoords1);*/
 };
