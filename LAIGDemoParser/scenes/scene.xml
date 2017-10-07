@@ -228,7 +228,6 @@
       <NODEREF id="table" />
       <NODEREF id="pillows" />
       <NODEREF id="curtains" />
-      <NODEREF id="cilindro" />
     </DESCENDANTS>
 
   </NODE>
@@ -1448,8 +1447,8 @@
   <MATERIAL id="null" />
   <TEXTURE id="null" />                  
   
-  <TRANSLATION x="0.5" y="1" z="-0.9995" />
-  <SCALE sx="0.5" sy="0.2" sz="0.999" />
+  <TRANSLATION x="0.5" y="1" z="-0.995" />
+  <SCALE sx="0.5" sy="0.2" sz="0.99" />
 
   <DESCENDANTS>
     <NODEREF id="curve" />
