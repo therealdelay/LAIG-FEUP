@@ -51,9 +51,9 @@ MyTriangle.prototype.initBuffers = function () {
 };
 
 MyTriangle.prototype.setTexCoordsAmp = function (amplif_factor_S,amplif_factor_T) {
-    var distAB = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));
-    var distBC = Math.sqrt(Math.pow(this.v2x-this.v3x, 2) + Math.pow(this.v2y-this.v3y, 2) + Math.pow(this.v2z-this.v3z, 2));
-    var distAC = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
+    var distAB = Math.sqrt(Math.pow(this.vert2X-this.vert1X, 2) + Math.pow(this.vert2Y-this.vert1Y, 2) + Math.pow(this.vert2Z-this.vert1Z, 2));
+    var distBC = Math.sqrt(Math.pow(this.vert2X-this.vert3X, 2) + Math.pow(this.vert2Y-this.vert3Y, 2) + Math.pow(this.vert2Z-this.vert3Z, 2));
+    var distAC = Math.sqrt(Math.pow(this.vert1X-this.vert3X, 2) + Math.pow(this.vert1Y-this.vert3Y, 2) + Math.pow(this.vert1Z-this.vert3Z, 2));
     var beta = Math.acos((Math.pow(distBC, 2) + Math.pow(distAB, 2) - Math.pow(distAC, 2))/(2*distAB*distBC));
     
     this.texCoords = [
