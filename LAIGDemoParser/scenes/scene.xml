@@ -1370,8 +1370,8 @@
   <MATERIAL id="null" />
   <TEXTURE id="null" />                  
   
-  <TRANSLATION x="0.5" y="1" z="-1" />
-  <SCALE sx="0.5" sy="0.2" sz="1" />
+  <TRANSLATION x="0.5" y="1" z="-0.9995" />
+  <SCALE sx="0.5" sy="0.2" sz="0.999" />
 
   <DESCENDANTS>
     <NODEREF id="curve" />
@@ -1387,8 +1387,6 @@
   
   <DESCENDANTS>
     <NODEREF id="cilindro"/>
-    <!--NODEREF id="circulo1"/>
-    <NODEREF id="circulo2"/> -->
   </DESCENDANTS>
 </NODE>
 
@@ -1450,8 +1448,8 @@
   <MATERIAL id="null" />
   <TEXTURE id="null" />                  
   
-  <TRANSLATION x="0.5" y="1" z="-1" />
-  <SCALE sx="0.5" sy="0.2" sz="1" />
+  <TRANSLATION x="0.5" y="1" z="-0.9995" />
+  <SCALE sx="0.5" sy="0.2" sz="0.999" />
 
   <DESCENDANTS>
     <NODEREF id="curve" />
