@@ -265,7 +265,9 @@
 
 <NODE id="curtain1">      
   <MATERIAL id="null" />    
-  <TEXTURE id="null" />     
+  <TEXTURE id="null" />  
+
+  <TRANSLATION x="0" y="8" z="7" />
   
   <DESCENDANTS>
    <NODEREF id="curtain" />
@@ -277,7 +279,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="0" z="11" />
+  <TRANSLATION x="0" y="8" z="18" />
 
   <DESCENDANTS>
    <NODEREF id="curtain" />
@@ -316,7 +318,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0.2" y="12.5" z="11" />
+  <TRANSLATION x="0.2" y="4.1" z="4" />
   <SCALE sx="0.05" sy="7.6" sz="0.05" />
   <ROTATION axis="x" angle="90" />
 
@@ -330,7 +332,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0.2" y="12.5" z="3" />
+  <TRANSLATION x="0.2" y="4.1" z="-4" />
   <SCALE sx="0.05" sy="7.6" sz="0.05" />
   <ROTATION axis="x" angle="90" />
 
@@ -344,7 +346,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
 
-  <TRANSLATION x="0" y="12" z="12" />
+  <TRANSLATION x="0" y="4.1" z="5"/>
   <SCALE sx="0.5" sy="0.5" sz="10" />
   
   <DESCENDANTS>
@@ -357,7 +359,6 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
 
-  <TRANSLATION x="0.1" y="0" z="11.5" />
   <SCALE sx="0.3" sy="0.05" sz="9" />
   
   <DESCENDANTS>
@@ -370,7 +371,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="11.7" z="0" />
+  <TRANSLATION x="0.1" y="3.6" z="4.5" />
 
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -382,7 +383,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="11.2" z="0" />
+  <TRANSLATION x="0.1" y="3.1" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -394,7 +395,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="10.7" z="0" />
+  <TRANSLATION x="0.1" y="2.6" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -406,7 +407,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="10.2" z="0" />
+  <TRANSLATION x="0.1" y="2.1" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -418,7 +419,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="9.7" z="0" />
+  <TRANSLATION x="0.1" y="1.6" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -430,7 +431,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="9.2" z="0" />
+  <TRANSLATION x="0.1" y="1.1" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -442,7 +443,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="8.7" z="0" />
+  <TRANSLATION x="0.1" y="0.6" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -454,7 +455,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="8.2" z="0" />
+  <TRANSLATION x="0.1" y="0.1" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -466,7 +467,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="7.7" z="0" />
+  <TRANSLATION x="0.1" y="-0.4" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -478,7 +479,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="7.2" z="0" />
+  <TRANSLATION x="0.1" y="-0.9" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -490,7 +491,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="6.7" z="0" />
+  <TRANSLATION x="0.1" y="-1.4" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -502,7 +503,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="6.2" z="0" />
+  <TRANSLATION x="0.1" y="-1.9" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -514,7 +515,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="5.7" z="0" />
+  <TRANSLATION x="0.1" y="-2.4" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -526,7 +527,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="5.2" z="0" />
+  <TRANSLATION x="0.1" y="-2.9" z="4.5" />
   
   <DESCENDANTS>
    <NODEREF id="lamina" />
@@ -538,7 +539,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
-  <TRANSLATION x="0" y="4.7" z="0" />
+  <TRANSLATION x="0.1" y="-3.7" z="4.5" />
   <SCALE sx="1" sy="5" sz="1" />
   
   <DESCENDANTS>
@@ -564,7 +565,7 @@
   <MATERIAL id="defaultMaterial" />    
   <TEXTURE id="null" /> 
 
-  <TRANSLATION x="20" y="0" z="26" />    
+  <!--TRANSLATION x="20" y="0" z="26" /-->    
   <ROTATION axis="y" angle="-180" />  
 
   <DESCENDANTS>
@@ -589,7 +590,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />                 
 
-  <TRANSLATION x="2.4" y="3.2" z="16.2" />
+  <!--TRANSLATION x="2.4" y="3.2" z="16.2" /-->
   <ROTATION axis="z" angle="-45" /> 
   <ROTATION axis="x" angle="-45" /> 
   <SCALE sx="0.7" sy="0.3" sz="0.7" /> 
@@ -604,7 +605,7 @@
   <MATERIAL id="null" />    
   <TEXTURE id="null" />                 
 
-  <TRANSLATION x="2.4" y="3.2" z="9.8" />
+  <!--TRANSLATION x="2.4" y="3.2" z="9.8" /-->
   <ROTATION axis="z" angle="-45" /> 
   <ROTATION axis="x" angle="45" /> 
   <SCALE sx="0.7" sy="0.3" sz="0.7" /> 
