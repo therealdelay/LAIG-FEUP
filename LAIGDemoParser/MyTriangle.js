@@ -33,11 +33,17 @@ MyTriangle.prototype.initBuffers = function () {
  		0, 1, 2,
  	];
 
-	 this.normals = [
-          0, 0, 1,
-          0, 0, 1,
-          0, 0, 1,
-      ];
+	 this.normals = [];
+
+ 	this.a = (this.vert2Y-this.vert1Y)*(this.vert3Z-this.vert1Z) - (this.vert2Z-this.vert1Z)*(this.vert3Y-this.vert1Y);
+	this.b = (this.vert2Z-this.vert1Z)*(this.vert3X-this.vert1X) - (this.vert2X-this.vert1X)*(this.vert3Z-this.vert1Z);
+    this.c = (this.vert2X-this.vert1X)*(this.vert3Y-this.vert1Y) - (this.vert2Y-this.vert1Y)*(this.vert3X-this.vert1X);
+
+	for (let j = 0; j < 3; j++){
+ 	  this.normals.push(this.a);
+ 	  this.normals.push(this.b);
+ 	  this.normals.push(this.c);
+ 	}
 
       this.texCoords = [
 		this.minS, this.maxT,
