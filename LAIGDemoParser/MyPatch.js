@@ -1,6 +1,6 @@
 function MyPatch(scene, degreeU, degreeV, controlvertexes){
 	CGFobject.call(this,scene);
-	
+		
 	var knots1 = this.getKnotsVector(degreeU); // to be built inside webCGF in later versions ()
 	var knots2 = this.getKnotsVector(degreeV); // to be built inside webCGF in later versions
 		
@@ -9,8 +9,7 @@ function MyPatch(scene, degreeU, degreeV, controlvertexes){
 		return nurbsSurface.getPoint(u, v);
 	};
 
-	this.obj = new CGFnurbsObject(this.scene, getSurfacePoint, 20, 20 );
-	this.scene.surfaces.push(this.obj);
+	this.obj = new CGFnurbsObject(scene, getSurfacePoint, 20, 20);
 }
 
  MyPatch.prototype = Object.create(CGFobject.prototype);
@@ -18,18 +17,19 @@ function MyPatch(scene, degreeU, degreeV, controlvertexes){
 
  MyPatch.prototype.getKnotsVector = function(degree){
  	var v = new Array();
-	for (var i=0; i<=degree; i++) {
+	for (var i=0; i<=degree; ++i) {
 		v.push(0);
 	}
-	for (var i=0; i<=degree; i++) {
+	for (var i=0; i<=degree; ++i) {
 		v.push(1);
 	}
+
+	console.log(v);
 	return v;
  };
 
 MyPatch.prototype.display = function () {
-	console.log('ola');
-	this.obj.display;
+	this.obj.display();
 };
 
  MyPatch.prototype.setTexCoordsAmp = function (amplif_factor_S, amplif_factor_T) {

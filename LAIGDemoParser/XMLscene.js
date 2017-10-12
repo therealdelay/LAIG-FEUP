@@ -9,9 +9,6 @@ function XMLscene(interface) {
 
     this.interface = interface;
 
-    this.surfaces = [];
-
-
     this.lightValues = {};
 }
 
@@ -145,7 +142,29 @@ XMLscene.prototype.display = function() {
 
         // Displays the scene.
         this.graph.displayScene();
-
+       	var patch = new MyPatch(this, 2, 3,[// U = 0
+						[ // V = 0..3;
+							 [ -2.0, -2.0, 1.0, 1 ],
+							 [ -2.0, -1.0, -2.0, 1 ],
+							 [ -2.0, 1.0, 5.0, 1 ],
+							 [ -2.0, 2.0, -1.0, 1 ]
+						],
+						// U = 1
+						[ // V = 0..3
+							 [ 0, -2.0, 0, 1 ],
+							 [ 0, -1.0, -1.0, 1 ],
+							 [ 0, 1.0, 1.5, 1 ],
+							 [ 0, 2.0, 0, 1 ]
+						],
+						// U = 2
+						[ // V = 0..3
+							 [ 2.0, -2.0, -1.0, 1 ],
+							 [ 2.0, -1.0, 2.0, 1 ],
+							 [ 2.0, 1.0, -5.0, 1 ],
+							 [ 2.0, 2.0, 1.0, 1 ]
+						]
+					]);
+		patch.display();
     }
 	else
 	{

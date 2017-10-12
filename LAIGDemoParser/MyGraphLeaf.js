@@ -34,6 +34,7 @@
    var orderV;
    for(var i = 0; i < cplines.length; i++){
      var cpoints = cplines[i].children;
+     var array = [];
      for(var j=0; j < cpoints.length; j++){
       var cpx = graph.reader.getString(cpoints[j], 'xx');
       var cpy = graph.reader.getString(cpoints[j], 'yy');
@@ -41,8 +42,9 @@
       var cpw = graph.reader.getString(cpoints[j], 'ww');
       var cpointargs = [cpx, cpy, cpz, cpw];
       orderV = cpoints.length;
-      controlvertexes.push(cpointargs);
+      array.push(cpointargs);
      }
+     controlvertexes.push(array);
    }
 
    console.log(controlvertexes );

@@ -581,7 +581,7 @@ MySceneGraph.prototype.parseLights = function(lightsNode) {
 
     nodeNames = [];
     for (var j = 0; j < grandChildren.length; j++) {
-      console.log(grandChildren[j].nodeName);
+      //console.log(grandChildren[j].nodeName);
       nodeNames.push(grandChildren[j].nodeName);
     }
 
@@ -1427,7 +1427,7 @@ MySceneGraph.generateRandomString = function(length) {
 * Displays the scene, processing each node, starting in the root node.
 */
 MySceneGraph.prototype.displayScene = function() {
-  console.log(this);
+  //console.log(this);
   this.nodesRecursive(this.nodes.root);
 
   this.log("Graph should be rendered here...");
@@ -1438,7 +1438,7 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
 
 
   //TEXTURE STACK PROCEDURE
-  console.log(node);
+  //console.log(node);
   if(node.textureID == 'null'){
     this.tex_stack.push(this.tex_top());
     tex_info = this.textures[this.tex_top()];
