@@ -228,11 +228,31 @@
       <NODEREF id="table" />
       <NODEREF id="pillows" />
       <NODEREF id="curtains" />
+      <NODEREF id="surface1" />
     </DESCENDANTS>
 
   </NODE>
 
+  <NODE id="surface1" >
+    <MATERIAL id="null" />
+    <TEXTURE id="null" />
 
+    <TRANSLATION x="10" y="10" z="10" />
+    <SCALE sx="5" sy="5" sz="5" />
+
+    <DESCENDANTS>
+       <LEAF type="patch" args="20 20" >
+        <CPLINE>
+          <CPOINT xx="-2" yy="-2" zz="0" ww="1" />
+          <CPOINT xx="-2" yy="2" zz="0" ww="1" />
+        </CPLINE>
+        <CPLINE>
+          <CPOINT xx="2" yy="-2" zz="0" ww="1" />
+          <CPOINT xx="2" yy="2" zz="0" ww="1" />
+        </CPLINE>
+      </LEAF>
+     </DESCENDANTS>
+   </NODE>
 
   <!-- The floor -->
   <NODE id="floor">      

@@ -9,6 +9,8 @@ function XMLscene(interface) {
 
     this.interface = interface;
 
+    this.surfaces = [];
+
 
     this.lightValues = {};
 }

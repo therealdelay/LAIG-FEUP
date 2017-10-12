@@ -1345,7 +1345,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
         else
         if (descendants[j].nodeName == "LEAF")
         {
-          var type=this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'circle']);
+          var type=this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'circle', 'patch']);
 
           if (type != null)
           this.log("   Leaf: "+ type);
@@ -1438,6 +1438,7 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
 
 
   //TEXTURE STACK PROCEDURE
+  console.log(node);
   if(node.textureID == 'null'){
     this.tex_stack.push(this.tex_top());
     tex_info = this.textures[this.tex_top()];
