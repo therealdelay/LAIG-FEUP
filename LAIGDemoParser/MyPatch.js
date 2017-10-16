@@ -24,7 +24,7 @@ function MyPatch(scene, degreeU, degreeV, controlvertexes){
 		v.push(1);
 	}
 
-	console.log(v);
+	//console.log(v);
 	return v;
  };
 
