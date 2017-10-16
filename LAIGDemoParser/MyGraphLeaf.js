@@ -9,10 +9,8 @@
   var type = graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch']);
   var args = graph.reader.getString(xmlelem, 'args');
 
- // console.log("isto são args", args);
-
   args = args.split(" ");
-
+  
   switch(type){
     case 'rectangle':
       this.createRectangle(graph, args); break;
@@ -81,15 +79,11 @@ MyGraphLeaf.prototype.createPatch = function (graph, xmlelem, args){
      }
      controlvertexes.push(array);
    }
-
-   //console.log(controlvertexes );
-
+   
    this.part = new MyPatch(graph.scene, orderU-1, orderV-1, controlvertexes);
-
 }
 
 MyGraphLeaf.prototype.display = function () {
-
   var tex = this.graph.textures[this.graph.tex_top()] ;
 
   if(tex != null)
