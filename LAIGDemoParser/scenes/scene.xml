@@ -243,12 +243,22 @@
     <DESCENDANTS>
        <LEAF type="patch" args="20 20" >
         <CPLINE>
-          <CPOINT xx="-2" yy="-2" zz="0" ww="1" />
-          <CPOINT xx="-2" yy="2" zz="0" ww="1" />
+          <CPOINT xx="-2" yy="-2" zz="1" ww="1" />
+          <CPOINT xx="-2" yy="-1" zz="-2" ww="1" />
+          <CPOINT xx="-2" yy="1" zz="5" ww="1" />
+          <CPOINT xx="-2" yy="2" zz="-1" ww="1" />
         </CPLINE>
         <CPLINE>
-          <CPOINT xx="2" yy="-2" zz="0" ww="1" />
-          <CPOINT xx="2" yy="2" zz="0" ww="1" />
+          <CPOINT xx="0" yy="-2" zz="0" ww="1" />
+          <CPOINT xx="0" yy="-1" zz="-1" ww="1" />
+           <CPOINT xx="0" yy="1" zz="1.5" ww="1" />
+          <CPOINT xx="0" yy="2" zz="0" ww="1" />
+        </CPLINE>
+        <CPLINE>
+          <CPOINT xx="2" yy="-2" zz="-1" ww="1" />
+          <CPOINT xx="2" yy="-1" zz="2" ww="1" />
+           <CPOINT xx="2" yy="1" zz="-5" ww="1" />
+          <CPOINT xx="2" yy="2" zz="1" ww="1" />
         </CPLINE>
       </LEAF>
      </DESCENDANTS>
