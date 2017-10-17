@@ -58,7 +58,7 @@
 <!-- Textures -->
 <TEXTURES>
 
-  <!-- Hide -->
+  <!-- Sofa -->
   <TEXTURE id="sofa">
     <file path="images/sofa.jpg" />                
     <amplif_factor s="1" t="1" />   
@@ -109,6 +109,12 @@
   <!-- Fabric -->
   <TEXTURE id="fabric2">
     <file path="images/fabric2.jpg" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+  <!-- Speaker -->
+  <TEXTURE id="speaker">
+    <file path="images/speaker.jpg" />                
     <amplif_factor s="1" t="1" />   
   </TEXTURE>
 
@@ -1742,9 +1748,18 @@
 
   <DESCENDANTS>
     <NODEREF id="cube"/>
+    <NODEREF id="frente"/>
   </DESCENDANTS>
 </NODE>
 
+<NODE id="frente" >
+  <MATERIAL id="null" />
+  <TEXTURE id="speaker" />
+
+  <DESCENDANTS>
+    <NODEREF id="facecube1" />
+  </DESCENDANTS>
+</NODE>
 
 <NODE id="soundColumn2" >
   <MATERIAL id="null" />
@@ -1755,6 +1770,7 @@
 
   <DESCENDANTS>
     <NODEREF id="cube"/>
+    <NODEREF id="frente"/>
   </DESCENDANTS>
 </NODE>
 
