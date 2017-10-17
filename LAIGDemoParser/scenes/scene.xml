@@ -1748,16 +1748,7 @@
 
   <DESCENDANTS>
     <NODEREF id="cube"/>
-    <NODEREF id="frente"/>
-  </DESCENDANTS>
-</NODE>
-
-<NODE id="frente" >
-  <MATERIAL id="null" />
-  <TEXTURE id="speaker" />
-
-  <DESCENDANTS>
-    <NODEREF id="facecube1" />
+    <NODEREF id="speakerFront"/>
   </DESCENDANTS>
 </NODE>
 
@@ -1770,10 +1761,18 @@
 
   <DESCENDANTS>
     <NODEREF id="cube"/>
-    <NODEREF id="frente"/>
+    <NODEREF id="speakerFront"/>
   </DESCENDANTS>
 </NODE>
 
+<NODE id="speakerFront" >
+  <MATERIAL id="null" />
+  <TEXTURE id="speaker" />
+
+  <DESCENDANTS>
+    <NODEREF id="facecube1" />
+  </DESCENDANTS>
+</NODE>
 
 <!-- The led tv -->
 <NODE id="tv" >
@@ -1869,16 +1868,25 @@
 <!-- The box of tv -->
 <NODE id="box" >
   <MATERIAL id="blackMaterial" />
-  <TEXTURE id="boxTexture" />
+  <TEXTURE id="null" />
 
   <TRANSLATION x="9" y="1.5" z="-0.2" />
   <SCALE sx="2.5" sy="0.8" sz="0.7" />
 
   <DESCENDANTS>
     <NODEREF id="cube" />
+    <NODEREF id="boxFront" />
   </DESCENDANTS>
 </NODE>
 
+<NODE id="boxFront" >
+  <MATERIAL id="null" />
+  <TEXTURE id="boxTexture" />
+
+  <DESCENDANTS>
+    <NODEREF id="facecube1" />
+  </DESCENDANTS>
+</NODE>
 
 <!-- Unitary Cylinder -->
 <NODE id="cilindro">       
