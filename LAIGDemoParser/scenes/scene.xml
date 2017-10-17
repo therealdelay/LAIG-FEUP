@@ -103,8 +103,15 @@
   <!-- Fabric -->
   <TEXTURE id="fabric">
     <file path="images/fabric.jpg" />                
-    <amplif_factor s="0.5" t="0.5" />   
+    <amplif_factor s="1" t="1" />   
   </TEXTURE>
+
+  <!-- Fabric -->
+  <TEXTURE id="fabric2">
+    <file path="images/fabric2.jpg" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
 </TEXTURES>
 
 
@@ -626,6 +633,8 @@
   <DESCENDANTS>
    <NODEREF id="pillowSofa1" />
    <NODEREF id="pillowSofa2" />
+   <NODEREF id="pillowSofa3" />
+   <NODEREF id="pillowSofa4" />
  </DESCENDANTS>
 </NODE>
 
@@ -638,6 +647,7 @@
    <NODEREF id="pillowSofa1" />
    <NODEREF id="pillowSofa2" />
     <NODEREF id="pillowSofa3" />
+    <NODEREF id="pillowSofa4" />
  </DESCENDANTS>
 </NODE>
 
@@ -675,12 +685,27 @@
 
 <NODE id="pillowSofa3">      
     <MATERIAL id="null" />    
-  <TEXTURE id="null" />                 
+  <TEXTURE id="fabric2" />                 
 
   <TRANSLATION x="2.4" y="3.2" z="11" />
   <ROTATION axis="z" angle="-45" /> 
   <ROTATION axis="x" angle="45" /> 
   <SCALE sx="0.7" sy="0.3" sz="0.7" /> 
+  
+  <DESCENDANTS>
+   <LEAF id="sphere1" type="sphere" args="1.5 20 20" />
+ </DESCENDANTS>
+
+</NODE>
+
+ <NODE id="pillowSofa4">      
+    <MATERIAL id="null" />    
+  <TEXTURE id="fabric2" />                 
+
+    <TRANSLATION x="2.4" y="3.2" z="15" />
+  <ROTATION axis="z" angle="-45" /> 
+  <ROTATION axis="x" angle="-45" /> 
+  <SCALE sx="0.7" sy="0.3" sz="0.7"/> 
   
   <DESCENDANTS>
    <LEAF id="sphere1" type="sphere" args="1.5 20 20" />
