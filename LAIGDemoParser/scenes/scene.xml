@@ -637,15 +637,21 @@
   <ROTATION axis="y" angle="-180" />  
 
   <DESCENDANTS>
-   <NODEREF id="pillowSofa1" />
-   <NODEREF id="pillowSofa2" />
-   <NODEREF id="pillowSofa3" />
-   <NODEREF id="pillowSofa4" />
+   <NODEREF id="pillowsSet"/> 
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="pillowsSofa2">      
+  <MATERIAL id="defaultMaterial" />    
+  <TEXTURE id="null" />  
+
+  <DESCENDANTS>
+   <NODEREF id="pillowsSet"/> 
  </DESCENDANTS>
 </NODE>
 
 
-<NODE id="pillowsSofa2">      
+<NODE id="pillowsSet">      
   <MATERIAL id="defaultMaterial" />    
   <TEXTURE id="null" />  
 
@@ -656,7 +662,6 @@
     <NODEREF id="pillowSofa4" />
  </DESCENDANTS>
 </NODE>
-
 
 <NODE id="pillowSofa1">      
   <MATERIAL id="null" />    
