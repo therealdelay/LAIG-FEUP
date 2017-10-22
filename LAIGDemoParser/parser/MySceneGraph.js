@@ -1427,46 +1427,44 @@ MySceneGraph.generateRandomString = function(length) {
 * Displays the scene, processing each node, starting in the root node.
 */
 MySceneGraph.prototype.displayScene = function() {
-  //console.log(this);
+ 
   this.nodesRecursive(this.nodes.root);
 
   this.log("Graph should be rendered here...");
 };
 
+/**
+* Treats recursively graph nodes and stacks of textures and materials
+*/
 MySceneGraph.prototype.nodesRecursive = function(node) {
   var tex_info, material;
 
-
   //TEXTURE STACK PROCEDURE
-  //console.log(node);
-  if(node.textureID == 'null'){
+  if(node.textureID == 'null')
     this.tex_stack.push(this.tex_top());
-    tex_info = this.textures[this.tex_top()];
-  }else if(node.textureID == 'clear'){
+  else if(node.textureID == 'clear')
     this.tex_stack.push(0);
-    tex_info = this.textures[this.tex_top()];
-  }else {
+  else 
     this.tex_stack.push(node.textureID);
-    tex_info = this.textures[this.tex_top()];
-  }
+
+   tex_info = this.textures[this.tex_top()];
 
 
   //MATERIALS STACK PROCEDURE
-  if(node.materialID != 'null'){
+  if(node.materialID != 'null')
     this.mat_stack.push(node.materialID);
-    this.scene.material = this.materials[this.mat_top()];
-  }else{
+  else
     this.mat_stack.push(this.mat_top());
-    this.scene.material = this.materials[this.mat_top()];
-  }
+
+  this.scene.material = this.materials[this.mat_top()];
 
 
   //MATERIALS AND TEXTURE INTEGRATION
-  if(tex_info==null){
+  if(tex_info == null)
     this.scene.material.setTexture(null);
-  }else{
+  else
     this.scene.material.setTexture(tex_info[0]);
-  }
+  
   this.scene.material.apply();
 
 
@@ -1474,12 +1472,12 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
   this.scene.pushMatrix();
   this.scene.multMatrix(node.transformMatrix);
 
-  for (var i = 0; i < node.children.length; i++) {
+  for (var i = 0; i < node.children.length; i++) 
     this.nodesRecursive(this.nodes[node.children[i]]);
-  }
-  for (i = 0; i < node.leaves.length; i++) {
+  
+  for (i = 0; i < node.leaves.length; i++)
     node.leaves[i].display();
-  }
+  
   this.scene.popMatrix();
 
   this.tex_stack.pop();

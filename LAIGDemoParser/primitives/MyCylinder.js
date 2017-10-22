@@ -1,3 +1,15 @@
+/**
+ * MyCylinder
+ * @param scene CGFscene where the Cylinder will be displayed
+ * @param height Cylinder height
+ * @param botRad radius of the bottom base of the cylinder, placed on the (0, 0, 0) point
+ * @param topRad radius of the top base of the cylinder
+ * @param stacks ammount of stacks the Cylinder will be divided along it's height
+ * @param slices ammount of slices the Cylinder will be divided into along it's perimeter
+ * @param top true/false cover top
+ * @param bottom true/false cover bottom
+ * @constructor
+ */
 function MyCylinder(scene, height, botRad, topRad, stacks, slices, top, bottom) {
 	CGFobject.call(this,scene);
 	
@@ -15,6 +27,9 @@ function MyCylinder(scene, height, botRad, topRad, stacks, slices, top, bottom) 
 MyCylinder.prototype = Object.create(CGFobject.prototype);
 MyCylinder.prototype.constructor = MyCylinder;
 
+/**
+ * Initializes the Cylinder  - vertices, indices, normals and texCoords.
+ */
 MyCylinder.prototype.initBuffers = function() {
 	var angle = (2*Math.PI)/this.slices;
 	var last = 0;
@@ -60,8 +75,10 @@ MyCylinder.prototype.initBuffers = function() {
 	this.initGLBuffers();
 };
 
-MyCylinder.prototype.setTexCoordsAmp = function (amplif_factor_S,amplif_factor_T) {};
 
+/**
+ * Added cover on top of Cylinder.
+ */
 MyCylinder.prototype.addCoverTop = function() {
 
 	var vertices1 = [];
@@ -88,6 +105,9 @@ MyCylinder.prototype.addCoverTop = function() {
 };
 
 
+/**
+ * Added cover on bottom of Cylinder.
+ */
 MyCylinder.prototype.addCoverBottom = function() {
 
 	var vertices1 = [];
@@ -110,3 +130,8 @@ MyCylinder.prototype.addCoverBottom = function() {
 	this.normals = this.normals.concat(normals1);
 	this.texCoords = this.texCoords.concat(texCoords1);
 };
+
+/**
+ * Required because of inheritance but does nothing.
+ */
+MyCylinder.prototype.setTexCoordsAmp = function (amplif_factor_S,amplif_factor_T) {};

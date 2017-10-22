@@ -1,10 +1,13 @@
  /**
  * MyRectangle
- * @param gl {WebGLRenderingContext}
+ * @param scene CGFscene where the Rectangle will be displayed
+ * @param leftTopX
+ * @param leftTopY
+ * @param rightBottomX
+ * @param rightBottomY
  * @constructor 
  */
-
- function MyRectangle(scene,leftTopX,leftTopY,rightBottomX,rightBottomY) {
+ function MyRectangle(scene, leftTopX, leftTopY, rightBottomX, rightBottomY) {
  	CGFobject.call(this,scene);
  	
  	this.leftTopX = leftTopX;
@@ -26,6 +29,10 @@
  MyRectangle.prototype = Object.create(CGFobject.prototype);
  MyRectangle.prototype.constructor=MyRectangle;
 
+
+/**
+ * Initializes the Rectangle  - vertices, indices, normals and texCoords.
+ */
  MyRectangle.prototype.initBuffers = function () {
  	this.vertices = [
  	this.leftTopX, this.rightBottomY, 0,
@@ -58,6 +65,9 @@
  	this.initGLBuffers();
  };
 
+ /**
+ * Updates the coordinates of the textures according to amplification factor of texture.
+ */
  MyRectangle.prototype.setTexCoordsAmp = function (amplif_factor_S, amplif_factor_T) {
  	
  	this.texCoords = [
