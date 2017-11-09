@@ -6,7 +6,7 @@
  * @param controlvertexes - matrix of control vertexes
  * @constructor
  */
- function MyPatch(scene, degreeU, degreeV, controlvertexes){
+ function MyPatch(scene, partsU, partsV,degreeU, degreeV, controlvertexes){
  	CGFobject.call(this,scene);
  	
  	var knots1 = this.getKnotsVector(degreeU); 
@@ -17,7 +17,7 @@
  		return nurbsSurface.getPoint(u, v);
  	};
 
- 	this.obj = new CGFnurbsObject(scene, getSurfacePoint, 20, 20);
+ 	this.obj = new CGFnurbsObject(scene, getSurfacePoint, partsU, partsV);
  }
 
  MyPatch.prototype = Object.create(CGFobject.prototype);

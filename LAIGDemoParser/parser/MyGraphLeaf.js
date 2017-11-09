@@ -122,7 +122,7 @@ MyGraphLeaf.prototype.createPatch = function (graph, xmlelem, args){
      controlvertexes.push(array);
    }
    
-   this.part = new MyPatch(graph.scene, orderU-1, orderV-1, controlvertexes);
+   this.part = new MyPatch(graph.scene, partsU, partsV, orderU-1, orderV-1, controlvertexes);
 }
 
 /**
