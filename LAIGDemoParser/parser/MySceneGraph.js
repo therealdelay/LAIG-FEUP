@@ -1,3 +1,4 @@
+
 var DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
@@ -6,8 +7,9 @@ var ILLUMINATION_INDEX = 1;
 var LIGHTS_INDEX = 2;
 var TEXTURES_INDEX = 3;
 var MATERIALS_INDEX = 4;
-var LEAVES_INDEX = 5;
-var NODES_INDEX = 6;
+var ANIMATION_INDEX = 5;
+var LEAVES_INDEX = 6;
+var NODES_INDEX = 7;
 
 /**
 * MySceneGraph class, representing the scene graph.
@@ -33,6 +35,7 @@ function MySceneGraph(filename, scene) {
   this.axisCoords['z'] = [0, 0, 1];
 
   this.textures = [];
+  this.animations = [];
 
   // File reading
   this.reader = new CGFXMLreader();
@@ -143,6 +146,17 @@ MySceneGraph.prototype.parseLSXFile = function(rootElement) {
     if ((error = this.parseMaterials(nodes[index])) != null )
       return error;
   }
+
+      // <ANIMATIONS>
+      if ((index = nodeNames.indexOf("ANIMATIONS")) == -1)
+        return "tag <ANIMATIONS> missing";
+      else {
+        if (index != ANIMATION_INDEX)
+          this.onXMLMinorError("tag <ANIMATIONS> out of order");
+
+        if ((error = this.parseAnimation(nodes[index])) != null )
+          return error;
+      }
 
   // <NODES>
   if ((index = nodeNames.indexOf("NODES")) == -1)
@@ -855,7 +869,7 @@ MySceneGraph.prototype.parseLights = function(lightsNode) {
 */
 MySceneGraph.prototype.parseTextures = function(texturesNode) {
 
-  
+
 
   var eachTexture = texturesNode.children;
   // Each texture.
@@ -1163,6 +1177,104 @@ MySceneGraph.prototype.parseMaterials = function(materialsNode) {
   console.log("Parsed materials");
 }
 
+/**
+* Parses the <ANIMATION> block.
+*/
+MySceneGraph.prototype.parseAnimation = function(animationNode) {
+
+  var eachAnimation = animationNode.children;
+
+  for (var i = 0; i < eachAnimation.length; i++) {
+    var nodeName = eachAnimation[i].nodeName;
+    if (nodeName == "ANIMATION") {
+
+      var animationID = this.reader.getString(eachAnimation[i], 'id');
+      if (animationID == null )
+        return "failed to parse animation ID";
+
+      var animationSpeed = this.reader.getFloat(eachAnimation[i], 'speed');
+      console.log("animationSpeed:::: " + animationSpeed);
+
+      if (animationSpeed == null )
+        return "failed to parse animation SPEED";
+
+      var animationType = this.reader.getString(eachAnimation[i], 'type');
+      if (animationType == null )
+        return "failed to parse animation TYPE";
+
+      var Animation;
+
+      switch(animationType){
+        case 'linear':
+        var controlpoints = [];
+        var args = eachAnimation[i].children;
+        for (var j = 1; j < args.length; j++) {
+          var cpx = this.reader.getFloat(args[j], 'xx');
+           console.log("cpx:::: " + cpx);
+
+          var cpy = this.reader.getFloat(args[j], 'yy');
+            console.log("cpy:::: " + cpy);
+
+          var cpz = this.reader.getFloat(args[j], 'zz');
+              console.log("cpy:::: " + cpy);
+         
+          var cpointargs = [cpx, cpy, cpz];
+          console.log("cpointargs:::: " + cpointargs);
+          controlpoints.push(cpointargs);
+        }
+        console.log("animationSpeed:::: " + animationSpeed);
+         console.log("controlpoints:::: " + controlpoints);
+
+        Animation = new LinearAnimation(this, animationSpeed, controlpoints);
+        break;
+
+        case 'circular':
+        var args = eachAnimation[i];
+        var centerx = this.reader.getFloat(args, 'centerx');
+        var centery = this.reader.getFloat(args, 'centery');
+        var centerz = this.reader.getFloat(args, 'centerz');
+        var radius = this.reader.getFloat(args, 'radius');
+        var initAngle = this.reader.getFloat(args, 'startang');
+        var rotAngle = this.reader.getFloat(args, 'rotang');
+        var centre = [centerx, centery, centerz];
+
+        Animation = new CircularAnimation(this, animationSpeed, centre, radius, initAngle, rotAngle);
+
+        break;
+        case 'bezier': //provavelmente se o numero de args != 4 lançar erro!!!
+         var controlpoints = [];
+         var args = eachAnimation[i].children;
+        for (var j = 1; j < args.length; j++) {
+          var cpx = this.reader.getFloat(args[j], 'xx');
+          var cpy = this.reader.getFloat(args[j], 'yy');
+          var cpz = this.reader.getFloat(args[j], 'zz');
+          var cpointargs = [cpx, cpy, cpz];
+          controlpoints.push(cpointargs);
+        }
+
+        Animation = new BezierAnimation(this, animationSpeed, controlpoints);
+
+        break;
+        case 'combo': /*
+        var animations;
+        for (var j = 1; j < args.length; j++) {
+          var id = this.reader.getString(args[j], 'id');
+          animations.push(id);
+        }
+
+        Animation = new ComboAnimation(animationSpeed, animations); */
+        break;
+        default:
+        break;
+      }
+
+      this.animations.push(Animation);
+    }
+  }
+
+  console.log("Parsed Animations");
+}
+
 
 /**
 * Parses the <NODES> block.
@@ -1239,6 +1351,15 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       // Retrieves possible transformations.
       for (var j = 0; j < nodeSpecs.length; j++) {
         switch (nodeSpecs[j].nodeName) {
+
+          case "ANIMATION":
+          var animationID = this.reader.getString(nodeSpecs[animationIndex], 'id');
+          if (animationID != "null" && animationID != "clear" && this.animation[animationID] == null )
+            return "ID does not correspond to a valid animation (node ID = " + nodeID + ")";
+          this.nodes[nodeID].animations.push(animationID);
+          break;
+
+
           case "TRANSLATION":
           // Retrieves translation parameters.
           var x = this.reader.getFloat(nodeSpecs[j], 'x');
@@ -1427,7 +1548,7 @@ return String.fromCharCode.apply(null, numbers);
 * Displays the scene, processing each node, starting in the root node.
 */
 MySceneGraph.prototype.displayScene = function() {
- 
+
   this.nodesRecursive(this.nodes.root);
 
   this.log("Graph should be rendered here...");
@@ -1491,5 +1612,3 @@ MySceneGraph.prototype.tex_top = function(){
 MySceneGraph.prototype.mat_top = function(){
   return this.mat_stack[this.mat_stack.length-1];
 }; 
-
-

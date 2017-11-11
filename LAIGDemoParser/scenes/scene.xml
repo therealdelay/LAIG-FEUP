@@ -213,6 +213,21 @@
 </MATERIALS>
 
 
+<ANIMATIONS>
+  <ANIMATION id="linear1" speed="10" type="linear">
+    <controlpoint xx="0" yy="0" zz="0" />
+    <controlpoint xx="10" yy="0" zz="10" />
+  </ANIMATION>
+  <ANIMATION id="circular1" speed="10" type="circular"
+    centerx="10" centery="10" centerz="10" radius="5" startang="40" rotang="20"/>
+  <ANIMATION id="bezier1" speed="10" type="bezier">
+    <controlpoint xx="0" yy="0" zz="0" />
+    <controlpoint xx="1" yy="0" zz="0" />
+    <controlpoint xx="1" yy="1" zz="0" />
+    <controlpoint xx="0" yy="1" zz="0" />
+  </ANIMATION>
+</ANIMATIONS>
+
 <!-- The leaves -->
 <LEAVES>
 </LEAVES>
