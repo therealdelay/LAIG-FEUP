@@ -1,14 +1,15 @@
-function Animation(scene, speed) {
+
+function Animation() {
 	
-	this.speed = speed;
-	this.startTime = 0;
 	
 };
+
+Animation.prototype.contructor = Animation;
 
 Animation.prototype.init = function() {
 	var d = new Date();
 	this.startTime = d.getTime();
-}:
+};
 
 
 

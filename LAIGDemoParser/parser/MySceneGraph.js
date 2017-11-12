@@ -1206,66 +1206,66 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
 
       switch(animationType){
         case 'linear':
-        var controlpoints = [];
-        var args = eachAnimation[i].children;
-        for (var j = 1; j < args.length; j++) {
-          var cpx = this.reader.getFloat(args[j], 'xx');
-           console.log("cpx:::: " + cpx);
+          var controlpoints = [];
+          var args = eachAnimation[i].children;
+          for (var j = 1; j < args.length; j++) {
+            var cpx = this.reader.getFloat(args[j], 'xx');
+             console.log("cpx:::: " + cpx);
 
-          var cpy = this.reader.getFloat(args[j], 'yy');
-            console.log("cpy:::: " + cpy);
-
-          var cpz = this.reader.getFloat(args[j], 'zz');
+            var cpy = this.reader.getFloat(args[j], 'yy');
               console.log("cpy:::: " + cpy);
-         
-          var cpointargs = [cpx, cpy, cpz];
-          console.log("cpointargs:::: " + cpointargs);
-          controlpoints.push(cpointargs);
-        }
-        console.log("animationSpeed:::: " + animationSpeed);
-         console.log("controlpoints:::: " + controlpoints);
 
-        Animation = new LinearAnimation(this, animationSpeed, controlpoints);
-        break;
+            var cpz = this.reader.getFloat(args[j], 'zz');
+                console.log("cpy:::: " + cpy);
+
+            var cpointargs = [cpx, cpy, cpz];
+            console.log("cpointargs:::: " + cpointargs);
+            controlpoints.push(cpointargs);
+          }
+          console.log("animationSpeed:::: " + animationSpeed);
+           console.log("controlpoints:::: " + controlpoints);
+
+          Animation = new LinearAnimation(this, animationSpeed, controlpoints);
+          break;
 
         case 'circular':
-        var args = eachAnimation[i];
-        var centerx = this.reader.getFloat(args, 'centerx');
-        var centery = this.reader.getFloat(args, 'centery');
-        var centerz = this.reader.getFloat(args, 'centerz');
-        var radius = this.reader.getFloat(args, 'radius');
-        var initAngle = this.reader.getFloat(args, 'startang');
-        var rotAngle = this.reader.getFloat(args, 'rotang');
-        var centre = [centerx, centery, centerz];
+          var args = eachAnimation[i];
+          var centerx = this.reader.getFloat(args, 'centerx');
+          var centery = this.reader.getFloat(args, 'centery');
+          var centerz = this.reader.getFloat(args, 'centerz');
+          var radius = this.reader.getFloat(args, 'radius');
+          var initAngle = this.reader.getFloat(args, 'startang');
+          var rotAngle = this.reader.getFloat(args, 'rotang');
+          var centre = [centerx, centery, centerz];
 
-        Animation = new CircularAnimation(this, animationSpeed, centre, radius, initAngle, rotAngle);
+          Animation = new CircularAnimation(this, animationSpeed, centre, radius, initAngle, rotAngle);
+          break;
 
-        break;
         case 'bezier': //provavelmente se o numero de args != 4 lançar erro!!!
-         var controlpoints = [];
-         var args = eachAnimation[i].children;
-        for (var j = 1; j < args.length; j++) {
-          var cpx = this.reader.getFloat(args[j], 'xx');
-          var cpy = this.reader.getFloat(args[j], 'yy');
-          var cpz = this.reader.getFloat(args[j], 'zz');
-          var cpointargs = [cpx, cpy, cpz];
-          controlpoints.push(cpointargs);
-        }
+           var controlpoints = [];
+           var args = eachAnimation[i].children;
+           for (var j = 1; j < args.length; j++) {
+             var cpx = this.reader.getFloat(args[j], 'xx');
+             var cpy = this.reader.getFloat(args[j], 'yy');
+             var cpz = this.reader.getFloat(args[j], 'zz');
+             var cpointargs = [cpx, cpy, cpz];
+             controlpoints.push(cpointargs);
+           }
 
-        Animation = new BezierAnimation(this, animationSpeed, controlpoints);
-
-        break;
+           Animation = new BezierAnimation(this, animationSpeed, controlpoints);
+           break;
+           
         case 'combo': /*
-        var animations;
-        for (var j = 1; j < args.length; j++) {
-          var id = this.reader.getString(args[j], 'id');
-          animations.push(id);
-        }
+          var animations;
+          for (var j = 1; j < args.length; j++) {
+            var id = this.reader.getString(args[j], 'id');
+            animations.push(id);
+          }
 
-        Animation = new ComboAnimation(animationSpeed, animations); */
-        break;
+          Animation = new ComboAnimation(animationSpeed, animations); */
+          break;
         default:
-        break;
+          break;
       }
 
       this.animations.push(Animation);
