@@ -1208,7 +1208,7 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
         case 'linear':
         var controlpoints = [];
         var args = eachAnimation[i].children;
-        for (var j = 1; j < args.length; j++) {
+        for (var j = 0; j < args.length; j++) {
           var cpx = this.reader.getFloat(args[j], 'xx');
           console.log("cpx:::: " + cpx);
 
@@ -1218,14 +1218,10 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
           var cpz = this.reader.getFloat(args[j], 'zz');
           console.log("cpy:::: " + cpy);
 
-          var cpointargs = [cpx, cpy, cpz];
-          console.log("cpointargs:::: " + cpointargs);
-          controlpoints.push(cpointargs);
+          controlpoints[j] = [cpx, cpy, cpz];
         }
-        console.log("animationSpeed:::: " + animationSpeed);
-        console.log("controlpoints:::: " + controlpoints);
 
-        Animation = new LinearAnimation(this, animationSpeed, controlpoints);
+        Animation = new LinearAnimation(this, animationID, animationSpeed, controlpoints);
         break;
 
         case 'circular':
@@ -1238,7 +1234,7 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
         var rotAngle = this.reader.getFloat(args, 'rotang');
         var centre = [centerx, centery, centerz];
 
-        Animation = new CircularAnimation(this, animationSpeed, centre, radius, initAngle, rotAngle);
+        Animation = new CircularAnimation(this, animationID, animationSpeed, centre, radius, initAngle, rotAngle);
 
         break;
         case 'bezier': //provavelmente se o numero de args != 4 lançar erro!!!
@@ -1252,7 +1248,7 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
           controlpoints.push(cpointargs);
         }
 
-        Animation = new BezierAnimation(this, animationSpeed, controlpoints);
+        Animation = new BezierAnimation(this, animationID, animationSpeed, controlpoints);
 
         break;
         case 'combo': /*
@@ -1262,7 +1258,7 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
           animations.push(id);
         }
 
-        Animation = new ComboAnimation(animationSpeed, animations); */
+        Animation = new ComboAnimation(this, animationID, animationSpeed, animations); */
         break;
         default:
         break;
@@ -1455,7 +1451,10 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
           if (animationId == null )
             this.onXMLMinorError("unable to parse animation id");
           else 
-            this.nodes[nodeID].animations.push(animationID);
+            this.nodes[nodeID].animations.push(animationId);
+
+          if(animChildren == 0)
+            this.nodes[nodeID].currAnimation = 0;
 
           animChildren++;
         }
@@ -1619,14 +1618,19 @@ this.scene.pushMatrix();
 
 
 //ANIMATIONS
-/*
+
 var currAnimation = node.currAnimation;
-if(currAnimation >= 0){
-  var animationID = node.animations[currAnimation]
-  var animationMatrix = this.animations[animationID].getTransfMatrix();
+if(node.animations.length > 0 && currAnimation >= 0){
+
+  var animationID = node.animations[currAnimation];
+  console.log("nodeID: " + node.nodeID);
+  console.log("animationID: " + animationID);
+
+  var animationMatrix = this.getAnimation(animationID).getMatrix();
+  console.log("animationMatrix: " + animationMatrix);
   this.scene.multMatrix(node.animationMatrix);
 }
-*/
+
 this.scene.multMatrix(node.transformMatrix);
 
 for (i = 0; i < node.leaves.length; i++)
@@ -1648,3 +1652,11 @@ MySceneGraph.prototype.tex_top = function(){
 MySceneGraph.prototype.mat_top = function(){
   return this.mat_stack[this.mat_stack.length-1];
 }; 
+
+MySceneGraph.prototype.getAnimation = function(animationID){
+    for (var i=0; i < this.animations.length; i++) {
+        if (this.animations[i].id == animationID) {
+            return this.animations[i];
+        }
+    }
+}

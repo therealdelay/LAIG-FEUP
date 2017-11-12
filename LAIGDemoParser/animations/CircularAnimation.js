@@ -1,7 +1,8 @@
-function CircularAnimation(scene, speed, centre, radius, initAngle, rotAngle) {
+function CircularAnimation(scene, id, speed, centre, radius, initAngle, rotAngle) {
 	Animation.call(this);
 	console.log("CircularAnimation contructor!!!!!! ");
 
+	this.id = id;
 	this.speed = speed;
 	this.centre = centre;
 	this.radius = radius;
@@ -19,6 +20,10 @@ CircularAnimation.prototype = Object.create(Animation.prototype);
 CircularAnimation.prototype.constructor = CircularAnimation;
 
 CircularAnimation.prototype.update = function(currTime) {
+	
+};
+
+CircularAnimation.prototype.getMatrix = function(currTime){
 	
 };
 

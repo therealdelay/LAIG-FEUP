@@ -16,3 +16,5 @@ Animation.prototype.init = function() {
 Animation.prototype.update = function(currTime) {
 	console.log("Este método tem que ser instanciado nas outras classes!");
 };
+
+Animation.prototype.getMatrix = function(currTime){};

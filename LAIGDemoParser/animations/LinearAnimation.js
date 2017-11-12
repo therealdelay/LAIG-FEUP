@@ -1,9 +1,10 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 
-function LinearAnimation(scene, speed, controlPoints) {
+function LinearAnimation(scene, id, speed, controlPoints) {
 	Animation.call(this);
 	console.log("LinearAnimation contructor!!!!!! ");
 
+	this.id = id;
 	this.speed = speed;
 	this.controlPoints = controlPoints;
 
@@ -15,13 +16,13 @@ function LinearAnimation(scene, speed, controlPoints) {
 	this.angleXZ = [];
 	this.angleXY = [];
 	
-	for(var i = 1; i < controlPoints.length; i++){
-		this.distance.push(this.getDistance(controlPoints[i-1],controlPoints[i]));
-		this.angleXZ.push(this.getAngleXZ(controlPoints[i-1],controlPoints[i])/DEGREE_TO_RAD);
-		this.angleXY.push(this.getAngleXY(controlPoints[i-1],controlPoints[i])/DEGREE_TO_RAD);
+	for(var i = 1; i < this.controlPoints.length; i++){
+		this.distance.push(this.getDistance(this.controlPoints[i-1],this.controlPoints[i]));
+		this.angleXZ.push(this.getAngleXZ(this.controlPoints[i-1],this.controlPoints[i])/DEGREE_TO_RAD);
+		this.angleXY.push(this.getAngleXY(this.controlPoints[i-1],this.controlPoints[i])/DEGREE_TO_RAD);
 	}
 
-	console.log(controlPoints);
+	console.log(this.controlPoints);
 	console.log(this.distance);
 	console.log(this.angleXY);
 	console.log(this.angleXZ);
@@ -56,13 +57,13 @@ LinearAnimation.prototype.update = function(currTime) {
 LinearAnimation.prototype.getMatrix = function(currTime){
 	this.update(currTime);
 	return this.translationMatrix;
-}
+};
 
 LinearAnimation.prototype.getDistance = function(p1, p2){
 	return Math.sqrt(Math.pow(p2[0] - p1[0], 2) +
-		 			 Math.pow(p2[1] - p1[1], 2) +
-		 			 Math.pow(p2[2] - p1[2], 2));
-}
+		Math.pow(p2[1] - p1[1], 2) +
+		Math.pow(p2[2] - p1[2], 2));
+};
 
 LinearAnimation.prototype.getAngleXZ = function(p1, p2){
 	var dx = p2[0]-p1[0];
@@ -73,7 +74,7 @@ LinearAnimation.prototype.getAngleXZ = function(p1, p2){
 	if(norm === 0)
 		return 0;
 	return Math.acos(dx/norm);
-}
+};
 
 LinearAnimation.prototype.getAngleXY = function(p1, p2){
 	var dx = p2[0]-p1[0];
@@ -84,4 +85,4 @@ LinearAnimation.prototype.getAngleXY = function(p1, p2){
 	if(norm === 0)
 		return 0;
 	return Math.acos(dx/norm);
-}
+};

@@ -216,7 +216,8 @@
 <ANIMATIONS>
   <ANIMATION id="linear1" speed="10" type="linear">
     <controlpoint xx="0" yy="0" zz="0" />
-    <controlpoint xx="10" yy="0" zz="10" />
+    <controlpoint xx="1" yy="0" zz="0" />
+    <controlpoint xx="1" yy="1" zz="0" />
   </ANIMATION>
   <ANIMATION id="circular1" speed="10" type="circular"
     centerx="10" centery="10" centerz="10" radius="5" startang="40" rotang="20"/>
@@ -271,7 +272,6 @@
 
     <ANIMATIONREFS>
         <ANIMATIONREF id="linear1" />
-        <ANIMATIONREF id="circular1" />
     </ANIMATIONREFS>
 
     <DESCENDANTS>
