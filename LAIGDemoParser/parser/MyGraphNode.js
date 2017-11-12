@@ -19,8 +19,14 @@ function MyGraphNode(graph, nodeID) {
     // The texture ID.
     this.textureID = null ;
 
+    //shaders
+    this.selectable = 0;
+
     // The animation ID.
     this.animations = [] ;
+
+    //a instanciar
+    this.currAnimation = null;
 
     this.transformMatrix = mat4.create();
     mat4.identity(this.transformMatrix);

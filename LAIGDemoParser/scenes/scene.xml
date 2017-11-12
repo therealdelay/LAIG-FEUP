@@ -269,6 +269,11 @@
     <ROTATION axis="y" angle="-90" />
     <ROTATION axis="x" angle="-90" />
 
+    <ANIMATIONREFS>
+        <ANIMATIONREF id="linear1" />
+        <ANIMATIONREF id="circular1" />
+    </ANIMATIONREFS>
+
     <DESCENDANTS>
      <LEAF  type="rectangle" args="0 1 1 0" />        
    </DESCENDANTS>
@@ -392,7 +397,7 @@
 </NODE>
 
 
-<NODE id="lamina1">      
+<NODE id="lamina1" selectable="1">      
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
