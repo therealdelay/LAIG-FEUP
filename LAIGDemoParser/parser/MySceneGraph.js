@@ -1206,66 +1206,66 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
 
       switch(animationType){
         case 'linear':
-          var controlpoints = [];
-          var args = eachAnimation[i].children;
-          for (var j = 1; j < args.length; j++) {
-            var cpx = this.reader.getFloat(args[j], 'xx');
-             console.log("cpx:::: " + cpx);
+        var controlpoints = [];
+        var args = eachAnimation[i].children;
+        for (var j = 1; j < args.length; j++) {
+          var cpx = this.reader.getFloat(args[j], 'xx');
+          console.log("cpx:::: " + cpx);
 
-            var cpy = this.reader.getFloat(args[j], 'yy');
-              console.log("cpy:::: " + cpy);
+          var cpy = this.reader.getFloat(args[j], 'yy');
+          console.log("cpy:::: " + cpy);
 
-            var cpz = this.reader.getFloat(args[j], 'zz');
-                console.log("cpy:::: " + cpy);
+          var cpz = this.reader.getFloat(args[j], 'zz');
+          console.log("cpy:::: " + cpy);
 
-            var cpointargs = [cpx, cpy, cpz];
-            console.log("cpointargs:::: " + cpointargs);
-            controlpoints.push(cpointargs);
-          }
-          console.log("animationSpeed:::: " + animationSpeed);
-           console.log("controlpoints:::: " + controlpoints);
+          var cpointargs = [cpx, cpy, cpz];
+          console.log("cpointargs:::: " + cpointargs);
+          controlpoints.push(cpointargs);
+        }
+        console.log("animationSpeed:::: " + animationSpeed);
+        console.log("controlpoints:::: " + controlpoints);
 
-          Animation = new LinearAnimation(this, animationSpeed, controlpoints);
-          break;
+        Animation = new LinearAnimation(this, animationSpeed, controlpoints);
+        break;
 
         case 'circular':
-          var args = eachAnimation[i];
-          var centerx = this.reader.getFloat(args, 'centerx');
-          var centery = this.reader.getFloat(args, 'centery');
-          var centerz = this.reader.getFloat(args, 'centerz');
-          var radius = this.reader.getFloat(args, 'radius');
-          var initAngle = this.reader.getFloat(args, 'startang');
-          var rotAngle = this.reader.getFloat(args, 'rotang');
-          var centre = [centerx, centery, centerz];
+        var args = eachAnimation[i];
+        var centerx = this.reader.getFloat(args, 'centerx');
+        var centery = this.reader.getFloat(args, 'centery');
+        var centerz = this.reader.getFloat(args, 'centerz');
+        var radius = this.reader.getFloat(args, 'radius');
+        var initAngle = this.reader.getFloat(args, 'startang');
+        var rotAngle = this.reader.getFloat(args, 'rotang');
+        var centre = [centerx, centery, centerz];
 
-          Animation = new CircularAnimation(this, animationSpeed, centre, radius, initAngle, rotAngle);
-          break;
+        Animation = new CircularAnimation(this, animationSpeed, centre, radius, initAngle, rotAngle);
 
+        break;
         case 'bezier': //provavelmente se o numero de args != 4 lançar erro!!!
-           var controlpoints = [];
-           var args = eachAnimation[i].children;
-           for (var j = 1; j < args.length; j++) {
-             var cpx = this.reader.getFloat(args[j], 'xx');
-             var cpy = this.reader.getFloat(args[j], 'yy');
-             var cpz = this.reader.getFloat(args[j], 'zz');
-             var cpointargs = [cpx, cpy, cpz];
-             controlpoints.push(cpointargs);
-           }
+        var controlpoints = [];
+        var args = eachAnimation[i].children;
+        for (var j = 1; j < args.length; j++) {
+          var cpx = this.reader.getFloat(args[j], 'xx');
+          var cpy = this.reader.getFloat(args[j], 'yy');
+          var cpz = this.reader.getFloat(args[j], 'zz');
+          var cpointargs = [cpx, cpy, cpz];
+          controlpoints.push(cpointargs);
+        }
 
-           Animation = new BezierAnimation(this, animationSpeed, controlpoints);
-           break;
-           
+        Animation = new BezierAnimation(this, animationSpeed, controlpoints);
+
+        break;
         case 'combo': /*
-          var animations;
-          for (var j = 1; j < args.length; j++) {
-            var id = this.reader.getString(args[j], 'id');
-            animations.push(id);
-          }
+        var animations;
+        for (var j = 1; j < args.length; j++) {
+          var id = this.reader.getString(args[j], 'id');
+          animations.push(id);
+        }
 
-          Animation = new ComboAnimation(animationSpeed, animations); */
-          break;
+        Animation = new ComboAnimation(animationSpeed, animations); */
+        break;
         default:
-          break;
+        break;
       }
 
       this.animations.push(Animation);
@@ -1306,15 +1306,19 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       if (this.nodes[nodeID] != null )
         return "node ID must be unique (conflict: ID = " + nodeID + ")";
 
-      this.log("Processing node "+nodeID);
-
       // Creates node.
       this.nodes[nodeID] = new MyGraphNode(this,nodeID);
+
+      //SHADERS
+      if(this.reader.hasAttribute(children[i], 'selectable')){
+        var selectable = this.reader.getString(children[i], 'selectable');
+        this.nodes[nodeID].selectable = selectable;  
+      }
 
       // Gathers child nodes.
       var nodeSpecs = children[i].children;
       var specsNames = [];
-      var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "DESCENDANTS"];
+      var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "ANIMATIONREFS","DESCENDANTS"];
       for (var j = 0; j < nodeSpecs.length; j++) {
         var name = nodeSpecs[j].nodeName;
         specsNames.push(nodeSpecs[j].nodeName);
@@ -1436,6 +1440,28 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
           default:
           break;
         }
+      }
+
+      var animationsIndex = specsNames.indexOf("ANIMATIONREFS");
+      if (animationsIndex !== -1) {
+
+        var anim = nodeSpecs[animationsIndex].children;
+        var animChildren = 0;
+        for (var j = 0; j < anim.length; j++) {
+          var animationId = this.reader.getString(anim[j], 'id');
+
+          this.log("   ANIMATIONREFS parse: " + animationId);
+
+          if (animationId == null )
+            this.onXMLMinorError("unable to parse animation id");
+          else 
+            this.nodes[nodeID].animations.push(animationID);
+
+          animChildren++;
+        }
+
+        if (animChildren == 0)
+          return "at least one animation must be defined for each intermediate node";
       }
 
       // Retrieves information about children.
@@ -1588,21 +1614,31 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
   
   this.scene.material.apply();
 
+//TRANFORMATION MATRIX APPLICATION
+this.scene.pushMatrix();
 
-  //TRANFORMATION MATRIX APPLICATION
-  this.scene.pushMatrix();
-  this.scene.multMatrix(node.transformMatrix);
 
-  for (i = 0; i < node.leaves.length; i++)
-    node.leaves[i].display();
+//ANIMATIONS
+/*
+var currAnimation = node.currAnimation;
+if(currAnimation >= 0){
+  var animationID = node.animations[currAnimation]
+  var animationMatrix = this.animations[animationID].getTransfMatrix();
+  this.scene.multMatrix(node.animationMatrix);
+}
+*/
+this.scene.multMatrix(node.transformMatrix);
 
-  for (var i = 0; i < node.children.length; i++) 
-    this.nodesRecursive(this.nodes[node.children[i]]);
-  
-  this.scene.popMatrix();
+for (i = 0; i < node.leaves.length; i++)
+  node.leaves[i].display();
 
-  this.tex_stack.pop();
-  this.mat_stack.pop();
+for (var i = 0; i < node.children.length; i++) 
+  this.nodesRecursive(this.nodes[node.children[i]]);
+
+this.scene.popMatrix();
+
+this.tex_stack.pop();
+this.mat_stack.pop();
 };
 
 MySceneGraph.prototype.tex_top = function(){

@@ -40,6 +40,8 @@ XMLscene.prototype.init = function(application) {
 XMLscene.prototype.initLights = function() {
     var i = 0;
     // Lights index.
+
+    var animation = new LinearAnimation(this, 1, [[0,0,0],[1,0,0],[1,1,0]]);
     
     // Reads the lights from the scene graph.
     for (var key in this.graph.lights) {

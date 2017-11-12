@@ -20,9 +20,9 @@ function LinearAnimation(scene, speed, controlPoints) {
 	}
 
 	console.log(controlPoints.length);
-	console.log(distance.length);
-	console.log(angleXY.length);
-	console.log(angleXZ.length);
+	console.log(this.distance.length);
+	console.log(this.angleXY.length);
+	console.log(this.angleXZ.length);
 
 	this.translationMatrix = mat4.create();
 	mat4.identity(this.translationMatrix);
