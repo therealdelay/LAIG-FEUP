@@ -13,7 +13,7 @@ function LinearAnimation(scene, speed, controlPoints) {
 	this.angleXZ = [];
 	this.angleXY = [];
 	
-	for(var i = 1; i < controlPoints.size; i++){
+	for(var i = 1; i < controlPoints.length; i++){
 		this.distance.push(this.getDistance(controlPoints[i-1],controlPoints[i]));
 		this.angleXZ.push(this.getAngleXZ(controlPoints[i-1],controlPoints[i]));
 		this.angleXY.push(this.getAngleXY(controlPoints[i-1],controlPoints[i]));
