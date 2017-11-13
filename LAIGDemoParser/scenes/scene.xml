@@ -245,7 +245,7 @@
       <TEXTURE id="null" />  
 
       <DESCENDANTS>
-        <NODEREF id="lights" />    
+        <!--NODEREF id="lights" />    
         <NODEREF id="floor" />
         <NODEREF id="walls" />
         <NODEREF id="sofas" />
@@ -255,7 +255,8 @@
         <NODEREF id="table" />
         <NODEREF id="pillows" />
         <NODEREF id="curtains" />
-        <NODEREF id="candle" />
+        <NODEREF id="candle" /-->
+        <NODEREF id="cube" />
       </DESCENDANTS>
 
     </NODE>
@@ -2021,6 +2022,10 @@
   <MATERIAL id="null" />     
   <TEXTURE id="null" />       			
 
+  <ANIMATIONREFS>
+    <ANIMATIONREF id="linear1" />
+  </ANIMATIONREFS>
+  
   <DESCENDANTS>
    <NODEREF id="facecube1" />
    <NODEREF id="facecube2" />

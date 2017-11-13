@@ -9,47 +9,29 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 	this.controlPoints = controlPoints;
 
 	this.distDone = 0;
-	this.distance = [];
 	this.index = 0;
-	this.angle = 0;
 
+	this.distance = [];
 	this.angleXZ = [];
 	this.angleXY = [];
+	this.vx = [];
+	this.vy = [];
+	this.vz = [];
 
-	this.previousPoint = 0;
-
-	/*
+	let totalDistance = 0;
+	this.previousPoint = [0, 0, 0];
+	
 	for(var i = 1; i < this.controlPoints.length; i++){
-		this.distance.push(this.getDistance(this.controlPoints[i-1],this.controlPoints[i]));
+		var dist = this.getDistance(this.controlPoints[i-1],this.controlPoints[i]);
+		this.distance.push(dist);
 		this.angleXZ.push(this.getAngleXZ(this.controlPoints[i-1],this.controlPoints[i])/DEGREE_TO_RAD);
 		this.angleXY.push(this.getAngleXY(this.controlPoints[i-1],this.controlPoints[i])/DEGREE_TO_RAD);
+		this.totalDistance += dist;
+		this.vx.push(this.getVX(this.controlPoints[i-1],this.controlPoints[i],dist));
+		this.vy.push(this.getVY(this.controlPoints[i-1],this.controlPoints[i],dist));
+		this.vz.push(this.getVZ(this.controlPoints[i-1],this.controlPoints[i],dist));
 	}
-
-	mat4.identity(this.translationMatrix);
-	this.translationMatrix = mat4.create();
-
-
-	console.log(this.controlPoints);
-	console.log(this.distance);
-	console.log(this.angleXY);
-	console.log(this.angleXZ); 
-
-	*/
-
-	console.log("Control Points " + this.controlPoints);
-	console.log("point 1 " + this.controlPoints);
-	console.log("point 2 " + this.controlPoints);
-
-	var dist = this.getDistance(this.controlPoints[0], this.controlPoints[1]);
-
-	console.log("Dist " + dist);
-
-	var cosA = (this.controlPoints[1][0]-this.controlPoints[0][0]) / dist;
-	this.vx = this.speed * cosA;
-
-	var senA = (this.controlPoints[1][1]-this.controlPoints[0][1]) / dist;
-	this.vy = this.speed * senA;
-
+	
 	this.translationMatrix = mat4.create();
 };
 
@@ -58,25 +40,33 @@ LinearAnimation.prototype.constructor = LinearAnimation;
 
 LinearAnimation.prototype.update = function(currTime) {
 	var deltaTime = currTime - this.startTime;
-	var deltaDist = this.speed * deltaTime;
-	
-	this.deltaX = deltaTime*this.vx;
-	this.deltaY = deltaTime*this.vy;
 
-	//var AB = vec2.fromValues(this.controlPoints[this.previousPoint+1][0]-this.controlPoints[this.previousPoint][0], this.controlPoints[this.previousPoint+1][2]-this.controlPoints[this.previousPoint][2]);
+	if(this.index < this.distance.length){
+		this.deltaX = deltaTime/100*this.vx[this.index] + this.previousPoint[0];
+		this.deltaY = deltaTime/100*this.vy[this.index] + this.previousPoint[1];
+		this.deltaZ = deltaTime/100*this.vz[this.index] + this.previousPoint[2];
 
-	var AB = vec2.fromValues(this.controlPoints[1][0]-this.controlPoints[0][0], this.controlPoints[1][1]-this.controlPoints[0][1]);
+		if(!isNaN(this.deltaX))
+			this.previousPoint[0] = this.deltaX;
+		if(!isNaN(this.deltaY))
+			this.previousPoint[1] = this.deltaY;
+		if(!isNaN(this.deltaZ))
+			this.previousPoint[2] = this.deltaZ;
 
-	var BC = vec2.fromValues(0,1);
-
-	this.rot_ang = Math.acos(((AB[0]*BC[0])+(AB[1]*BC[1]))/ (Math.sqrt(Math.pow(AB[0],2)+Math.pow(AB[1],2))+
-		Math.sqrt(Math.pow(BC[0],2)+Math.pow(BC[1],2))))*(180/Math.PI);
-
-
-	mat4.identity(this.translationMatrix);
-	mat4.translate(this.translationMatrix, this.translationMatrix,[this.deltaX, this.deltaY, 0]);
-	mat4.rotate(this.translationMatrix, this.translationMatrix,this.rot_ang, [0, 1, 0]);
-
+		if(this.distDone >= this.distance[this.index]){
+			this.index++;
+		}
+		mat4.identity(this.translationMatrix);
+		mat4.translate(this.translationMatrix, this.translationMatrix,[this.deltaX, this.deltaY, this.deltaZ]);
+		mat4.rotate(this.translationMatrix, this.translationMatrix,this.angleXZ[this.index], [0, 1, 0]);
+	}
+	else{
+		this.deltaX = 0;
+		this.deltaY = 0;
+		this.deltaZ = 0;
+		this.previousPoint = [0,0,0];
+		mat4.identity(this.translationMatrix);
+	}
 	this.startTime = currTime;
 };
 
@@ -116,3 +106,18 @@ LinearAnimation.prototype.getAngleXY = function(p1, p2){
 		return 0;
 	return Math.acos(dx/norm);
 };
+
+LinearAnimation.prototype.getVX = function(p1, p2, dist){
+	var cosA = (p2[0]-p1[0]) / dist;
+	return this.speed * cosA;
+}
+
+LinearAnimation.prototype.getVY = function(p1, p2, dist){
+	var senA = (p2[1]-p1[1]) / dist;
+	return this.speed * senA;
+}
+
+LinearAnimation.prototype.getVZ = function(p1, p2, dist){
+	var senA = (p2[2]-p1[2]) / dist;
+	return this.speed * senA;
+}
