@@ -23,7 +23,7 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 	for(var i = 1; i < this.controlPoints.length; i++){
 		var dist = this.getDistance(this.controlPoints[i-1],this.controlPoints[i]);
 		this.distance.push(dist);
-		this.angleXZ.push(this.getAngleXZ(this.controlPoints[i-1],this.controlPoints[i])/DEGREE_TO_RAD);
+		this.angleXZ.push(this.getAngleXZ(this.controlPoints[i-1],this.controlPoints[i]));
 		this.totalDistance += dist;
 		this.vx.push(this.getVX(this.controlPoints[i-1],this.controlPoints[i],dist));
 		this.vy.push(this.getVY(this.controlPoints[i-1],this.controlPoints[i],dist));
@@ -41,9 +41,9 @@ LinearAnimation.prototype.constructor = LinearAnimation;
 LinearAnimation.prototype.update = function(currTime) {
 	var deltaTime = currTime - this.startTime;
 	if(this.index < this.distance.length){
-		this.deltaX = deltaTime/100*this.vx[this.index] + this.previousPoint[0];
-		this.deltaY = deltaTime/100*this.vy[this.index] + this.previousPoint[1];
-		this.deltaZ = deltaTime/100*this.vz[this.index] + this.previousPoint[2];
+		this.deltaX = deltaTime/1000*this.vx[this.index] + this.previousPoint[0];
+		this.deltaY = deltaTime/1000*this.vy[this.index] + this.previousPoint[1];
+		this.deltaZ = deltaTime/1000*this.vz[this.index] + this.previousPoint[2];
 		
 		let deltas = vec3.fromValues(this.deltaX, this.deltaY, this.deltaZ);
 		let point = vec3.fromValues(this.controlPoints[this.index][0],this.controlPoints[this.index][1],this.controlPoints[this.index][2]);
@@ -65,6 +65,7 @@ LinearAnimation.prototype.update = function(currTime) {
 		mat4.translate(this.transformationMatrix, this.transformationMatrix,[this.deltaX, this.deltaY, this.deltaZ]);
 		mat4.rotate(this.transformationMatrix, this.transformationMatrix,this.angleXZ[this.index], [0, 1, 0]);
 		this.startTime = currTime;
+		console.log(this.angleXZ[this.index]);
 	}
 	else{
 		this.deltaX = 0;

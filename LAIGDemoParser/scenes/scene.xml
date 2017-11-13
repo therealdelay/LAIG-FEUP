@@ -2034,6 +2034,8 @@
   <MATERIAL id="null" />     
   <TEXTURE id="null" />       			
 
+  <TRANSLATION x="-0.5" y="-0.5" z="0.5" />
+
   <ANIMATIONREFS>
     <ANIMATIONREF id="linear1" />
   </ANIMATIONREFS>
@@ -2052,7 +2054,7 @@
   <MATERIAL id="null" />     
   <TEXTURE id="null" />       			
 
-  <TRANSLATION x="1" y="10" z="0" />  
+  <TRANSLATION x="0.5" y="9.5" z="0.5" />  
 
   <DESCENDANTS>
    <NODEREF id="facecube1" />
@@ -2069,7 +2071,7 @@
   <MATERIAL id="null" />     
   <TEXTURE id="null" />       			
 
-  <TRANSLATION x="10" y="0" z="0" />  
+  <TRANSLATION x="9.5" y="-0.5" z="0.5" />  
   
   <DESCENDANTS>
    <NODEREF id="facecube1" />
