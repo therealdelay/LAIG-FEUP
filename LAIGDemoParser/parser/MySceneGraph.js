@@ -1628,7 +1628,7 @@ if(node.animations.length > 0 && currAnimation >= 0){
 
   var animationMatrix = this.getAnimation(animationID).getMatrix();
   console.log("animationMatrix: " + animationMatrix);
-  this.scene.multMatrix(node.animationMatrix);
+  this.scene.multMatrix(animationMatrix);
 }
 
 this.scene.multMatrix(node.transformMatrix);
