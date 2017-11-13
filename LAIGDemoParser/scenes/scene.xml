@@ -219,80 +219,95 @@
     <controlpoint xx="10" yy="0" zz="0" />
     <controlpoint xx="1" yy="10" zz="0" />
   </ANIMATION>
-  <ANIMATION id="circular1" speed="10" type="circular"
-    centerx="10" centery="10" centerz="10" radius="5" startang="40" rotang="20"/>
-    <ANIMATION id="bezier1" speed="10" type="bezier">
-      <controlpoint xx="0" yy="0" zz="0" />
-      <controlpoint xx="1" yy="0" zz="0" />
-      <controlpoint xx="1" yy="1" zz="0" />
-      <controlpoint xx="0" yy="1" zz="0" />
-    </ANIMATION>
-  </ANIMATIONS>
 
-  <!-- The leaves -->
-  <LEAVES>
-  </LEAVES>
+  <ANIMATION id="circular1" speed="1" type="circular" centerx="5.0" centery="1" centerz="5.0" radius="5" startang="20" rotang="100"/>
 
+  <ANIMATION id="bezier1" speed="10" type="bezier">
+    <controlpoint xx="0" yy="0" zz="0" />
+    <controlpoint xx="1" yy="0" zz="0" />
+    <controlpoint xx="1" yy="1" zz="0" />
+    <controlpoint xx="0" yy="1" zz="0" />
+  </ANIMATION>
 
-  <!-- THE NODES -->
-  <NODES>
+</ANIMATIONS>
 
-    <ROOT id="root" />     
-
-    <!-- The root node -->
-    <NODE id="root">       
-      <MATERIAL id="defaultMaterial" />         
-      <TEXTURE id="null" />  
-
-      <DESCENDANTS>
-        <!--NODEREF id="lights" />    
-        <NODEREF id="floor" />
-        <NODEREF id="walls" />
-        <NODEREF id="sofas" />
-        <NODEREF id="windows" />
-        <NODEREF id="wallObjects" />
-        <NODEREF id="floorLamp" />
-        <NODEREF id="table" />
-        <NODEREF id="pillows" />
-        <NODEREF id="curtains" />
-        <NODEREF id="candle" /-->
-        <NODEREF id="cube1" />
-        <NODEREF id="cube2" />
-        <NODEREF id="cube" />
-      </DESCENDANTS>
-
-    </NODE>
-
-    <!-- The floor -->
-    <NODE id="floor">      
-      <MATERIAL id="null" />    
-      <TEXTURE id="floor" />       			
-
-      <TRANSLATION x="0" y="0" z="-1" />
-      <SCALE sx="21" sy="2" sz="26" />
-      <ROTATION axis="y" angle="-90" />
-      <ROTATION axis="x" angle="-90" />
-
-      <DESCENDANTS>
-       <LEAF  type="rectangle" args="0 1 1 0" />        
-     </DESCENDANTS>
-   </NODE>
+<!-- The leaves -->
+<LEAVES>
+</LEAVES>
 
 
+<!-- THE NODES -->
+<NODES>
 
-   <!-- The electric shutters -->
-   <NODE id="curtains">      
-    <MATERIAL id="blackMaterial" />    
-    <TEXTURE id="null" />     
+  <ROOT id="root" />     
+
+  <!-- The root node -->
+  <NODE id="root">       
+    <MATERIAL id="defaultMaterial" />         
+    <TEXTURE id="null" />  
 
     <DESCENDANTS>
-     <NODEREF id="curtain1" />
-     <NODEREF id="curtain2" />
-   </DESCENDANTS>
- </NODE>
+      <!--NODEREF id="lights" />    
+      <NODEREF id="floor" />
+      <NODEREF id="walls" />
+      <NODEREF id="sofas" />
+      <NODEREF id="windows" />
+      <NODEREF id="wallObjects" />
+      <NODEREF id="floorLamp" />
+      <NODEREF id="table" />
+      <NODEREF id="pillows" />
+      <NODEREF id="curtains" />
+      <NODEREF id="candle" /-->
+      <NODEREF id="teste" />
+      <NODEREF id="cube" />
+      <NODEREF id="cube1" />
+      <NODEREF id="cube2" />
+    </DESCENDANTS>
+  </NODE>
+
+  <NODE id="teste">
+   <MATERIAL id="null" />    
+   <TEXTURE id="null" />   
+
+   <ANIMATIONREFS>
+    <ANIMATIONREF id="circular1" />
+  </ANIMATIONREFS>
+
+  <DESCENDANTS>
+    <NODEREF id="cilindro" />        
+  </DESCENDANTS>
+</NODE>
+
+<!-- The floor -->
+<NODE id="floor">      
+  <MATERIAL id="null" />    
+  <TEXTURE id="floor" />       			
+
+  <TRANSLATION x="0" y="0" z="-1" />
+  <SCALE sx="21" sy="2" sz="26" />
+  <ROTATION axis="y" angle="-90" />
+  <ROTATION axis="x" angle="-90" />
+
+  <DESCENDANTS>
+   <LEAF  type="rectangle" args="0 1 1 0" />        
+ </DESCENDANTS>
+</NODE>
 
 
- <NODE id="curtain1">      
+
+<!-- The electric shutters -->
+<NODE id="curtains">      
+  <MATERIAL id="blackMaterial" />    
+  <TEXTURE id="null" />     
+
+  <DESCENDANTS>
+   <NODEREF id="curtain1" />
+   <NODEREF id="curtain2" />
+ </DESCENDANTS>
+</NODE>
+
+
+<NODE id="curtain1">      
   <MATERIAL id="null" />    
   <TEXTURE id="null" />  
 
@@ -1925,10 +1940,6 @@
 
   <TRANSLATION x="9.5" y="1.6" z="12" />
   <SCALE sx="1" sy="2" sz="1" />
-
-  <ANIMATIONREFS>
-    <ANIMATIONREF id="linear1" />
-  </ANIMATIONREFS>
 
   <DESCENDANTS>
    <NODEREF id="candlehalf1" /> 
