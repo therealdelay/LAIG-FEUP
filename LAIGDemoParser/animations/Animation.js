@@ -7,8 +7,7 @@ function Animation() {
 Animation.prototype.contructor = Animation;
 
 Animation.prototype.init = function() {
-	var d = new Date();
-	this.startTime = d.getTime();
+	this.startTime = Date.now();
 };
 
 
