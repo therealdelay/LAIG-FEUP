@@ -1623,10 +1623,13 @@ var currAnimation = node.currAnimation;
 if(node.animations.length > 0 && currAnimation >= 0){
 
   var animationID = node.animations[currAnimation];
-  console.log("nodeID: " + node.nodeID);
-  console.log("animationID: " + animationID);
 
-  var animationMatrix = this.getAnimation(animationID).getMatrix();
+  /// ?????
+  var d = new Date();
+  var currTime = d.getTime();
+  console.log("time: " + currTime);
+
+  var animationMatrix = this.getAnimation(animationID).getMatrix(currTime);
   console.log("animationMatrix: " + animationMatrix);
   this.scene.multMatrix(animationMatrix);
 }
