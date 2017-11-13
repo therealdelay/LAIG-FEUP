@@ -1627,10 +1627,10 @@ if(node.animations.length > 0 && currAnimation >= 0){
   /// ?????
   var d = new Date();
   var currTime = d.getTime();
-  console.log("time: " + currTime);
+  //console.log("time: " + currTime);
 
   var animationMatrix = this.getAnimation(animationID).getMatrix(currTime);
-  console.log("animationMatrix: " + animationMatrix);
+  //console.log("animationMatrix: " + animationMatrix);
   this.scene.multMatrix(animationMatrix);
 }
 

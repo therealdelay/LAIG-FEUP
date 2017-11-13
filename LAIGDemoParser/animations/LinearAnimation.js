@@ -13,26 +13,26 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 
 	this.distance = [];
 	this.angleXZ = [];
-	this.angleXY = [];
 	this.vx = [];
 	this.vy = [];
 	this.vz = [];
 
-	let totalDistance = 0;
+	this.totalDistance = 0;
 	this.previousPoint = [0, 0, 0];
 	
 	for(var i = 1; i < this.controlPoints.length; i++){
 		var dist = this.getDistance(this.controlPoints[i-1],this.controlPoints[i]);
 		this.distance.push(dist);
 		this.angleXZ.push(this.getAngleXZ(this.controlPoints[i-1],this.controlPoints[i])/DEGREE_TO_RAD);
-		this.angleXY.push(this.getAngleXY(this.controlPoints[i-1],this.controlPoints[i])/DEGREE_TO_RAD);
 		this.totalDistance += dist;
 		this.vx.push(this.getVX(this.controlPoints[i-1],this.controlPoints[i],dist));
 		this.vy.push(this.getVY(this.controlPoints[i-1],this.controlPoints[i],dist));
 		this.vz.push(this.getVZ(this.controlPoints[i-1],this.controlPoints[i],dist));
 	}
-	
-	this.translationMatrix = mat4.create();
+	console.log(this.distance);
+	this.transformationMatrix = mat4.create();
+
+	this.init();
 };
 
 LinearAnimation.prototype = Object.create(Animation.prototype);
@@ -40,11 +40,13 @@ LinearAnimation.prototype.constructor = LinearAnimation;
 
 LinearAnimation.prototype.update = function(currTime) {
 	var deltaTime = currTime - this.startTime;
-
 	if(this.index < this.distance.length){
 		this.deltaX = deltaTime/100*this.vx[this.index] + this.previousPoint[0];
 		this.deltaY = deltaTime/100*this.vy[this.index] + this.previousPoint[1];
 		this.deltaZ = deltaTime/100*this.vz[this.index] + this.previousPoint[2];
+		
+		let deltas = vec3.fromValues(this.deltaX, this.deltaY, this.deltaZ);
+		let point = vec3.fromValues(this.controlPoints[this.index][0],this.controlPoints[this.index][1],this.controlPoints[this.index][2]);
 
 		if(!isNaN(this.deltaX))
 			this.previousPoint[0] = this.deltaX;
@@ -52,27 +54,31 @@ LinearAnimation.prototype.update = function(currTime) {
 			this.previousPoint[1] = this.deltaY;
 		if(!isNaN(this.deltaZ))
 			this.previousPoint[2] = this.deltaZ;
-
-		if(this.distDone >= this.distance[this.index]){
+		
+		if(vec3.distance(deltas, point) >= this.distance[this.index]){
+			this.deltaX = 0;
+			this.deltaY = 0;
+			this.deltaZ = 0;
 			this.index++;
 		}
-		mat4.identity(this.translationMatrix);
-		mat4.translate(this.translationMatrix, this.translationMatrix,[this.deltaX, this.deltaY, this.deltaZ]);
-		mat4.rotate(this.translationMatrix, this.translationMatrix,this.angleXZ[this.index], [0, 1, 0]);
+		mat4.identity(this.transformationMatrix);
+		mat4.translate(this.transformationMatrix, this.transformationMatrix,[this.deltaX, this.deltaY, this.deltaZ]);
+		mat4.rotate(this.transformationMatrix, this.transformationMatrix,this.angleXZ[this.index], [0, 1, 0]);
+		this.startTime = currTime;
 	}
 	else{
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.deltaZ = 0;
 		this.previousPoint = [0,0,0];
-		mat4.identity(this.translationMatrix);
+		mat4.identity(this.transformationMatrix);
 	}
-	this.startTime = currTime;
+	
 };
 
 LinearAnimation.prototype.getMatrix = function(currTime){
 	this.update(currTime);
-	return this.translationMatrix;
+	return this.transformationMatrix;
 };
 
 LinearAnimation.prototype.calculateRotation = function(p1, p2) {
@@ -80,9 +86,9 @@ LinearAnimation.prototype.calculateRotation = function(p1, p2) {
 };
 
 LinearAnimation.prototype.getDistance = function(p1, p2){
-	return Math.sqrt(Math.pow(p2[0] - p1[0], 2) +
-		Math.pow(p2[1] - p1[1], 2) +
-		Math.pow(p2[2] - p1[2], 2));
+	let np1 = vec3.fromValues(p1[0],p1[1],p1[2]);
+	let np2 = vec3.fromValues(p2[0],p2[1],p2[2]);
+	return vec3.distance(np1, np2);
 };
 
 LinearAnimation.prototype.getAngleXZ = function(p1, p2){
@@ -91,17 +97,6 @@ LinearAnimation.prototype.getAngleXZ = function(p1, p2){
 	var ax = Math.pow(dx,2);
 	var az = Math.pow(dz,2);
 	var norm = Math.sqrt(ax + az);
-	if(norm === 0)
-		return 0;
-	return Math.acos(dx/norm);
-};
-
-LinearAnimation.prototype.getAngleXY = function(p1, p2){
-	var dx = p2[0]-p1[0];
-	var dy = p2[1]-p1[1];
-	var ax = Math.pow(dx,2);
-	var ay = Math.pow(dy,2);
-	var norm = Math.sqrt(ax + ay);
 	if(norm === 0)
 		return 0;
 	return Math.acos(dx/norm);
