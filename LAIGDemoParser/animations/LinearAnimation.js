@@ -7,6 +7,8 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 	this.id = id;
 	this.speed = speed;
 	this.controlPoints = controlPoints;
+	this.finish = false;
+	this.startTime = Date.now();
 
 	this.distDone = 0;
 	this.index = 0;
@@ -72,6 +74,7 @@ LinearAnimation.prototype.update = function(currTime) {
 		this.deltaY = 0;
 		this.deltaZ = 0;
 		this.previousPoint = [0,0,0];
+		this.finish = true;
 		mat4.identity(this.transformationMatrix);
 	}
 	

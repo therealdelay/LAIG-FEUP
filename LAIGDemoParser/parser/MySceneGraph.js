@@ -1192,7 +1192,9 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
       if (animationID == null )
         return "failed to parse animation ID";
 
-      var animationSpeed = this.reader.getFloat(eachAnimation[i], 'speed');
+      if(this.reader.hasAttribute(eachAnimation[i], 'speed'))
+        var animationSpeed = this.reader.getString(eachAnimation[i], 'speed');
+      
       console.log("animationSpeed:::: " + animationSpeed);
 
       if (animationSpeed == null )
@@ -1234,6 +1236,8 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
         var rotAngle = this.reader.getFloat(args, 'rotang');
         var centre = [centerx, centery, centerz];
 
+        console.log("VAI CRIAR NOVA ANIMAÇÃO CIRCULAR");
+
         Animation = new CircularAnimation(this, animationID, animationSpeed, centre, radius, initAngle, rotAngle);
 
         break;
@@ -1247,18 +1251,26 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
           var cpointargs = [cpx, cpy, cpz];
           controlpoints.push(cpointargs);
         }
-        
+
         Animation = new BezierAnimation(this, animationID, animationSpeed, controlpoints);
 
         break;
-        case 'combo': /*
-        var animations;
-        for (var j = 1; j < args.length; j++) {
+        case 'combo': 
+        var animCombo = [];
+        var args = eachAnimation[i].children;
+         console.log("Animation combo args!!!!" + args);
+        for (var j = 0; j < args.length; j++) {
           var id = this.reader.getString(args[j], 'id');
-          animations.push(id);
+          auxAnim = this.getAnimation(id);
+
+          if(auxAnim == null){
+            console.log("Animation not initialized!!!!");
+            break;
+          }
+          animCombo.push(id);
         }
 
-        Animation = new ComboAnimation(this, animationID, animationSpeed, animations); */
+        Animation = new ComboAnimation(this, animationID, animCombo); 
         break;
         default:
         break;
@@ -1270,6 +1282,8 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
 
   console.log("Parsed Animations");
 }
+
+
 
 
 /**
@@ -1657,4 +1671,6 @@ MySceneGraph.prototype.getAnimation = function(animationID){
             return this.animations[i];
         }
     }
+
+    return null;
 }
