@@ -1240,14 +1240,14 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
         case 'bezier': //provavelmente se o numero de args != 4 lançar erro!!!
         var controlpoints = [];
         var args = eachAnimation[i].children;
-        for (var j = 1; j < args.length; j++) {
+        for (var j = 0; j < args.length; j++) {
           var cpx = this.reader.getFloat(args[j], 'xx');
           var cpy = this.reader.getFloat(args[j], 'yy');
           var cpz = this.reader.getFloat(args[j], 'zz');
           var cpointargs = [cpx, cpy, cpz];
           controlpoints.push(cpointargs);
         }
-
+        
         Animation = new BezierAnimation(this, animationID, animationSpeed, controlpoints);
 
         break;
