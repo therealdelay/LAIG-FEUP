@@ -2,7 +2,6 @@ var DEGREE_TO_RAD = Math.PI / 180;
 
 function LinearAnimation(scene, id, speed, controlPoints) {
 	Animation.call(this);
-	console.log("LinearAnimation contructor!!!!!! ");
 
 	this.id = id;
 	this.speed = speed;

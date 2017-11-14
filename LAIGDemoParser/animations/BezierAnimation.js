@@ -1,8 +1,6 @@
 function BezierAnimation(scene, id, speed, controlPoints) {
 	Animation.call(this);
 
-	console.log("BezierAnimation contructor!!!!!! ");
-
 	this.id = id;
 	this.speed = speed;
 	this.controlPoints = controlPoints;
