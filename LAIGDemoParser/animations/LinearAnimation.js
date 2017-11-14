@@ -19,7 +19,7 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 	this.vz = [];
 
 	this.totalDistance = 0;
-	this.previousPoint = [0, 0, 0];
+	this.previousPoint = controlPoints[0].slice();
 	
 	for(var i = 1; i < this.controlPoints.length; i++){
 		var dist = this.getDistance(this.controlPoints[i-1],this.controlPoints[i]);
@@ -76,6 +76,8 @@ LinearAnimation.prototype.update = function(currTime) {
 		this.finish = true;
 		mat4.identity(this.transformationMatrix);
 	}
+
+	console.log("CONTROL POINTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+this.controlPoints);
 	
 };
 
