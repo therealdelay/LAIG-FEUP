@@ -124,6 +124,12 @@
     <amplif_factor s="1" t="1" />   
   </TEXTURE>
 
+    <!-- Wax -->
+  <TEXTURE id="vaccum">
+    <file path="../textures/vac.jpg" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
 </TEXTURES>
 
 
@@ -350,14 +356,14 @@
 </NODE>
 
   <NODE id="tampaAspirador">
-   <MATERIAL id="blackMaterial" />    
-   <TEXTURE id="null" />  
+   <MATERIAL id="defaultMaterial" />    
+   <TEXTURE id="vaccum" />  
   
-  <SCALE sx="0.8" sy="0.1" sz="0.8" />
-  <ROTATION axis="x" angle="90" /> 
+  <SCALE sx="0.9" sy="0.1" sz="0.9" />
+  <ROTATION axis="y" angle="90" /> 
 
   <DESCENDANTS>
-    <NODEREF id="cilindro" />          
+   <LEAF id="sphere1" type="sphere" args="1 20 20" />     
   </DESCENDANTS>
 </NODE>
 
