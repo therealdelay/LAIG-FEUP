@@ -8,6 +8,8 @@ function BezierAnimation(scene, id, speed, controlPoints) {
 	this.p2 = this.controlPoints[1];
 	this.p3 = this.controlPoints[2];
 	this.p4 = this.controlPoints[3];
+	this.startTime= Date.now();
+	this.finish = false;
 
 	this.time = 0;
 
@@ -34,19 +36,22 @@ BezierAnimation.prototype.update = function(currTime) {
 		mat4.translate(this.transformationMatrix, this.transformationMatrix,[point[0], point[1], point[2]]);
 		mat4.rotate(this.transformationMatrix, this.transformationMatrix,angle, [0, 1, 0]);	
 	}
+	
 	this.startTime = currTime;
+
 };
 
 BezierAnimation.prototype.getMatrix = function(currTime){
 	if(this.time < 1){
 		this.update(currTime);
 	}
+	else this.finish = true;
 	return this.transformationMatrix;
 };
 
 BezierAnimation.prototype.qfunction = function(time){
 	let qx = Math.pow(1 - time, 3) * this.p1[0] + 3 * time * Math.pow(1 - time, 2) * this.p2[0] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[0] + Math.pow(time, 3) * this.p4[0];
-    let qy = Math.pow(1 - time, 3) * this.p1[1] + 3 * time * Math.pow(1 - time, 2) * this.p2[1] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[1] + Math.pow(time, 3) * this.p4[1];
-    let qz = Math.pow(1 - time, 3) * this.p1[2] + 3 * time * Math.pow(1 - time, 2) * this.p2[2] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[2] + Math.pow(time, 3) * this.p4[2];
-  	return vec3.fromValues(qx, qy, qz);
+	let qy = Math.pow(1 - time, 3) * this.p1[1] + 3 * time * Math.pow(1 - time, 2) * this.p2[1] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[1] + Math.pow(time, 3) * this.p4[1];
+	let qz = Math.pow(1 - time, 3) * this.p1[2] + 3 * time * Math.pow(1 - time, 2) * this.p2[2] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[2] + Math.pow(time, 3) * this.p4[2];
+	return vec3.fromValues(qx, qy, qz);
 }
