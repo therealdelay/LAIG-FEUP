@@ -86,10 +86,6 @@ LinearAnimation.prototype.getMatrix = function(currTime){
 	return this.transformationMatrix;
 };
 
-LinearAnimation.prototype.calculateRotation = function(p1, p2) {
-	return Math.atan2(p2[0] - p1[0], p2[2] - p1[2]);
-};
-
 LinearAnimation.prototype.getDistance = function(p1, p2){
 	let np1 = vec3.fromValues(p1[0],p1[1],p1[2]);
 	let np2 = vec3.fromValues(p2[0],p2[1],p2[2]);
@@ -97,16 +93,7 @@ LinearAnimation.prototype.getDistance = function(p1, p2){
 };
 
 LinearAnimation.prototype.getAngleXZ = function(p1, p2){
-	var dx = p2[0]-p1[0];
-	var dz = p2[2]-p1[2];
-	var ax = Math.pow(dx,2);
-	var az = Math.pow(dz,2);
-	var norm = Math.sqrt(ax + az);
-	if(norm === 0)
-		return 0;
-	//return Math.acos(dx/norm);
-
-	return Math.atan(dx / dz) + (dz<0 ? Math.PI : 0)
+	return Math.atan2(p2[0] - p1[0], p2[2] - p1[2]);
 };
 
 LinearAnimation.prototype.getVX = function(p1, p2, dist){
