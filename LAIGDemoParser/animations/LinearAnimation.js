@@ -72,7 +72,7 @@ LinearAnimation.prototype.update = function(currTime) {
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.deltaZ = 0;
-		this.previousPoint = [0,0,0];
+		//this.previousPoint = [0,0,0];
 		this.finish = true;
 		mat4.identity(this.transformationMatrix);
 	}
@@ -104,7 +104,9 @@ LinearAnimation.prototype.getAngleXZ = function(p1, p2){
 	var norm = Math.sqrt(ax + az);
 	if(norm === 0)
 		return 0;
-	return Math.acos(dx/norm);
+	//return Math.acos(dx/norm);
+
+	return Math.atan(dx / dz) + (dz<0 ? Math.PI : 0)
 };
 
 LinearAnimation.prototype.getVX = function(p1, p2, dist){
