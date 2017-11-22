@@ -1468,7 +1468,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             this.nodes[nodeID].animations.push(animationId);
 
           if(animChildren == 0)
-            this.nodes[nodeID].currAnimation = 0;
+            this.nodes[nodeID].currAnimation = animationId;
 
           animChildren++;
         }
@@ -1629,7 +1629,7 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
 
 
 //selectable shaders
-if(node.selectable)
+if(node.selectable && this.scene.selectable)
   this.scene.setActiveShader(this.scene.testShaders[this.scene.currentShader]);
 
 //TRANFORMATION MATRIX APPLICATION
@@ -1638,13 +1638,13 @@ this.scene.pushMatrix();
 
 //ANIMATIONS
 var currAnimation = node.currAnimation;
-if(node.animations.length > 0 && currAnimation >= 0){
+if(node.animations.length > 0 && currAnimation != null){
 
   var animationID = node.animations[currAnimation];
 
-  var animationMatrix = this.getAnimation(animationID).getMatrix(Date.now());
-  console.log("animationMatrix: " + animationMatrix);
-  this.scene.multMatrix(animationMatrix);
+  //var animationMatrix = this.getAnimation(animationID).getMatrix(Date.now());
+  //console.log("animationMatrix: " + animationMatrix);
+  this.scene.multMatrix(node.animationMatrix);
 }
 
 
@@ -1659,7 +1659,7 @@ for (var i = 0; i < node.children.length; i++)
 this.scene.popMatrix();
 
 
-if(node.selectable)
+if(node.selectable && this.scene.selectable)
   this.scene.setActiveShader(this.scene.defaultShader);
 
 this.tex_stack.pop();

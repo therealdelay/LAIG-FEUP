@@ -28,8 +28,11 @@ function MyGraphNode(graph, nodeID) {
     //a instanciar
     this.currAnimation = null;
 
+    this.startTime=0;
     this.transformMatrix = mat4.create();
     mat4.identity(this.transformMatrix);
+    this.animationMatrix = mat4.create();
+    mat4.identity(this.animationMatrix);
 }
 
 /**
@@ -47,3 +50,15 @@ MyGraphNode.prototype.addLeaf = function(leaf) {
 }
 
 
+MyGraphNode.prototype.update = function(currTime){
+    if(this.startTime == 0){
+        this.startTime = currTime;
+        return;
+    }
+    let deltaTime = currTime - this.startTime;
+    if(this.animations.length > 0){
+        this.animationMatrix = this.graph.getAnimation(this.currAnimation).getMatrix(deltaTime);
+    }
+
+    this.startTime=currTime;
+}

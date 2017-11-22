@@ -15,18 +15,18 @@ function ComboAnimation(scene, id, animations) {
 ComboAnimation.prototype.update = function(currTime) {
 };
 
-ComboAnimation.prototype.getMatrix = function(currTime){
+ComboAnimation.prototype.getMatrix = function(deltaTime){
 
 	if(this.index < this.size){
 
-		this.transformationMatrix = this.currAnimation.getMatrix(currTime);
+		this.transformationMatrix = this.currAnimation.getMatrix(deltaTime);
 
 		if(this.currAnimation.finish){
 			this.index++;
 			if(this.index < this.size){
 				this.currAnimation = this.scene.getAnimation(this.animations[this.index]);
-				this.currAnimation.startTime = currTime;
-				this.transformationMatrix = this.currAnimation.getMatrix(currTime);
+				this.currAnimation.deltaTime = deltaTime;
+				this.transformationMatrix = this.currAnimation.getMatrix(deltaTime);
 				console.log("MUDOU PARA NOVA ANIMAÇÃO");
 
 			}

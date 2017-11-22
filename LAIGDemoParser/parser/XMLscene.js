@@ -10,6 +10,7 @@ function XMLscene(interface) {
     this.interface = interface;
 	this.currentShader = 0;
 	this.scaleFactor=50.0;
+	this.selectable=false;
 
     this.lightValues = {};
 };
@@ -31,7 +32,7 @@ XMLscene.prototype.init = function(application) {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
-    this.setUpdatePeriod(500);
+    this.setUpdatePeriod(1000/60);
 
 
 	this.testShaders=[
@@ -169,14 +170,6 @@ XMLscene.prototype.display = function() {
 
 // Displays the scene.
 		this.graph.displayScene();
-		/*this.setActiveShader(this.testShaders[this.currentShader]);
-        this.pushMatrix();
-        	this.scale(0.5,0.5,0.5);
-       		this.rotate(-Math.PI/2, 1, 0, 0);	
-        	this.bule.display();
-        this.popMatrix();
-       	this.setActiveShader(this.defaultShader);*/
-
     }
 	else
 	{
@@ -190,3 +183,11 @@ XMLscene.prototype.display = function() {
     // ---- END Background, camera and axis setup
     
 };
+
+XMLscene.prototype.update = function(currTime){
+	for(var index in this.graph.nodes){
+		this.graph.nodes[index].update(currTime);
+	}
+
+	//mudar o scaleFactor com sin
+}

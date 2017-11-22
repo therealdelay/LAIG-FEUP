@@ -33,13 +33,14 @@ MyInterface.prototype.init = function(application) {
 			'Multiple textures in VS and FS': 5,
 			'Sepia': 6,
 			'Convolution': 7
-			
 	}).name('Shader examples');
 
 	obj=this;
 	this.gui.add(this.scene, 'scaleFactor',-50,50).onChange(function(v){
 		obj.scene.updateScaleFactor(v);
 	});
+
+	this.gui.add(this.scene, 'selectable');
     
     return true;
 };

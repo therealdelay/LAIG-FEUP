@@ -7,7 +7,7 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 	this.speed = speed;
 	this.controlPoints = controlPoints;
 	this.finish = false;
-	this.startTime = Date.now();
+	this.deltaTime = 0;
 
 	this.distDone = 0;
 	this.index = 0;
@@ -39,12 +39,12 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 LinearAnimation.prototype = Object.create(Animation.prototype);
 LinearAnimation.prototype.constructor = LinearAnimation;
 
-LinearAnimation.prototype.update = function(currTime) {
-	var deltaTime = currTime - this.startTime;
+LinearAnimation.prototype.update = function(deltaTime) {
+	this.deltaTime = deltaTime/1000;
 	if(this.index < this.distance.length){
-		this.deltaX = deltaTime/1000*this.vx[this.index] + this.previousPoint[0];
-		this.deltaY = deltaTime/1000*this.vy[this.index] + this.previousPoint[1];
-		this.deltaZ = deltaTime/1000*this.vz[this.index] + this.previousPoint[2];
+		this.deltaX = this.deltaTime*this.vx[this.index] + this.previousPoint[0];
+		this.deltaY = this.deltaTime*this.vy[this.index] + this.previousPoint[1];
+		this.deltaZ = this.deltaTime*this.vz[this.index] + this.previousPoint[2];
 		
 		let deltas = vec3.fromValues(this.deltaX, this.deltaY, this.deltaZ);
 		let point = vec3.fromValues(this.controlPoints[this.index][0],this.controlPoints[this.index][1],this.controlPoints[this.index][2]);
@@ -65,14 +65,12 @@ LinearAnimation.prototype.update = function(currTime) {
 		mat4.identity(this.transformationMatrix);
 		mat4.translate(this.transformationMatrix, this.transformationMatrix,[this.deltaX, this.deltaY, this.deltaZ]);
 		mat4.rotate(this.transformationMatrix, this.transformationMatrix,this.angleXZ[this.index], [0, 1, 0]);
-		this.startTime = currTime;
 		console.log(this.angleXZ[this.index]);
 	}
 	else{
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.deltaZ = 0;
-		//this.previousPoint = [0,0,0];
 		this.finish = true;
 		mat4.identity(this.transformationMatrix);
 	}
