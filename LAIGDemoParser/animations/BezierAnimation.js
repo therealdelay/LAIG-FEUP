@@ -26,7 +26,7 @@ BezierAnimation.prototype.constructor = BezierAnimation;
 BezierAnimation.prototype.update = function(deltaTime) {
 	this.deltaTime = deltaTime/1000;
 	if(this.time < 1){
-		this.time += 0.1*this.speed*deltaTime;
+		this.time += 0.1*this.speed*this.deltaTime;
 		let point = this.qfunction(this.time);
 		let angle = Math.atan((point[0]-this.lastPoint[0]) / (point[2]-this.lastPoint[2])) + ((point[2]-this.lastPoint[2])<0 ? Math.PI : 0);
 		
