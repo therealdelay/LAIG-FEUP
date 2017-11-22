@@ -308,7 +308,7 @@
       <NODEREF id="curtains" />
       <NODEREF id="candle" />
       <NODEREF id="aspirador" />
-        <NODEREF id="drone" />
+      <NODEREF id="drone" />
     </DESCENDANTS>
 
   </NODE>
@@ -360,7 +360,7 @@
    <TEXTURE id="vaccum" />  
   
   <SCALE sx="0.9" sy="0.1" sz="0.9" />
-  <ROTATION axis="y" angle="90" /> 
+  <ROTATION axis="z" angle="-90" /> 
 
   <DESCENDANTS>
    <LEAF id="sphere1" type="sphere" args="1 20 20" />     

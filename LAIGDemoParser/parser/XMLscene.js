@@ -8,9 +8,11 @@ function XMLscene(interface) {
     CGFscene.call(this);
 
     this.interface = interface;
+	this.currentShader = 0;
+	this.scaleFactor=50.0;
 
     this.lightValues = {};
-}
+};
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
@@ -29,11 +31,34 @@ XMLscene.prototype.init = function(application) {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
+    this.setUpdatePeriod(500);
+
+
+	this.testShaders=[
+		new CGFshader(this.gl, "shaders/flat.vert", "shaders/flat.frag"),
+		new CGFshader(this.gl, "shaders/uScale.vert", "shaders/uScale.frag"),
+		new CGFshader(this.gl, "shaders/varying.vert", "shaders/varying.frag"),
+		new CGFshader(this.gl, "shaders/texture1.vert", "shaders/texture1.frag"),
+		new CGFshader(this.gl, "shaders/texture2.vert", "shaders/texture2.frag"),
+		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/texture3.frag"),
+		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/sepia.frag"),
+		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/convolution.frag")
+	];
+	this.testShaders[4].setUniformsValues({uSampler2: 1});
+	this.testShaders[5].setUniformsValues({uSampler2: 1});
+
+	this.updateScaleFactor();
 
 	this.rec = new MyRectangle(this,0,1,0,1);    
     this.axis = new CGFaxis(this);
-}
+    this.bule = new Teapot(this);
+};
 
+XMLscene.prototype.updateScaleFactor = function (v) {
+	this.testShaders[1].setUniformsValues({normScale: this.scaleFactor});
+	this.testShaders[2].setUniformsValues({normScale: this.scaleFactor});
+	this.testShaders[5].setUniformsValues({normScale: this.scaleFactor});
+};
 /**
  * Initializes the scene lights with the values read from the LSX file.
  */
@@ -68,14 +93,14 @@ XMLscene.prototype.initLights = function() {
         }
     }
     
-}
+};
 
 /**
  * Initializes the scene cameras.
  */
 XMLscene.prototype.initCameras = function() {
     this.camera = new CGFcamera(0.4,0.1,500,vec3.fromValues(15, 15, 15),vec3.fromValues(0, 0, 0));
-}
+};
 
 /* Handler called when the graph is finally loaded. 
  * As loading is asynchronous, this may be called already after the application has started the run loop
@@ -95,7 +120,7 @@ XMLscene.prototype.onGraphLoaded = function()
 
     // Adds lights group.
     this.interface.addLightsGroup(this.graph.lights);
-}
+};
 
 /**
  * Displays the scene.
@@ -143,7 +168,15 @@ XMLscene.prototype.display = function() {
         }
 
 // Displays the scene.
-        this.graph.displayScene();
+		this.graph.displayScene();
+		/*this.setActiveShader(this.testShaders[this.currentShader]);
+        this.pushMatrix();
+        	this.scale(0.5,0.5,0.5);
+       		this.rotate(-Math.PI/2, 1, 0, 0);	
+        	this.bule.display();
+        this.popMatrix();
+       	this.setActiveShader(this.defaultShader);*/
+
     }
 	else
 	{
@@ -156,4 +189,4 @@ XMLscene.prototype.display = function() {
     
     // ---- END Background, camera and axis setup
     
-}
+};

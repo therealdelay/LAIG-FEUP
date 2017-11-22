@@ -1643,6 +1643,11 @@ if(node.animations.length > 0 && currAnimation >= 0){
   this.scene.multMatrix(animationMatrix);
 }
 
+//selectable shaders
+/*if(node.selectable);
+  this.scene.setActiveShader(this.scene.testShaders[this.scene.currentShader]);
+*/
+
 this.scene.multMatrix(node.transformMatrix);
 
 for (i = 0; i < node.leaves.length; i++)
@@ -1650,6 +1655,8 @@ for (i = 0; i < node.leaves.length; i++)
 
 for (var i = 0; i < node.children.length; i++) 
   this.nodesRecursive(this.nodes[node.children[i]]);
+
+//this.scene.setActiveShader(this.scene.defaultShader);
 
 this.scene.popMatrix();
 
