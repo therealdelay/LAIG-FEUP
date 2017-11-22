@@ -25,8 +25,12 @@ ComboAnimation.prototype.getMatrix = function(deltaTime){
 			this.index++;
 			if(this.index < this.size){
 				this.currAnimation = this.scene.getAnimation(this.animations[this.index]);
-				this.currAnimation.deltaTime = deltaTime;
+				this.currAnimation.deltaTime = 0;
 				this.transformationMatrix = this.currAnimation.getMatrix(deltaTime);
+				console.log("Delta time" + this.currAnimation.deltaTime);
+				console.log("this.index" + this.index);
+				console.log("this.currAnimation" + this.currAnimation);
+				console.log("this.animations[this.index]" + this.animations[this.index]);
 				console.log("MUDOU PARA NOVA ANIMAÇÃO");
 
 			}

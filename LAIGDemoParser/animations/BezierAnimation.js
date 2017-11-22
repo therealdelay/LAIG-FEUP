@@ -8,7 +8,7 @@ function BezierAnimation(scene, id, speed, controlPoints) {
 	this.p2 = this.controlPoints[1];
 	this.p3 = this.controlPoints[2];
 	this.p4 = this.controlPoints[3];
-	this.startTime= Date.now();
+	this.deltaTime = 0;
 	this.finish = false;
 
 	this.time = 0;
@@ -23,11 +23,10 @@ function BezierAnimation(scene, id, speed, controlPoints) {
 BezierAnimation.prototype = Object.create(Animation.prototype);
 BezierAnimation.prototype.constructor = BezierAnimation;
 
-BezierAnimation.prototype.update = function(currTime) {
-	let deltaTime = currTime - this.startTime;
-	console.log(this.time);
+BezierAnimation.prototype.update = function(deltaTime) {
+	this.deltaTime = deltaTime/1000;
 	if(this.time < 1){
-		this.time += 0.01*this.speed*deltaTime/100;
+		this.time += 0.1*this.speed*deltaTime;
 		let point = this.qfunction(this.time);
 		let angle = Math.atan((point[0]-this.lastPoint[0]) / (point[2]-this.lastPoint[2])) + ((point[2]-this.lastPoint[2])<0 ? Math.PI : 0);
 		
@@ -36,14 +35,11 @@ BezierAnimation.prototype.update = function(currTime) {
 		mat4.translate(this.transformationMatrix, this.transformationMatrix,[point[0], point[1], point[2]]);
 		mat4.rotate(this.transformationMatrix, this.transformationMatrix,angle, [0, 1, 0]);	
 	}
-	
-	this.startTime = currTime;
-
 };
 
-BezierAnimation.prototype.getMatrix = function(currTime){
+BezierAnimation.prototype.getMatrix = function(deltaTime){
 	if(this.time < 1){
-		this.update(currTime);
+		this.update(deltaTime);
 	}
 	else this.finish = true;
 	return this.transformationMatrix;

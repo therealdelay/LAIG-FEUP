@@ -7,13 +7,13 @@ function Animation() {
 Animation.prototype.contructor = Animation;
 
 Animation.prototype.init = function() {
-	this.startTime = Date.now();
+	this.deltaTime = 0;
 };
 
 
 
-Animation.prototype.update = function(currTime) {
+Animation.prototype.update = function(deltaTime) {
 	console.log("Este método tem que ser instanciado nas outras classes!");
 };
 
-Animation.prototype.getMatrix = function(currTime){};
+Animation.prototype.getMatrix = function(deltaTime){};
