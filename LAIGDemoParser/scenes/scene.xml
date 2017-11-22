@@ -124,7 +124,7 @@
     <amplif_factor s="1" t="1" />   
   </TEXTURE>
 
-    <!-- Wax -->
+  <!-- Wax -->
   <TEXTURE id="vaccum">
     <file path="../textures/vac.jpg" />                
     <amplif_factor s="1" t="1" />   
@@ -232,17 +232,20 @@
   </ANIMATION>
 
 
-  <ANIMATION id="linear3" speed="5" type="linear">
-    <controlpoint xx="18" yy="1" zz="2" />
-    <controlpoint xx="18" yy="8" zz="2" />
+  <ANIMATION id="linear3" speed="2" type="linear">
+    <controlpoint xx="12" yy="1" zz="6" />
+    <controlpoint xx="12" yy="12" zz="6" />
   </ANIMATION>
 
-    <ANIMATION id="linear4" speed="5" type="linear">
-    <controlpoint xx="3" yy="8" zz="2" />
-    <controlpoint xx="3" yy="1" zz="2" />
+  <ANIMATION id="linear4" speed="2" type="linear">
+    <controlpoint xx="12" yy="12" zz="6" />
+    <controlpoint xx="12" yy="1" zz="6" />
   </ANIMATION>
 
-  <ANIMATION id="circular1" speed="1" type="circular" centerx="5" centery="1" centerz="20" radius="2" startang="45" rotang="270"/>
+  <ANIMATION id="circular1" speed="2" type="circular" centerx="12" centery="12" centerz="14" radius="8" startang="90" rotang="450"/>
+
+    <ANIMATION id="circular2" speed="3" type="circular" centerx="0" centery="0" centerz="0" radius="0.1" startang="0" rotang="61000"/>
+
 
   <ANIMATION id="bezier1" speed="1" type="bezier">
     <controlpoint xx="6.25" yy="1" zz="7" />
@@ -251,7 +254,7 @@
     <controlpoint xx="13.5" yy="1" zz="7" />
   </ANIMATION>
 
-    <ANIMATION id="bezier2" speed="1" type="bezier">
+  <ANIMATION id="bezier2" speed="1" type="bezier">
     <controlpoint xx="13.5" yy="1" zz="18" />
     <controlpoint xx="25" yy="1" zz="26" />
     <controlpoint xx="-6" yy="1" zz="26" />
@@ -259,10 +262,10 @@
   </ANIMATION>
 
   <ANIMATION id="bezier3" speed="1" type="bezier">
-    <controlpoint xx="18" yy="8" zz="2" />
-    <controlpoint xx="10" yy="15" zz="2" />
-    <controlpoint xx="5" yy="15" zz="2" />
     <controlpoint xx="3" yy="8" zz="2" />
+    <controlpoint xx="5" yy="15" zz="2" />
+    <controlpoint xx="10" yy="15" zz="2" />
+    <controlpoint xx="18" yy="8" zz="2" />
   </ANIMATION>
 
   <ANIMATION id="combo1" type="combo">
@@ -272,10 +275,11 @@
     <SPANREF id="bezier2"/>
   </ANIMATION>
 
-    <ANIMATION id="combo2" type="combo">
+  <ANIMATION id="combo2" type="combo">
     <SPANREF id="linear3"/>
-    <SPANREF id="bezier3"/>
+    <SPANREF id="circular1"/>
     <SPANREF id="linear4"/>
+    
   </ANIMATION>
 
 </ANIMATIONS>
@@ -310,82 +314,250 @@
       <NODEREF id="aspirador" />
       <NODEREF id="drone" />
     </DESCENDANTS>
-
   </NODE>
 
-  <NODE id="drone">
-   <MATERIAL id="null" />    
-   <TEXTURE id="null" />   
 
-  <ROTATION axis="x" angle="90" />
+
+  <NODE id="drone">
+   <MATERIAL id="blackMaterial" />    
+   <TEXTURE id="null" />   
 
    <ANIMATIONREFS>
     <ANIMATIONREF id="combo2" />
   </ANIMATIONREFS>
 
   <DESCENDANTS>
-    <NODEREF id="cilindro" />        
+    <NODEREF id="corpoDrone" /> 
+    <NODEREF id="pernaDrone1" />          
+    <NODEREF id="pernaDrone2" />                    
   </DESCENDANTS>
 </NODE>
 
-  <NODE id="aspirador" selectable="1">
-   <MATERIAL id="blackMaterial" />    
-   <TEXTURE id="null" />  
-  
-   <ANIMATIONREFS>
-    <ANIMATIONREF id="combo1" />
+
+<NODE id="corpoDrone">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" />   
+
+ <SCALE sx="0.5" sy="0.3" sz="0.5" />
+
+<DESCENDANTS>
+  <LEAF id="sphere1" type="sphere" args="1 20 20" />           
+</DESCENDANTS>
+</NODE>
+
+
+<NODE id="pernaDrone1">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" />   
+
+<DESCENDANTS>
+  <NODEREF id="pernaDrone"/>                                                                   
+</DESCENDANTS>
+</NODE>
+
+<NODE id="pernaDrone2">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" />   
+
+ <ROTATION axis="y" angle="90" /> 
+
+<DESCENDANTS>
+  <NODEREF id="pernaDrone"/>                                                               
+</DESCENDANTS>
+</NODE>
+
+<NODE id="pernaDrone">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" />  
+
+<DESCENDANTS>
+  <NODEREF id="pernaD" />
+  <NODEREF id="helices" />     
+
+</DESCENDANTS>
+</NODE>
+
+<NODE id="pernaD">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" />  
+
+<TRANSLATION x="0" y="0" z="-1.5" /> 
+ <SCALE sx="0.15" sy="0.1" sz="3" /> 
+
+<DESCENDANTS>
+  <NODEREF id="cilindro" />
+</DESCENDANTS>
+</NODE>
+
+<NODE id="helices">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
+
+<DESCENDANTS>
+  <NODEREF id="helices1" />
+  <NODEREF id="helices2" />
+</DESCENDANTS>
+</NODE>
+
+
+<NODE id="helices1">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
+
+<TRANSLATION x="0" y="0" z="1.2" /> 
+
+<DESCENDANTS>
+  <NODEREF id="helicesAnim" />
+</DESCENDANTS>
+</NODE>
+
+<NODE id="helices2">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
+
+<TRANSLATION x="0" y="0" z="-1.2" /> 
+
+<DESCENDANTS>
+  <NODEREF id="helicesAnim" />
+</DESCENDANTS>
+</NODE>
+
+<NODE id="helicesAnim">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
+
+<ANIMATIONREFS>
+    <ANIMATIONREF id="circular2" />
   </ANIMATIONREFS>
 
-  <DESCENDANTS>
-    <NODEREF id="corpoAspirador" />   
-    <NODEREF id="tampaAspirador" />          
-  </DESCENDANTS>
+<DESCENDANTS>
+  <NODEREF id="helice1" />
+  <NODEREF id="helice2" />
+  <NODEREF id="parafuso" />
+</DESCENDANTS>
+</NODE>
+
+<NODE id="helice1">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
+
+<DESCENDANTS>
+  <NODEREF id="helice" />
+</DESCENDANTS>
+</NODE>
+
+<NODE id="helice2">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
+
+<TRANSLATION x="0" y="0" z="-0.6" />  
+
+<DESCENDANTS>
+  <NODEREF id="helice" />
+</DESCENDANTS>
 </NODE>
 
 
-  <NODE id="corpoAspirador">
-   <MATERIAL id="blackMaterial" />    
-   <TEXTURE id="null" />  
-  
-  <SCALE sx="0.9" sy="0.4" sz="0.9" />
-  <ROTATION axis="x" angle="90" /> 
+<NODE id="helice">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
 
-  <DESCENDANTS>
-    <NODEREF id="cilindro" />          
-  </DESCENDANTS>
+<TRANSLATION x="0" y="0.1" z="0" />  
+<SCALE sx="0.08" sy="0.025" sz="0.6" /> 
+
+<DESCENDANTS>
+  <NODEREF id="cilindro" />
+</DESCENDANTS>
 </NODE>
 
-  <NODE id="tampaAspirador">
-   <MATERIAL id="defaultMaterial" />    
-   <TEXTURE id="vaccum" />  
-  
-  <SCALE sx="0.9" sy="0.1" sz="0.9" />
-  <ROTATION axis="z" angle="-90" /> 
+<NODE id="parafuso">
+ <MATERIAL id="null" />    
+ <TEXTURE id="null" /> 
 
-  <DESCENDANTS>
+<TRANSLATION x="0" y="0.1" z="0" /> 
+ <SCALE sx="0.1" sy="0.08" sz="0.1" /> 
+
+<DESCENDANTS>
+  <LEAF id="sphere1" type="sphere" args="1 20 20" />    
+</DESCENDANTS>
+</NODE>
+
+
+
+
+<NODE id="aspirador" selectable="1">
+ <MATERIAL id="blackMaterial" />    
+ <TEXTURE id="null" />  
+
+ <ANIMATIONREFS>
+  <ANIMATIONREF id="combo1" />
+</ANIMATIONREFS>
+
+<DESCENDANTS>
+  <NODEREF id="corpoAspirador" />   
+  <NODEREF id="tampaAspirador" />          
+</DESCENDANTS>
+</NODE>
+
+
+<NODE id="corpoAspirador">
+ <MATERIAL id="blackMaterial" />    
+ <TEXTURE id="null" />  
+
+ <SCALE sx="0.9" sy="0.4" sz="0.9" />
+ <ROTATION axis="x" angle="90" /> 
+
+ <DESCENDANTS>
+  <NODEREF id="cilindro" />          
+</DESCENDANTS>
+</NODE>
+
+<NODE id="tampaAspirador">
+ <MATERIAL id="defaultMaterial" />    
+ <TEXTURE id="vaccum" />  
+
+ <SCALE sx="0.9" sy="0.1" sz="0.9" />
+ <ROTATION axis="z" angle="-90" /> 
+
+ <DESCENDANTS>
    <LEAF id="sphere1" type="sphere" args="1 20 20" />     
-  </DESCENDANTS>
+ </DESCENDANTS>
 </NODE>
 
-  <!-- The floor -->
-  <NODE id="floor" >      
-    <MATERIAL id="null" />    
-    <TEXTURE id="floor" />            
-
-    <TRANSLATION x="0" y="0" z="-1" />
-    <SCALE sx="21" sy="2" sz="26" />
-    <ROTATION axis="y" angle="-90" />
-    <ROTATION axis="x" angle="-90" />
-
-    <DESCENDANTS>
-     <LEAF  type="rectangle" args="0 1 1 0" />        
-   </DESCENDANTS>
- </NODE>
 
 
 
- <!-- The electric shutters -->
- <NODE id="curtains">      
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- The floor -->
+<NODE id="floor" >      
+  <MATERIAL id="null" />    
+  <TEXTURE id="floor" />            
+
+  <TRANSLATION x="0" y="0" z="-1" />
+  <SCALE sx="21" sy="2" sz="26" />
+  <ROTATION axis="y" angle="-90" />
+  <ROTATION axis="x" angle="-90" />
+
+  <DESCENDANTS>
+   <LEAF  type="rectangle" args="0 1 1 0" />        
+ </DESCENDANTS>
+</NODE>
+
+
+
+<!-- The electric shutters -->
+<NODE id="curtains">      
   <MATERIAL id="blackMaterial" />    
   <TEXTURE id="null" />     
   
