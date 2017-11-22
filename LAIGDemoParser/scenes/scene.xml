@@ -328,7 +328,7 @@
   </DESCENDANTS>
 </NODE>
 
-  <NODE id="aspirador">
+  <NODE id="aspirador" selectable="1">
    <MATERIAL id="blackMaterial" />    
    <TEXTURE id="null" />  
   
@@ -368,7 +368,7 @@
 </NODE>
 
   <!-- The floor -->
-  <NODE id="floor">      
+  <NODE id="floor" >      
     <MATERIAL id="null" />    
     <TEXTURE id="floor" />            
 
@@ -500,7 +500,7 @@
 </NODE>
 
 
-<NODE id="lamina1" selectable="1">      
+<NODE id="lamina1" >      
   <MATERIAL id="null" />    
   <TEXTURE id="null" />     
   
