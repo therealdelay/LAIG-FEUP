@@ -68,9 +68,10 @@ LinearAnimation.prototype.update = function(deltaTime) {
 		console.log(this.angleXZ[this.index]);
 	}
 	else{
-		this.deltaX = 0;
-		this.deltaY = 0;
-		this.deltaZ = 0;
+		this.deltaX = this.controlPoints[this.index][0];
+		this.deltaY = this.controlPoints[this.index][1];
+		this.deltaZ = this.controlPoints[this.index][2];
+		this.previousPoint = this.controlPoints[this.index];
 		this.finish = true;
 		mat4.identity(this.transformationMatrix);
 	}
