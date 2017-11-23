@@ -222,24 +222,24 @@
 <ANIMATIONS>
 
   <ANIMATION id="linear1" speed="1" type="linear">
-    <controlpoint xx="6.25" yy="1" zz="18" />
-    <controlpoint xx="6.25" yy="1" zz="7" />
+    <controlpoint xx="6.25" yy="0.3" zz="18" />
+    <controlpoint xx="6.25" yy="0.3" zz="7" />
   </ANIMATION>
 
   <ANIMATION id="linear2" speed="1" type="linear">
-    <controlpoint xx="13.5" yy="1" zz="7" />
-    <controlpoint xx="13.5" yy="1" zz="18" />
+    <controlpoint xx="13.5" yy="0.3" zz="7" />
+    <controlpoint xx="13.5" yy="0.3" zz="18" />
   </ANIMATION>
 
 
   <ANIMATION id="linear3" speed="2" type="linear">
-    <controlpoint xx="12" yy="1" zz="6" />
+    <controlpoint xx="12" yy="0.3" zz="6" />
     <controlpoint xx="12" yy="12" zz="6" />
   </ANIMATION>
 
   <ANIMATION id="linear4" speed="2" type="linear">
     <controlpoint xx="12" yy="12" zz="6" />
-    <controlpoint xx="12" yy="1" zz="6" />
+    <controlpoint xx="12" yy="0.3" zz="6" />
   </ANIMATION>
 
   <ANIMATION id="circular1" speed="2" type="circular" centerx="12" centery="12" centerz="14" radius="8" startang="90" rotang="450"/>
@@ -248,17 +248,17 @@
 
 
   <ANIMATION id="bezier1" speed="1" type="bezier">
-    <controlpoint xx="6.25" yy="1" zz="7" />
-    <controlpoint xx="-8" yy="1" zz="0" />
-    <controlpoint xx="22" yy="1" zz="0" />
-    <controlpoint xx="13.5" yy="1" zz="7" />
+    <controlpoint xx="6.25" yy="0.3" zz="7" />
+    <controlpoint xx="-8" yy="0.3" zz="0" />
+    <controlpoint xx="22" yy="0.3" zz="0" />
+    <controlpoint xx="13.5" yy="0.3" zz="7" />
   </ANIMATION>
 
   <ANIMATION id="bezier2" speed="1" type="bezier">
-    <controlpoint xx="13.5" yy="1" zz="18" />
-    <controlpoint xx="25" yy="1" zz="26" />
-    <controlpoint xx="-6" yy="1" zz="26" />
-    <controlpoint xx="6.25" yy="1" zz="18" />
+    <controlpoint xx="13.5" yy="0.3" zz="18" />
+    <controlpoint xx="25" yy="0.3" zz="26" />
+    <controlpoint xx="-6" yy="0.3" zz="26" />
+    <controlpoint xx="6.25" yy="0.3" zz="18" />
   </ANIMATION>
 
   <ANIMATION id="bezier3" speed="1" type="bezier">

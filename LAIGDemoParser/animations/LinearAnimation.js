@@ -66,16 +66,15 @@ LinearAnimation.prototype.update = function(deltaTime) {
 		mat4.rotate(this.transformationMatrix, this.transformationMatrix,this.angleXZ[this.index], [0, 1, 0]);
 	}
 	else{
-		this.deltaX = this.controlPoints[this.index][0];
-		this.deltaY = this.controlPoints[this.index][1];
-		this.deltaZ = this.controlPoints[this.index][2];
 		this.previousPoint = this.controlPoints[this.index];
 		this.finish = true;
 		mat4.identity(this.transformationMatrix);
+		mat4.translate(this.transformationMatrix, this.transformationMatrix,this.previousPoint);
 	}	
 };
 
 LinearAnimation.prototype.getMatrix = function(deltaTime){
+	console.log(this.finish);
 	if(!this.finish)
 		this.update(deltaTime);
 	//console.log(this.transformationMatrix);
