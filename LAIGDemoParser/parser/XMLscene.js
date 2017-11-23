@@ -8,9 +8,14 @@ function XMLscene(interface) {
     CGFscene.call(this);
 
     this.interface = interface;
-	this.currentShader = 0;
+	this.currentNode = null;
+	this.nodesToShade = [];
 	this.scaleFactor=50.0;
+	this.tempScaleFactor=50.0;
 	this.selectable=false;
+	this.sinTime = -Math.PI/2;
+	this.R = 1;
+	this.tempR = 1;
 
     this.lightValues = {};
 };
@@ -34,8 +39,8 @@ XMLscene.prototype.init = function(application) {
     this.gl.depthFunc(this.gl.LEQUAL);
     this.setUpdatePeriod(1000/60);
 
-
-	this.testShaders=[
+	this.shader = new CGFshader(this.gl, "shaders/uScale.vert", "shaders/uScale.frag");
+	/*this.testShaders=[
 		new CGFshader(this.gl, "shaders/flat.vert", "shaders/flat.frag"),
 		new CGFshader(this.gl, "shaders/uScale.vert", "shaders/uScale.frag"),
 		new CGFshader(this.gl, "shaders/varying.vert", "shaders/varying.frag"),
@@ -44,10 +49,12 @@ XMLscene.prototype.init = function(application) {
 		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/texture3.frag"),
 		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/sepia.frag"),
 		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/convolution.frag")
-	];
+	];*/
+	this.shader.setUniformsValues({R: this.tempR});
+	/*this.testShaders[1].setUniformsValues({R: this.tempR});
 	this.testShaders[4].setUniformsValues({uSampler2: 1});
 	this.testShaders[5].setUniformsValues({uSampler2: 1});
-
+*/
 	this.updateScaleFactor();
 
 	this.rec = new MyRectangle(this,0,1,0,1);    
@@ -56,9 +63,11 @@ XMLscene.prototype.init = function(application) {
 };
 
 XMLscene.prototype.updateScaleFactor = function (v) {
-	this.testShaders[1].setUniformsValues({normScale: this.scaleFactor});
-	this.testShaders[2].setUniformsValues({normScale: this.scaleFactor});
-	this.testShaders[5].setUniformsValues({normScale: this.scaleFactor});
+	this.shader.setUniformsValues({normScale: this.tempScaleFactor});
+	/*this.testShaders[1].setUniformsValues({normScale: this.tempScaleFactor});
+	this.testShaders[1].setUniformsValues({R: this.tempR});
+	this.testShaders[2].setUniformsValues({normScale: this.tempScaleFactor});
+	this.testShaders[5].setUniformsValues({normScale: this.tempScaleFactor});*/
 };
 /**
  * Initializes the scene lights with the values read from the LSX file.
@@ -121,6 +130,7 @@ XMLscene.prototype.onGraphLoaded = function()
 
     // Adds lights group.
     this.interface.addLightsGroup(this.graph.lights);
+    this.interface.addShadersGroup();
 };
 
 /**
@@ -190,4 +200,15 @@ XMLscene.prototype.update = function(currTime){
 	}
 
 	//mudar o scaleFactor com sin
+	if(this.sinTime >= 3*Math.PI/2)
+		this.sinTime = -Math.PI/2;
+	else{
+		this.sinTime += Math.PI/40;
+	}
+	if(this.scaleFactor * Math.sin(this.sinTime) != 0){
+		this.tempScaleFactor = this.scaleFactor * Math.sin(this.sinTime);	
+	}
+	this.tempR = this.R * Math.abs(Math.sin(this.sinTime));
+	this.updateScaleFactor();
+	console.log(this.currentNode);
 }

@@ -318,7 +318,7 @@
 
 
 
-  <NODE id="drone">
+  <NODE id="drone" selectable="1">
    <MATERIAL id="blackMaterial" />    
    <TEXTURE id="null" />   
 
@@ -1190,7 +1190,7 @@
 
 
 <!-- The floor lamp  -->
-<NODE id="floorLamp">       
+<NODE id="floorLamp" selectable="1">       
   <MATERIAL id="lightMaterial" />
   <TEXTURE id="metal" />                  
 

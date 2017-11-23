@@ -1323,6 +1323,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       if(this.reader.hasAttribute(children[i], 'selectable')){
         var selectable = this.reader.getString(children[i], 'selectable');
         this.nodes[nodeID].selectable = selectable;  
+        this.scene.nodesToShade.push(nodeID);
       }
 
       // Gathers child nodes.
@@ -1629,8 +1630,8 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
 
 
 //selectable shaders
-if(node.selectable && this.scene.selectable)
-  this.scene.setActiveShader(this.scene.testShaders[this.scene.currentShader]);
+if(node.selectable && this.scene.selectable && this.scene.currentNode == node.nodeID)
+  this.scene.setActiveShader(this.scene.shader);
 
 //TRANFORMATION MATRIX APPLICATION
 this.scene.pushMatrix();

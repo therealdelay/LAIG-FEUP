@@ -30,7 +30,6 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 		this.vy.push(this.getVY(this.controlPoints[i-1],this.controlPoints[i],dist));
 		this.vz.push(this.getVZ(this.controlPoints[i-1],this.controlPoints[i],dist));
 	}
-	console.log(this.distance);
 	this.transformationMatrix = mat4.create();
 
 	this.init();
@@ -65,7 +64,6 @@ LinearAnimation.prototype.update = function(deltaTime) {
 		mat4.identity(this.transformationMatrix);
 		mat4.translate(this.transformationMatrix, this.transformationMatrix,[this.deltaX, this.deltaY, this.deltaZ]);
 		mat4.rotate(this.transformationMatrix, this.transformationMatrix,this.angleXZ[this.index], [0, 1, 0]);
-		console.log(this.angleXZ[this.index]);
 	}
 	else{
 		this.deltaX = this.controlPoints[this.index][0];
@@ -74,14 +72,13 @@ LinearAnimation.prototype.update = function(deltaTime) {
 		this.previousPoint = this.controlPoints[this.index];
 		this.finish = true;
 		mat4.identity(this.transformationMatrix);
-	}
-
-	console.log("CONTROL POINTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+this.controlPoints);
-	
+	}	
 };
 
-LinearAnimation.prototype.getMatrix = function(currTime){
-	this.update(currTime);
+LinearAnimation.prototype.getMatrix = function(deltaTime){
+	if(!this.finish)
+		this.update(deltaTime);
+	//console.log(this.transformationMatrix);
 	return this.transformationMatrix;
 };
 

@@ -24,23 +24,7 @@ MyInterface.prototype.init = function(application) {
     
     this.gui = new dat.GUI();
 
-    this.gui.add(this.scene, 'currentShader', {
-			'Flat Shading': 0, 
-			'Passing a scale as uniform': 1, 
-			'Passing a varying parameter from VS -> FS': 2, 
-			'Simple texturing': 3, 
-			'Multiple textures in the FS': 4, 
-			'Multiple textures in VS and FS': 5,
-			'Sepia': 6,
-			'Convolution': 7
-	}).name('Shader examples');
-
-	obj=this;
-	this.gui.add(this.scene, 'scaleFactor',-50,50).onChange(function(v){
-		obj.scene.updateScaleFactor(v);
-	});
-
-	this.gui.add(this.scene, 'selectable');
+	
     
     return true;
 };
@@ -49,7 +33,7 @@ MyInterface.prototype.init = function(application) {
  * Adds a folder containing the IDs of the lights passed as parameter.
  */
 MyInterface.prototype.addLightsGroup = function(lights) {
-
+	
     var group = this.gui.addFolder("Lights");
     group.open();
 
@@ -62,4 +46,16 @@ MyInterface.prototype.addLightsGroup = function(lights) {
             group.add(this.scene.lightValues, key);
         }
     }
+};
+
+MyInterface.prototype.addShadersGroup = function(){
+	var group = this.gui.addFolder("Shaders");
+    group.open();
+	this.gui.add(this.scene, 'currentNode', this.scene.nodesToShade);
+	obj=this;
+	this.gui.add(this.scene, 'scaleFactor',-50,50).onChange(function(v){
+		obj.scene.updateScaleFactor(v);
+	});
+
+	this.gui.add(this.scene, 'selectable');	
 };
