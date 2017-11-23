@@ -45,19 +45,19 @@ CircularAnimation.prototype.constructor = CircularAnimation;
 CircularAnimation.prototype.update = function(deltaTime) {
 	if(this.currAngle < this.rotAngle) {
 
-	// delta time since last update in seconds
-	this.deltaTime = deltaTime/1000; //to seconds
-	// current angle in radians
-	
-	this.currAngle += this.vAng*this.deltaTime;
+		// delta time since last update in seconds
+		this.deltaTime = deltaTime/1000; //to seconds
+		// current angle in radians
+		
+		this.currAngle += this.vAng*this.deltaTime;
 
-	mat4.identity(this.translationMatrix);
-	mat4.translate(this.translationMatrix, this.translationMatrix,this.centre);		//T(cx,cy)
-	mat4.rotate(this.translationMatrix, this.translationMatrix,this.currAngle, [0, 1, 0]);//R(DELTAALFA)
-	mat4.translate(this.translationMatrix, this.translationMatrix,[this.radius, 0, 0]);		//T(R,0)
-	//mat4.rotate(this.translationMatrix, this.translationMatrix,90*DEGREE_TO_RAD, [1, 0, 0]); //R(90)
-}
-else this.finish = true;
+		mat4.identity(this.translationMatrix);
+		mat4.translate(this.translationMatrix, this.translationMatrix,this.centre);		//T(cx,cy)
+		mat4.rotate(this.translationMatrix, this.translationMatrix,this.currAngle, [0, 1, 0]);//R(DELTAALFA)
+		mat4.translate(this.translationMatrix, this.translationMatrix,[this.radius, 0, 0]);		//T(R,0)
+		//mat4.rotate(this.translationMatrix, this.translationMatrix,90*DEGREE_TO_RAD, [1, 0, 0]); //R(90)
+	}
+	else this.finish = true;
 };
 
 /**
