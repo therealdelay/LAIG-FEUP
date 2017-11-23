@@ -1,5 +1,13 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 
+/**
+ * LinearAnimation
+ * @param scene CGFscene
+ * @param id id of the animation
+ * @param speed speed of the animation
+ * @param controlPoints control points to guide the animation
+ * @constructor
+ */
 function LinearAnimation(scene, id, speed, controlPoints) {
 	Animation.call(this);
 
@@ -38,6 +46,10 @@ function LinearAnimation(scene, id, speed, controlPoints) {
 LinearAnimation.prototype = Object.create(Animation.prototype);
 LinearAnimation.prototype.constructor = LinearAnimation;
 
+/**
+ * Updates the animation's transformation matrix according to the time that passed since the last update
+ * @param deltaTime time that passed since the last update
+ */
 LinearAnimation.prototype.update = function(deltaTime) {
 	this.deltaTime = deltaTime/1000;
 	if(this.index < this.distance.length){
@@ -73,34 +85,50 @@ LinearAnimation.prototype.update = function(deltaTime) {
 	}	
 };
 
+/**
+ * Returns the transformation matrix updated
+ */
 LinearAnimation.prototype.getMatrix = function(deltaTime){
-	console.log(this.finish);
 	if(!this.finish)
 		this.update(deltaTime);
-	//console.log(this.transformationMatrix);
 	return this.transformationMatrix;
 };
 
+/**
+ * Returns the distance between 2 points
+ */
 LinearAnimation.prototype.getDistance = function(p1, p2){
 	let np1 = vec3.fromValues(p1[0],p1[1],p1[2]);
 	let np2 = vec3.fromValues(p2[0],p2[1],p2[2]);
 	return vec3.distance(np1, np2);
 };
 
+/**
+ * Returns the angle between 2 vectors
+ */
 LinearAnimation.prototype.getAngleXZ = function(p1, p2){
 	return Math.atan2(p2[0] - p1[0], p2[2] - p1[2]);
 };
 
+/**
+ * Returns the speed in X
+ */
 LinearAnimation.prototype.getVX = function(p1, p2, dist){
 	var cosA = (p2[0]-p1[0]) / dist;
 	return this.speed * cosA;
 }
 
+/**
+ * Returns the speed in Y
+ */
 LinearAnimation.prototype.getVY = function(p1, p2, dist){
 	var senA = (p2[1]-p1[1]) / dist;
 	return this.speed * senA;
 }
 
+/**
+ * Returns the speed in Z
+ */
 LinearAnimation.prototype.getVZ = function(p1, p2, dist){
 	var senA = (p2[2]-p1[2]) / dist;
 	return this.speed * senA;

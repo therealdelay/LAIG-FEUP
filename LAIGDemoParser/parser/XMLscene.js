@@ -39,45 +39,27 @@ XMLscene.prototype.init = function(application) {
     this.gl.depthFunc(this.gl.LEQUAL);
     this.setUpdatePeriod(1000/60);
 
-	this.shader = new CGFshader(this.gl, "shaders/uScale.vert", "shaders/uScale.frag");
-	/*this.testShaders=[
-		new CGFshader(this.gl, "shaders/flat.vert", "shaders/flat.frag"),
-		new CGFshader(this.gl, "shaders/uScale.vert", "shaders/uScale.frag"),
-		new CGFshader(this.gl, "shaders/varying.vert", "shaders/varying.frag"),
-		new CGFshader(this.gl, "shaders/texture1.vert", "shaders/texture1.frag"),
-		new CGFshader(this.gl, "shaders/texture2.vert", "shaders/texture2.frag"),
-		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/texture3.frag"),
-		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/sepia.frag"),
-		new CGFshader(this.gl, "shaders/texture3.vert", "shaders/convolution.frag")
-	];*/
+	this.shader = new CGFshader(this.gl, "shaders/scaler.vert", "shaders/scaler.frag");
 	this.shader.setUniformsValues({R: this.tempR});
-	/*this.testShaders[1].setUniformsValues({R: this.tempR});
-	this.testShaders[4].setUniformsValues({uSampler2: 1});
-	this.testShaders[5].setUniformsValues({uSampler2: 1});
-*/
 	this.updateScaleFactor();
 
-	this.rec = new MyRectangle(this,0,1,0,1);    
     this.axis = new CGFaxis(this);
-    this.bule = new Teapot(this);
 };
 
+/**
+ * Updates the scale factor of the shader
+ */
 XMLscene.prototype.updateScaleFactor = function (v) {
 	this.shader.setUniformsValues({normScale: this.tempScaleFactor});
-	/*this.testShaders[1].setUniformsValues({normScale: this.tempScaleFactor});
-	this.testShaders[1].setUniformsValues({R: this.tempR});
-	this.testShaders[2].setUniformsValues({normScale: this.tempScaleFactor});
-	this.testShaders[5].setUniformsValues({normScale: this.tempScaleFactor});*/
 };
+
 /**
  * Initializes the scene lights with the values read from the LSX file.
  */
 XMLscene.prototype.initLights = function() {
     var i = 0;
     // Lights index.
-
-  
-    
+   
     // Reads the lights from the scene graph.
     for (var key in this.graph.lights) {
         if (i >= 8)
@@ -149,9 +131,6 @@ XMLscene.prototype.display = function() {
 
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
-	
-	//this.rec.display();
-
     this.pushMatrix();
     
     if (this.graph.loadedOk) 
@@ -199,7 +178,6 @@ XMLscene.prototype.update = function(currTime){
 		this.graph.nodes[index].update(currTime);
 	}
 
-	//mudar o scaleFactor com sin
 	if(this.sinTime >= 3*Math.PI/2)
 		this.sinTime = -Math.PI/2;
 	else{
@@ -210,5 +188,4 @@ XMLscene.prototype.update = function(currTime){
 	}
 	this.tempR = this.R * Math.abs(Math.sin(this.sinTime));
 	this.updateScaleFactor();
-	console.log(this.currentNode);
 }

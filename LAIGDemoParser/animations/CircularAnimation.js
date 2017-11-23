@@ -1,3 +1,14 @@
+/**
+ * CircularAnimation
+ * @param scene CGFscene
+ * @param id id of the animation
+ * @param speed speed of the animation
+ * @param centre centre of the rotation
+ * @param radius radius of the rotation
+ * @param initAngle initial angle of the rotation
+ * @param rotAngle final angle of the rotation
+ * @constructor
+ */
 function CircularAnimation(scene, id, speed, centre, radius, initAngle, rotAngle) {
 	Animation.call(this);
 
@@ -27,6 +38,10 @@ function CircularAnimation(scene, id, speed, centre, radius, initAngle, rotAngle
 CircularAnimation.prototype = Object.create(Animation.prototype);
 CircularAnimation.prototype.constructor = CircularAnimation;
 
+/**
+ * Updates the animation's transformation matrix according to the time that passed since the last update
+ * @param deltaTime time that passed since the last update
+ */
 CircularAnimation.prototype.update = function(deltaTime) {
 	if(this.currAngle < this.rotAngle) {
 
@@ -45,6 +60,9 @@ CircularAnimation.prototype.update = function(deltaTime) {
 else this.finish = true;
 };
 
+/**
+ * Returns the transformation matrix updated
+ */
 CircularAnimation.prototype.getMatrix = function(currTime){
 	this.update(currTime);
 	return this.translationMatrix;

@@ -1,3 +1,11 @@
+/**
+ * BezierAnimation
+ * @param scene CGFscene
+ * @param id id of the animation
+ * @param speed speed of the animation
+ * @param controlPoints control points to guide the animation
+ * @constructor
+ */
 function BezierAnimation(scene, id, speed, controlPoints) {
 	Animation.call(this);
 
@@ -23,6 +31,10 @@ function BezierAnimation(scene, id, speed, controlPoints) {
 BezierAnimation.prototype = Object.create(Animation.prototype);
 BezierAnimation.prototype.constructor = BezierAnimation;
 
+/**
+ * Updates the animation's transformation matrix according to the time that passed since the last update
+ * @param deltaTime time that passed since the last update
+ */
 BezierAnimation.prototype.update = function(deltaTime) {
 	this.deltaTime = deltaTime/1000;
 	if(this.time < 1){
@@ -37,6 +49,9 @@ BezierAnimation.prototype.update = function(deltaTime) {
 	}
 };
 
+/**
+ * Returns the transformation matrix updated
+ */
 BezierAnimation.prototype.getMatrix = function(deltaTime){
 	if(this.time < 1){
 		this.update(deltaTime);
@@ -45,6 +60,10 @@ BezierAnimation.prototype.getMatrix = function(deltaTime){
 	return this.transformationMatrix;
 };
 
+/**
+ * Returns the current point of the bezier curve
+ * @param time
+ */
 BezierAnimation.prototype.qfunction = function(time){
 	let qx = Math.pow(1 - time, 3) * this.p1[0] + 3 * time * Math.pow(1 - time, 2) * this.p2[0] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[0] + Math.pow(time, 3) * this.p4[0];
 	let qy = Math.pow(1 - time, 3) * this.p1[1] + 3 * time * Math.pow(1 - time, 2) * this.p2[1] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[1] + Math.pow(time, 3) * this.p4[1];
