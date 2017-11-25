@@ -1640,11 +1640,7 @@ this.scene.pushMatrix();
 //ANIMATIONS
 var currAnimation = node.currAnimation;
 if(node.animations.length > 0 && currAnimation != null){
-
   var animationID = node.animations[currAnimation];
-
-  //var animationMatrix = this.getAnimation(animationID).getMatrix(Date.now());
-  //console.log("animationMatrix: " + animationMatrix);
   this.scene.multMatrix(node.animationMatrix);
 }
 

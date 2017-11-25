@@ -20,7 +20,7 @@ function MyGraphNode(graph, nodeID) {
     this.textureID = null ;
 
     //shaders
-    this.selectable = 0;
+    this.selectable = false;
 
     // The animation ID.
     this.animations = [] ;
