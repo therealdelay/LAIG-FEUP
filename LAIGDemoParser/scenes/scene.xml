@@ -295,7 +295,7 @@
   <ROOT id="root" />     
 
   <!-- The root node -->
-  <NODE id="root">       
+  <NODE id="root" selectable="true">       
     <MATERIAL id="defaultMaterial" />         
     <TEXTURE id="null" />  
 

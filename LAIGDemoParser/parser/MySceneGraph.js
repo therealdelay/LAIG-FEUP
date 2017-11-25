@@ -1656,7 +1656,7 @@ for (var i = 0; i < node.children.length; i++)
 this.scene.popMatrix();
 
 
-if(node.selectable && this.scene.selectable)
+if(node.selectable && this.scene.selectable && this.scene.currentNode == node.nodeID)
   this.scene.setActiveShader(this.scene.defaultShader);
 
 this.tex_stack.pop();

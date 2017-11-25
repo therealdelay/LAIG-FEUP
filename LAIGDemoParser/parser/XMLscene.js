@@ -181,7 +181,7 @@ XMLscene.prototype.update = function(currTime){
 
     this.time = currTime/1000;
 
-    this.tempR = 0.5*(Math.sin(4*this.time)+1);
+    this.tempR = 0.5*(Math.sin(4*this.time));
     this.tempScaleFactor = this.tempR;
     this.updateScaleFactor();
 

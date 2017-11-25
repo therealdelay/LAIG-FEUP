@@ -52,10 +52,6 @@ MyInterface.prototype.addShadersGroup = function(){
 	var group = this.gui.addFolder("Shaders");
     group.open();
 	this.gui.add(this.scene, 'currentNode', this.scene.nodesToShade);
-	obj=this;
-	this.gui.add(this.scene, 'scaleFactor',-50,50).onChange(function(v){
-		obj.scene.updateScaleFactor(v);
-	});
 
 	this.gui.add(this.scene, 'selectable');	
 };
