@@ -49,8 +49,9 @@ XMLscene.prototype.init = function(application) {
 /**
  * Updates the scale factor of the shader
  */
-XMLscene.prototype.updateScaleFactor = function (v) {
+XMLscene.prototype.updateScaleFactor = function () {
 	this.shader.setUniformsValues({normScale: this.tempScaleFactor});
+    this.shader.setUniformsValues({R: this.tempR});
 };
 
 /**
@@ -178,14 +179,10 @@ XMLscene.prototype.update = function(currTime){
 		this.graph.nodes[index].update(currTime);
 	}
 
-	if(this.sinTime >= 3*Math.PI/2)
-		this.sinTime = -Math.PI/2;
-	else{
-		this.sinTime += Math.PI/40;
-	}
-	if(this.scaleFactor * Math.sin(this.sinTime) != 0){
-		this.tempScaleFactor = this.scaleFactor * Math.sin(this.sinTime);	
-	}
-	this.tempR = this.R * Math.abs(Math.sin(this.sinTime));
-	this.updateScaleFactor();
+    this.time = currTime/1000;
+
+    this.tempR = 0.5*(Math.sin(4*this.time)+1);
+    this.tempScaleFactor = this.tempR;
+    this.updateScaleFactor();
+
 }

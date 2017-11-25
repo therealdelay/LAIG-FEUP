@@ -318,7 +318,7 @@
 
 
 
-  <NODE id="drone" selectable="1">
+  <NODE id="drone" selectable="true">
    <MATERIAL id="blackMaterial" />    
    <TEXTURE id="null" />   
 
@@ -327,14 +327,15 @@
   </ANIMATIONREFS>
 
   <DESCENDANTS>
-    <NODEREF id="corpoDrone" /> 
+    
     <NODEREF id="pernaDrone1" />          
-    <NODEREF id="pernaDrone2" />                    
+    <NODEREF id="pernaDrone2" />   
+    <NODEREF id="corpoDrone" />                  
   </DESCENDANTS>
 </NODE>
 
 
-<NODE id="corpoDrone">
+<NODE id="corpoDrone" selectable="true">
  <MATERIAL id="null" />    
  <TEXTURE id="null" />   
 
@@ -485,7 +486,7 @@
 
 
 
-<NODE id="aspirador" selectable="1">
+<NODE id="aspirador" selectable="true">
  <MATERIAL id="blackMaterial" />    
  <TEXTURE id="null" />  
 
@@ -1190,7 +1191,7 @@
 
 
 <!-- The floor lamp  -->
-<NODE id="floorLamp" selectable="1">       
+<NODE id="floorLamp" selectable="true">       
   <MATERIAL id="lightMaterial" />
   <TEXTURE id="metal" />                  
 
@@ -2194,7 +2195,7 @@
 
 
 <!-- A decorative candle -->
-<NODE id="candle">       
+<NODE id="candle" selectable="true">       
 
   <MATERIAL id="piramideMaterial" />      
   <TEXTURE id="wax" />            

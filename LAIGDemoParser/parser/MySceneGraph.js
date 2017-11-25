@@ -1322,7 +1322,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       //SHADERS
       if(this.reader.hasAttribute(children[i], 'selectable')){
         var selectable = this.reader.getString(children[i], 'selectable');
-        this.nodes[nodeID].selectable = selectable;  
+        this.nodes[nodeID].selectable = true;  
         this.scene.nodesToShade.push(nodeID);
       }
 
