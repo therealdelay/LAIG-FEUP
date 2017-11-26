@@ -111,10 +111,13 @@ XMLscene.prototype.onGraphLoaded = function()
     
     this.initLights();
 
-    // Adds lights group.
+    // Adds lights group
     this.interface.addLightsGroup(this.graph.lights);
+
+    // Adds shaders group
     this.interface.addShadersGroup();
 };
+
 
 /**
  * Displays the scene.
@@ -158,7 +161,7 @@ XMLscene.prototype.display = function() {
             }
         }
 
-// Displays the scene.
+        // Displays the scene.
 		this.graph.displayScene();
     }
 	else
@@ -174,15 +177,20 @@ XMLscene.prototype.display = function() {
     
 };
 
+
+/**
+ * Update the scale factor and Red component from the given current time.
+ * @param currTime
+ */
 XMLscene.prototype.update = function(currTime){
 	for(var index in this.graph.nodes){
 		this.graph.nodes[index].update(currTime);
 	}
 
-    this.time = currTime/1000;
+    //to seconds
+    this.time = currTime/1000; 
 
     this.tempR = 0.5*(Math.sin(4*this.time));
     this.tempScaleFactor = this.tempR;
     this.updateScaleFactor();
-
 }

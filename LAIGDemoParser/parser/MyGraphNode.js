@@ -19,18 +19,20 @@ function MyGraphNode(graph, nodeID) {
     // The texture ID.
     this.textureID = null ;
 
-    //shaders
+    // Selectable
     this.selectable = false;
 
-    // The animation ID.
-    this.animations = [] ;
-
-    //a instanciar
+    // The animation of node
     this.currAnimation = null;
 
-    this.startTime=0;
+    // Time of animation
+    this.startTime = 0;
+
+    // Transformations matrix
     this.transformMatrix = mat4.create();
     mat4.identity(this.transformMatrix);
+
+    // Animation Matrix
     this.animationMatrix = mat4.create();
     mat4.identity(this.animationMatrix);
 }
@@ -49,16 +51,21 @@ MyGraphNode.prototype.addLeaf = function(leaf) {
     this.leaves.push(leaf);
 }
 
-
+/**
+ * Get the matrix for animation for each node
+ * @param  currTime 
+ */
 MyGraphNode.prototype.update = function(currTime){
+    // First time
     if(this.startTime == 0){
         this.startTime = currTime;
         return;
     }
+
     let deltaTime = currTime - this.startTime;
-    if(this.animations.length > 0){
+    if(this.currAnimation != null){
         this.animationMatrix = this.graph.getAnimation(this.currAnimation).getMatrix(deltaTime);
     }
 
-    this.startTime=currTime;
+    this.startTime = currTime;
 }

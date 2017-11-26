@@ -244,7 +244,7 @@
 
   <ANIMATION id="circular1" speed="2" type="circular" centerx="12" centery="12" centerz="14" radius="8" startang="90" rotang="450"/>
 
-  <ANIMATION id="circular2" speed="3" type="circular" centerx="0" centery="0" centerz="0" radius="0.1" startang="0" rotang="61000"/>
+  <ANIMATION id="circular2" speed="3" type="circular" centerx="0" centery="0" centerz="0" radius="0.1" startang="0" rotang="65000"/>
 
 
   <ANIMATION id="bezier1" speed="1" type="bezier">
@@ -259,13 +259,6 @@
     <controlpoint xx="25" yy="0.3" zz="26" />
     <controlpoint xx="-6" yy="0.3" zz="26" />
     <controlpoint xx="6.25" yy="0.3" zz="18" />
-  </ANIMATION>
-
-  <ANIMATION id="bezier3" speed="1" type="bezier">
-    <controlpoint xx="3" yy="8" zz="2" />
-    <controlpoint xx="5" yy="15" zz="2" />
-    <controlpoint xx="10" yy="15" zz="2" />
-    <controlpoint xx="18" yy="8" zz="2" />
   </ANIMATION>
 
   <ANIMATION id="combo1" type="combo">
@@ -311,13 +304,13 @@
       <NODEREF id="pillows" />
       <NODEREF id="curtains" />
       <NODEREF id="candle" />
-      <NODEREF id="aspirador" />
+      <NODEREF id="roomba" />
       <NODEREF id="drone" />
     </DESCENDANTS>
   </NODE>
 
 
-
+<!-- The Drone -->
   <NODE id="drone" selectable="true">
    <MATERIAL id="blackMaterial" />    
    <TEXTURE id="null" />   
@@ -328,14 +321,14 @@
 
   <DESCENDANTS>
     
-    <NODEREF id="pernaDrone1" />          
-    <NODEREF id="pernaDrone2" />   
-    <NODEREF id="corpoDrone" />                  
+    <NODEREF id="droneLeg1" />          
+    <NODEREF id="droneLeg2" />   
+    <NODEREF id="droneBody" />                  
   </DESCENDANTS>
 </NODE>
 
 
-<NODE id="corpoDrone" selectable="true">
+<NODE id="droneBody" selectable="true">
  <MATERIAL id="null" />    
  <TEXTURE id="null" />   
 
@@ -347,38 +340,38 @@
 </NODE>
 
 
-<NODE id="pernaDrone1">
+<NODE id="droneLeg1">
  <MATERIAL id="null" />    
  <TEXTURE id="null" />   
 
 <DESCENDANTS>
-  <NODEREF id="pernaDrone"/>                                                                   
+  <NODEREF id="droneLeg"/>                                                                   
 </DESCENDANTS>
 </NODE>
 
-<NODE id="pernaDrone2">
+<NODE id="droneLeg2">
  <MATERIAL id="null" />    
  <TEXTURE id="null" />   
 
  <ROTATION axis="y" angle="90" /> 
 
 <DESCENDANTS>
-  <NODEREF id="pernaDrone"/>                                                               
+  <NODEREF id="droneLeg"/>                                                               
 </DESCENDANTS>
 </NODE>
 
-<NODE id="pernaDrone">
+<NODE id="droneLeg">
  <MATERIAL id="null" />    
  <TEXTURE id="null" />  
 
 <DESCENDANTS>
-  <NODEREF id="pernaD" />
+  <NODEREF id="legD" />
   <NODEREF id="helices" />     
 
 </DESCENDANTS>
 </NODE>
 
-<NODE id="pernaD">
+<NODE id="legD">
  <MATERIAL id="null" />    
  <TEXTURE id="null" />  
 
@@ -434,7 +427,7 @@
 <DESCENDANTS>
   <NODEREF id="helice1" />
   <NODEREF id="helice2" />
-  <NODEREF id="parafuso" />
+  <NODEREF id="screw" />
 </DESCENDANTS>
 </NODE>
 
@@ -471,7 +464,7 @@
 </DESCENDANTS>
 </NODE>
 
-<NODE id="parafuso">
+<NODE id="screw">
  <MATERIAL id="null" />    
  <TEXTURE id="null" /> 
 
@@ -485,8 +478,8 @@
 
 
 
-
-<NODE id="aspirador" selectable="true">
+<!-- The vaccum clean -->
+<NODE id="roomba" selectable="true">
  <MATERIAL id="blackMaterial" />    
  <TEXTURE id="null" />  
 
@@ -495,13 +488,13 @@
 </ANIMATIONREFS>
 
 <DESCENDANTS>
-  <NODEREF id="corpoAspirador" />   
-  <NODEREF id="tampaAspirador" />          
+  <NODEREF id="roombaBody" />   
+  <NODEREF id="roombaCover" />          
 </DESCENDANTS>
 </NODE>
 
 
-<NODE id="corpoAspirador">
+<NODE id="roombaBody">
  <MATERIAL id="blackMaterial" />    
  <TEXTURE id="null" />  
 
@@ -513,7 +506,7 @@
 </DESCENDANTS>
 </NODE>
 
-<NODE id="tampaAspirador">
+<NODE id="roombaCover">
  <MATERIAL id="defaultMaterial" />    
  <TEXTURE id="vaccum" />  
 
@@ -524,20 +517,6 @@
    <LEAF id="sphere1" type="sphere" args="1 20 20" />     
  </DESCENDANTS>
 </NODE>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- The floor -->

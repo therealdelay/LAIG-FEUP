@@ -1279,8 +1279,6 @@ MySceneGraph.prototype.parseAnimation = function(animationNode) {
       this.animations.push(Animation);
     }
   }
-
-  console.log("Parsed Animations");
 }
 
 
@@ -1367,14 +1365,6 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       for (var j = 0; j < nodeSpecs.length; j++) {
         switch (nodeSpecs[j].nodeName) {
 
-          case "ANIMATION":
-          var animationID = this.reader.getString(nodeSpecs[animationIndex], 'id');
-          if (animationID != "null" && animationID != "clear" && this.animation[animationID] == null )
-            return "ID does not correspond to a valid animation (node ID = " + nodeID + ")";
-          this.nodes[nodeID].animations.push(animationID);
-          break;
-
-
           case "TRANSLATION":
           // Retrieves translation parameters.
           var x = this.reader.getFloat(nodeSpecs[j], 'x');
@@ -1457,26 +1447,23 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       if (animationsIndex !== -1) {
 
         var anim = nodeSpecs[animationsIndex].children;
-        var animChildren = 0;
-        for (var j = 0; j < anim.length; j++) {
-          var animationId = this.reader.getString(anim[j], 'id');
+        var animChildren = false;
 
-          this.log("   ANIMATIONREFS parse: " + animationId);
+        var animationId = this.reader.getString(anim[0], 'id');
 
-          if (animationId == null )
-            this.onXMLMinorError("unable to parse animation id");
-          else 
-            this.nodes[nodeID].animations.push(animationId);
+        this.log("   ANIMATIONREFS parse: " + animationId);
 
-          if(animChildren == 0)
-            this.nodes[nodeID].currAnimation = animationId;
-
-          animChildren++;
+        if (animationId == null )
+          this.onXMLMinorError("unable to parse animation id");
+        else {
+          this.nodes[nodeID].currAnimation = animationId;
+          animChildren = true;
         }
 
-        if (animChildren == 0)
+        if (!animChildren)
           return "at least one animation must be defined for each intermediate node";
       }
+
 
       // Retrieves information about children.
       var descendantsIndex = specsNames.indexOf("DESCENDANTS");
@@ -1629,7 +1616,7 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
   this.scene.material.apply();
 
 
-//selectable shaders
+//SELECTABLE SHADERS
 if(node.selectable && this.scene.selectable && this.scene.currentNode == node.nodeID)
   this.scene.setActiveShader(this.scene.shader);
 
@@ -1638,12 +1625,8 @@ this.scene.pushMatrix();
 
 
 //ANIMATIONS
-var currAnimation = node.currAnimation;
-if(node.animations.length > 0 && currAnimation != null){
-  var animationID = node.animations[currAnimation];
+if(node.currAnimation != null)
   this.scene.multMatrix(node.animationMatrix);
-}
-
 
 this.scene.multMatrix(node.transformMatrix);
 
@@ -1655,28 +1638,45 @@ for (var i = 0; i < node.children.length; i++)
 
 this.scene.popMatrix();
 
-
+//SELECTABLE SHADERS
 if(node.selectable && this.scene.selectable && this.scene.currentNode == node.nodeID)
   this.scene.setActiveShader(this.scene.defaultShader);
 
 this.tex_stack.pop();
 this.mat_stack.pop();
+
 };
 
+
+
+/**
+ * Get de texture on top in stack
+ */
 MySceneGraph.prototype.tex_top = function(){
   return this.tex_stack[this.tex_stack.length-1];
 };
 
+
+
+/**
+ * Get de material on top in stack
+ */
 MySceneGraph.prototype.mat_top = function(){
   return this.mat_stack[this.mat_stack.length-1];
 }; 
 
+
+
+/**
+ * Get animation already instantiated for combo animations
+ * @param animationID 
+ * @return instanced animation 
+ */
 MySceneGraph.prototype.getAnimation = function(animationID){
     for (var i=0; i < this.animations.length; i++) {
         if (this.animations[i].id == animationID) {
             return this.animations[i];
         }
     }
-
     return null;
 }

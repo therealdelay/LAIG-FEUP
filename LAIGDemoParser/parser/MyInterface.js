@@ -1,3 +1,4 @@
+ 
  /**
  * MyInterface class, creating a GUI interface.
  * @constructor
@@ -10,6 +11,7 @@ function MyInterface() {
 
 MyInterface.prototype = Object.create(CGFinterface.prototype);
 MyInterface.prototype.constructor = MyInterface;
+
 
 /**
  * Initializes the interface.
@@ -24,10 +26,9 @@ MyInterface.prototype.init = function(application) {
     
     this.gui = new dat.GUI();
 
-	
-    
     return true;
 };
+
 
 /**
  * Adds a folder containing the IDs of the lights passed as parameter.
@@ -48,9 +49,16 @@ MyInterface.prototype.addLightsGroup = function(lights) {
     }
 };
 
+
+/**
+ * Adds a group for shaders and add nodes selectable
+ */
 MyInterface.prototype.addShadersGroup = function(){
+
 	var group = this.gui.addFolder("Shaders");
+
     group.open();
+
 	this.gui.add(this.scene, 'currentNode', this.scene.nodesToShade);
 
 	this.gui.add(this.scene, 'selectable');	
