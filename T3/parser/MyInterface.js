@@ -63,3 +63,24 @@ MyInterface.prototype.addShadersGroup = function(){
 
 	this.gui.add(this.scene, 'selectable');	
 };
+
+MyInterface.prototype.processKeyDown = function(event) {
+	CGFinterface.prototype.processKeyDown.call(this,event);
+	switch (event.keyCode)
+	{
+		case (66):
+		case (98):	//b
+			this.scene.updateCameras('black');
+			break;
+
+		case (87):
+		case (119):	//w
+			this.scene.updateCameras('white');
+			break;
+
+		case (68):
+		case (100):	//d
+			this.scene.updateCameras('ai');
+			break;
+	}
+};

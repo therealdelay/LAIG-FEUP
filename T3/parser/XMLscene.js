@@ -92,9 +92,30 @@ XMLscene.prototype.initLights = function() {
  * Initializes the scene cameras.
  */
 XMLscene.prototype.initCameras = function() {
-    this.camera = new CGFcamera(0.4,0.1,500,vec3.fromValues(15, 15, 15),vec3.fromValues(0, 0, 0));
+    //AI games
+    this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(1, 15, 15),vec3.fromValues(1, 5, 5));
+    //White view
+    //this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(15, 15, 1),vec3.fromValues(0, 0, 1));
+    //Black view
+    //this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(-15, 15, 1),vec3.fromValues(0, 0, 1));
 };
 
+XMLscene.prototype.updateCameras = function(view){
+	switch(view){
+		case 'ai':
+			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(1, 15, 15),vec3.fromValues(1, 5, 5));
+			break;
+		case 'black':
+			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(-15, 15, 1),vec3.fromValues(0, 0, 1));
+			break;
+		case 'white':
+			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(15, 15, 1),vec3.fromValues(0, 0, 1));
+			break;
+		default:
+			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(1, 15, 15),vec3.fromValues(1, 5, 5));
+			break;
+	}
+}
 /* Handler called when the graph is finally loaded. 
  * As loading is asynchronous, this may be called already after the application has started the run loop
  */
@@ -143,7 +164,7 @@ XMLscene.prototype.display = function() {
         this.multMatrix(this.graph.initialTransforms);
 
 		// Draw axis
-		this.axis.display();
+		//this.axis.display();
 
         var i = 0;
         for (var key in this.lightValues) {
