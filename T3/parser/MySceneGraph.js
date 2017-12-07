@@ -36,7 +36,7 @@ function MySceneGraph(filename, scene) {
 
   this.textures = [];
   this.animations = [];
-
+  this.whitePieces = [];
   // File reading
   this.reader = new CGFXMLreader();
 
@@ -1313,8 +1313,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       // Checks if ID is valid.
       if (this.nodes[nodeID] != null )
         return "node ID must be unique (conflict: ID = " + nodeID + ")";
-
-      // Creates node.
+  
       this.nodes[nodeID] = new MyGraphNode(this,nodeID);
 
       //SHADERS
@@ -1631,9 +1630,9 @@ if(node.currAnimation != null)
 this.scene.multMatrix(node.transformMatrix);
 
 for (i = 0; i < node.leaves.length; i++)
-  node.leaves[i].display();
+    node.leaves[i].display();
 
-for (var i = 0; i < node.children.length; i++) 
+for (var i = 0; i < node.children.length; i++)
   this.nodesRecursive(this.nodes[node.children[i]]);
 
 this.scene.popMatrix();
@@ -1679,4 +1678,4 @@ MySceneGraph.prototype.getAnimation = function(animationID){
         }
     }
     return null;
-}
+};

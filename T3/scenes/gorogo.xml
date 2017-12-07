@@ -216,7 +216,7 @@
 
   <DESCENDANTS>
     <NODEREF id="cube" />
- </DESCENDANTS>
+  </DESCENDANTS>
 </NODE>
 
 <NODE id="blackBoard" >      
@@ -330,6 +330,11 @@
     <NODEREF id="face3" />
   </DESCENDANTS>
 </NODE>
+
+
+
+
+
 
 <NODE id="face1">       
   <MATERIAL id="null" />     

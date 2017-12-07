@@ -16,12 +16,36 @@ function XMLscene(interface) {
 	this.sinTime = -Math.PI/2;
 	this.R = 1;
 	this.tempR = 1;
+	this.cam = [0,0,0];
+	this.camTarget = [0,0,0];
+	this.currentView = 'ai';
+	this.lastCamTime = 0;
 
     this.lightValues = {};
+	this.quadrados = [];
+	this.blackPieces = [];
+  	this.whitePieces = [];
+  	this.hengePieces = [];
+
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
+
+XMLscene.prototype.logPicking = function (){
+	if (this.pickMode == false) {
+		if (this.pickResults != null && this.pickResults.length > 0) {
+			for (var i=0; i< this.pickResults.length; i++) {
+				var obj = this.pickResults[i][0];
+				if (obj){
+					var customId = this.pickResults[i][1];				
+					console.log("Picked object: " + obj + ", with pick id " + customId);
+				}
+			}
+			this.pickResults.splice(0,this.pickResults.length);
+		}		
+	}
+};
 
 /**
  * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
@@ -29,7 +53,7 @@ XMLscene.prototype.constructor = XMLscene;
 XMLscene.prototype.init = function(application) {
     CGFscene.prototype.init.call(this, application);
     
-    this.initCameras();
+    this.updateCameras();
 
     this.enableTextures(true);
     
@@ -44,6 +68,22 @@ XMLscene.prototype.init = function(application) {
 	this.updateScaleFactor();
 
     this.axis = new CGFaxis(this);
+
+    this.setPickEnabled(true);
+    this.createPickableSquares();	
+	this.materialDefault = new CGFappearance(this);
+
+	this.blackMaterial = new CGFappearance(this);
+	this.blackMaterial.setAmbient(0,0,0,1);
+	this.blackMaterial.setDiffuse(0,0,0,1);
+	this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
+	this.blackMaterial.setShininess(0.3);
+
+	this.darkMaterial = new CGFappearance(this);
+	this.darkMaterial.setAmbient(0,0,0,1);
+	this.darkMaterial.setDiffuse(0,0,0,1);
+	this.darkMaterial.setSpecular(0,0,0,1);
+	this.darkMaterial.setShininess(0);
 };
 
 /**
@@ -88,34 +128,44 @@ XMLscene.prototype.initLights = function() {
     
 };
 
-/**
- * Initializes the scene cameras.
- */
-XMLscene.prototype.initCameras = function() {
-    //AI games
-    this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(1, 15, 15),vec3.fromValues(1, 5, 5));
-    //White view
-    //this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(15, 15, 1),vec3.fromValues(0, 0, 1));
-    //Black view
-    //this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(-15, 15, 1),vec3.fromValues(0, 0, 1));
-};
+/*XMLscene.prototype.animateCamera = function (curTime, startView, endView) {
+	if(Math.abs(this.lastCamTime - curTime) >= 1000){
+		return;
+	}
+	let deltaTime = this.lastCamTime - curTime;
+	let cameraAnimation = new CameraAnimation(this, startView, endView);
+	while(cameraAnimation.finish != true)
+		this.cam = cameraAnimation.update(deltaTime);
+	this.currentView = endView;
+	this.lastCamTime = curTime;
+};*/
 
 XMLscene.prototype.updateCameras = function(view){
 	switch(view){
 		case 'ai':
-			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(1, 15, 15),vec3.fromValues(1, 5, 5));
+			this.cam = [1,15,15];
+    		this.camTarget = [1,5,5];
+    		//this.animateCamera(this.time, this.currentView, 'ai');
 			break;
 		case 'black':
-			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(-15, 15, 1),vec3.fromValues(0, 0, 1));
+			this.cam = [-15,15,1];
+    		this.camTarget = [0,0,1];
+    		//this.animateCamera(this.time, this.currentView, 'black');
 			break;
 		case 'white':
-			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(15, 15, 1),vec3.fromValues(0, 0, 1));
+			this.cam = [15,15,1];
+    		this.camTarget = [0,0,1];
+    		//this.animateCamera(this.time, this.currentView, 'white');
 			break;
 		default:
-			this.camera = new CGFcamera(0.5,0.5,500,vec3.fromValues(1, 15, 15),vec3.fromValues(1, 5, 5));
+			this.cam = [1,15,15];
+    		this.camTarget = [1,5,5];
+    		//this.animateCamera(this.time, this.currentView, 'ai');
 			break;
 	}
-}
+	this.camera = new CGFcamera(0.5,0.5,500,this.cam,this.camTarget);
+};
+
 /* Handler called when the graph is finally loaded. 
  * As loading is asynchronous, this may be called already after the application has started the run loop
  */
@@ -149,7 +199,8 @@ XMLscene.prototype.display = function() {
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-    
+    this.gl.enable(this.gl.DEPTH_TEST);
+
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
     this.loadIdentity();
@@ -160,6 +211,8 @@ XMLscene.prototype.display = function() {
     
     if (this.graph.loadedOk) 
     {        
+    	this.logPicking();
+		this.clearPickRegistration();
         // Applies initial transformations.
         this.multMatrix(this.graph.initialTransforms);
 
@@ -191,6 +244,11 @@ XMLscene.prototype.display = function() {
 		this.axis.display();
 	}
     
+    for(let j = 0; j < this.quadrados.length; j++){
+    	this.registerForPick(j+1,this.quadrados[j]);
+    	this.darkMaterial.apply();
+    	this.quadrados[j].display();
+    }
 
     this.popMatrix();
     
@@ -210,8 +268,26 @@ XMLscene.prototype.update = function(currTime){
 
     //to seconds
     this.time = currTime/1000; 
+	
+
 
     this.tempR = 0.5*(Math.sin(4*this.time));
     this.tempScaleFactor = this.tempR;
     this.updateScaleFactor();
 }
+
+XMLscene.prototype.createPickableSquares = function(){
+  let x = 2.4;
+  let z = 2.4;
+  for(let i = 0; i < 25; i++){
+  	let square = new MySquare(this, i, x,z);
+  	if(x >= 12.59){
+  		x = 2.4;
+  		z += 2.55;
+  	}
+  	else
+  		x += 2.55;
+  	console.log(x);
+    this.quadrados.push(square);
+  }
+};
