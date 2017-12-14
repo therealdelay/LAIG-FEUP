@@ -70,17 +70,17 @@ MyInterface.prototype.processKeyDown = function(event) {
 	{
 		case (66):
 		case (98):	//b
-			this.scene.updateCameras('black');
+			this.scene.updateCamera('black');
 			break;
 
 		case (87):
 		case (119):	//w
-			this.scene.updateCameras('white');
+			this.scene.updateCamera('white');
 			break;
 
 		case (68):
 		case (100):	//d
-			this.scene.updateCameras('ai');
+			this.scene.updateCamera('ai');
 			break;
 	}
 };

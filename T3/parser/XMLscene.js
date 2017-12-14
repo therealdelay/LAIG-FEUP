@@ -17,9 +17,14 @@ function XMLscene(interface) {
 	this.R = 1;
 	this.tempR = 1;
 	this.cam = [0,0,0];
-	this.camTarget = [0,0,0];
 	this.currentView = 'ai';
 	this.lastCamTime = 0;
+    this.finalPos = [0,0,0];
+    this.moveCam = false;
+
+    var d = new Date();
+
+    this.initialTime = d.getTime();
 
     this.lightValues = {};
 	this.quadrados = [];
@@ -53,7 +58,7 @@ XMLscene.prototype.logPicking = function (){
 XMLscene.prototype.init = function(application) {
     CGFscene.prototype.init.call(this, application);
     
-    this.updateCameras();
+    this.camera = new CGFcamera(0.5,0.5,500,[0,15,15],[0,0,0]);
 
     this.enableTextures(true);
     
@@ -125,45 +130,35 @@ XMLscene.prototype.initLights = function() {
             i++;
         }
     }
-    
 };
 
-/*XMLscene.prototype.animateCamera = function (curTime, startView, endView) {
-	if(Math.abs(this.lastCamTime - curTime) >= 1000){
-		return;
-	}
-	let deltaTime = this.lastCamTime - curTime;
-	let cameraAnimation = new CameraAnimation(this, startView, endView);
-	while(cameraAnimation.finish != true)
-		this.cam = cameraAnimation.update(deltaTime);
-	this.currentView = endView;
-	this.lastCamTime = curTime;
-};*/
-
-XMLscene.prototype.updateCameras = function(view){
+XMLscene.prototype.updateCamera = function(view){
 	switch(view){
 		case 'ai':
-			this.cam = [1,15,15];
-    		this.camTarget = [1,5,5];
-    		//this.animateCamera(this.time, this.currentView, 'ai');
-			break;
-		case 'black':
-			this.cam = [-15,15,1];
-    		this.camTarget = [0,0,1];
-    		//this.animateCamera(this.time, this.currentView, 'black');
-			break;
-		case 'white':
-			this.cam = [15,15,1];
-    		this.camTarget = [0,0,1];
-    		//this.animateCamera(this.time, this.currentView, 'white');
-			break;
-		default:
-			this.cam = [1,15,15];
-    		this.camTarget = [1,5,5];
-    		//this.animateCamera(this.time, this.currentView, 'ai');
-			break;
+            //this.animateCamera([0,15,15]);
+            //this.camera.orbit("y", 0*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
+            this.finalPos = [0,15,15];
+            this.moveCam = true;
+            break;
+        case 'black':
+            //this.animateCamera([15,15,0]);
+            //this.camera.orbit("y", 90*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
+            this.finalPos = [15,15,0];
+            this.moveCam = true;
+            break;
+        case 'white':
+            //this.animateCamera([-15,15,0]);
+            //this.camera.orbit("y", -90*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
+            this.finalPos = [-15,15,0];
+            this.moveCam = true;
+            break;
+        default:
+            //this.animateCamera([0,15,15]);
+            //this.camera.orbit("y", 0*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
+            this.finalPos = [0,15,15];
+            this.moveCam = true;
+            break;
 	}
-	this.camera = new CGFcamera(0.5,0.5,500,this.cam,this.camTarget);
 };
 
 /* Handler called when the graph is finally loaded. 
@@ -217,7 +212,7 @@ XMLscene.prototype.display = function() {
         this.multMatrix(this.graph.initialTransforms);
 
 		// Draw axis
-		//this.axis.display();
+		this.axis.display();
 
         var i = 0;
         for (var key in this.lightValues) {
@@ -268,8 +263,22 @@ XMLscene.prototype.update = function(currTime){
 
     //to seconds
     this.time = currTime/1000; 
-	
+    var delta = currTime - this.initialTime;
+    
+    if(this.moveCam){
+        if(Math.abs(this.camera.position[0] - this.finalPos[0]) >= 0.01 || Math.abs(this.camera.position[1] - this.finalPos[1]) >= 0.01 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
+            if(delta <= 10000){
+                if(this.camera.position[0] < this.finalPos[0])
+                    this.camera.orbit("y", delta/1000*40*DEGREE_TO_RAD);
+                else
+                    this.camera.orbit("y", -delta/1000*40*DEGREE_TO_RAD);
+            }
+        }
+        else
+            this.moveCam = false;
+    }
 
+    this.initialTime = currTime;
 
     this.tempR = 0.5*(Math.sin(4*this.time));
     this.tempScaleFactor = this.tempR;
@@ -277,12 +286,12 @@ XMLscene.prototype.update = function(currTime){
 }
 
 XMLscene.prototype.createPickableSquares = function(){
-  let x = 2.4;
-  let z = 2.4;
+  let x = -5.1;
+  let z = -5.1;
   for(let i = 0; i < 25; i++){
   	let square = new MySquare(this, i, x,z);
-  	if(x >= 12.59){
-  		x = 2.4;
+  	if(x >= 5){
+  		x = -5.1;
   		z += 2.55;
   	}
   	else
