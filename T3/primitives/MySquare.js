@@ -2,7 +2,6 @@ function MySquare(scene,id,x,z) {
  	CGFobject.call(this,scene);
 
     this.scene = scene;
- 	//this.square = new MyRectangle(scene, 0, 1, 1, 0);
  	this.circle = new MyCircle(scene,20);
  	this.x = x;
  	this.z = z;

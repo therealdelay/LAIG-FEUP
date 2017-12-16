@@ -26,7 +26,6 @@
   }
 }
 
-
 /**
  * Create rectangle
  * @param scene CGFscene where the rectangle will be displayed
@@ -40,7 +39,6 @@ MyGraphLeaf.prototype.createRectangle = function (graph, args){
     
   this.part = new MyRectangle(graph.scene,args[0],args[1],args[2],args[3]);
 }
-
 
 /**
  * Create cylinder

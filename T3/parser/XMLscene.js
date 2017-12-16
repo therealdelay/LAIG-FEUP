@@ -31,7 +31,8 @@ function XMLscene(interface) {
 	this.blackPieces = [];
   	this.whitePieces = [];
   	this.hengePieces = [];
-
+    this.pickableID = 0;
+    this.currentPiece = null;
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -45,6 +46,22 @@ XMLscene.prototype.logPicking = function (){
 				if (obj){
 					var customId = this.pickResults[i][1];				
 					console.log("Picked object: " + obj + ", with pick id " + customId);
+
+                    if(this.pickResults[i][0] instanceof RegularPiece){
+                        if(this.pickResults[i][0].type == 'black')
+                            this.currentPiece = this.blackPieces[customId-1];
+                        else
+                            this.currentPiece = this.whitePieces[customId-1];
+                    }
+                    else if(this.pickResults[i][0] instanceof HengePiece)
+                        this.currentPiece = this.hengePieces[customId-1];
+
+                    if(this.currentPiece !== null){
+                        if(this.pickResults[i][0] instanceof MySquare){
+                            this.currentPiece.updateCoords([this.pickResults[i][0].x,this.pickResults[i][0].z]);
+                            this.currentPiece = null;
+                        }
+                    }
 				}
 			}
 			this.pickResults.splice(0,this.pickResults.length);
@@ -78,17 +95,53 @@ XMLscene.prototype.init = function(application) {
     this.createPickableSquares();	
 	this.materialDefault = new CGFappearance(this);
 
-	this.blackMaterial = new CGFappearance(this);
-	this.blackMaterial.setAmbient(0,0,0,1);
-	this.blackMaterial.setDiffuse(0,0,0,1);
-	this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
-	this.blackMaterial.setShininess(0.3);
+	this.whiteMaterial = new CGFappearance(this);
+	this.whiteMaterial.setAmbient(0.2,0.2,0.2,1);
+	this.whiteMaterial.setDiffuse(0.5,0.5,0.5,1);
+	this.whiteMaterial.setSpecular(0.2,0.2,0.2,1);
+	this.whiteMaterial.setShininess(1);   
 
 	this.darkMaterial = new CGFappearance(this);
 	this.darkMaterial.setAmbient(0,0,0,1);
 	this.darkMaterial.setDiffuse(0,0,0,1);
 	this.darkMaterial.setSpecular(0,0,0,1);
 	this.darkMaterial.setShininess(0);
+
+    this.blackMaterial = new CGFappearance(this);
+    this.blackMaterial.setAmbient(0,0,0,1);
+    this.blackMaterial.setDiffuse(0,0,0,1);
+    this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
+    this.blackMaterial.setShininess(0.3);   
+
+
+    this.createPieces();
+};
+
+XMLscene.prototype.createPieces = function() {
+    var x = -15;
+    var z = -8;
+    for(var i = 0; i < 10; i++){
+        this.blackPieces.push(new RegularPiece(this,'black',[x,z]));
+        this.whitePieces.push(new RegularPiece(this,'white',[x+28,z]));
+        if(x > -15){
+            x = -15;
+            z += 2;
+        }
+        else
+            x += 2;
+    }
+
+    for(var j = 0; j < 2; j++){
+        this.hengePieces.push(new HengePiece(this,'black',[x,z]));
+        this.hengePieces.push(new HengePiece(this,'white',[x+28,z]));
+        if(x > -15){
+            x = -15;
+            z += 2;
+        }
+        else
+            x += 2;
+    }
+    this.hengePieces.push(new HengePiece(this,'white',[x+30,z]));
 };
 
 /**
@@ -135,26 +188,18 @@ XMLscene.prototype.initLights = function() {
 XMLscene.prototype.updateCamera = function(view){
 	switch(view){
 		case 'ai':
-            //this.animateCamera([0,15,15]);
-            //this.camera.orbit("y", 0*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
             this.finalPos = [0,15,15];
             this.moveCam = true;
             break;
         case 'black':
-            //this.animateCamera([15,15,0]);
-            //this.camera.orbit("y", 90*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
-            this.finalPos = [15,15,0];
-            this.moveCam = true;
-            break;
-        case 'white':
-            //this.animateCamera([-15,15,0]);
-            //this.camera.orbit("y", -90*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
             this.finalPos = [-15,15,0];
             this.moveCam = true;
             break;
+        case 'white':
+            this.finalPos = [15,15,0];
+            this.moveCam = true;
+            break;
         default:
-            //this.animateCamera([0,15,15]);
-            //this.camera.orbit("y", 0*DEGREE_TO_RAD);   //this.camera.position = [0,15,15]
             this.finalPos = [0,15,15];
             this.moveCam = true;
             break;
@@ -164,8 +209,8 @@ XMLscene.prototype.updateCamera = function(view){
 /* Handler called when the graph is finally loaded. 
  * As loading is asynchronous, this may be called already after the application has started the run loop
  */
-XMLscene.prototype.onGraphLoaded = function() 
-{
+XMLscene.prototype.onGraphLoaded = function() {
+    
     this.camera.near = this.graph.near;
     this.camera.far = this.graph.far;
     this.axis = new CGFaxis(this,this.graph.referenceLength);
@@ -190,7 +235,6 @@ XMLscene.prototype.onGraphLoaded = function()
  */
 XMLscene.prototype.display = function() {
     // ---- BEGIN Background, camera and axis setup
-    
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -212,7 +256,7 @@ XMLscene.prototype.display = function() {
         this.multMatrix(this.graph.initialTransforms);
 
 		// Draw axis
-		this.axis.display();
+		//this.axis.display();
 
         var i = 0;
         for (var key in this.lightValues) {
@@ -232,25 +276,68 @@ XMLscene.prototype.display = function() {
 
         // Displays the scene.
 		this.graph.displayScene();
+
+        this.pushMatrix();
+            this.translate(10,10,10);
+            
+        this.popMatrix();
     }
 	else
 	{
 		// Draw axis
-		this.axis.display();
+		//this.axis.display();
 	}
     
-    for(let j = 0; j < this.quadrados.length; j++){
-    	this.registerForPick(j+1,this.quadrados[j]);
-    	this.darkMaterial.apply();
-    	this.quadrados[j].display();
-    }
+    this.displayPickableCircles();
+    this.clearPickRegistration();
+   /* if(this.pieceMatrix !== null)
+        this.multMatrix(this.pieceMatrix);*/
+    this.displayPieces();
+    this.clearPickRegistration();
 
     this.popMatrix();
     
     // ---- END Background, camera and axis setup
-    
 };
 
+XMLscene.prototype.displayPickableCircles = function() {
+    this.pickableID = 0;
+    let j = 0;
+    for(; j < this.quadrados.length; j++){
+        if(this.currentPiece !== null)
+            this.registerForPick(j+1,this.quadrados[j]);
+        this.darkMaterial.apply();
+        this.quadrados[j].display();
+    }    
+    this.pickableID += j+1;
+
+};
+
+XMLscene.prototype.displayPieces = function() {
+    let w = 0;
+    for(; w < this.whitePieces.length; w++){
+        if(this.currentPiece == null)
+            this.registerForPick(/*this.pickableID*/1+w,this.whitePieces[w]);
+        this.whitePieces[w].display();
+    }
+    this.pickableID += w;
+
+    let b = 0;
+    for(; b < this.blackPieces.length; b++){
+        if(this.currentPiece == null)
+            this.registerForPick(/*this.pickableID*/1+b,this.blackPieces[b]);
+        this.blackPieces[b].display();
+    }
+    this.pickableID += b;
+
+    let h = 0;
+    for(; h < this.hengePieces.length; h++){
+        if(this.currentPiece == null)
+            this.registerForPick(/*this.pickableID*/1+h,this.hengePieces[h]);
+        this.hengePieces[h].display();   
+    }
+    this.pickableID += h+1;
+};
 
 /**
  * Update the scale factor and Red component from the given current time.
@@ -278,12 +365,13 @@ XMLscene.prototype.update = function(currTime){
             this.moveCam = false;
     }
 
+    //this.paintOptions();
     this.initialTime = currTime;
 
     this.tempR = 0.5*(Math.sin(4*this.time));
     this.tempScaleFactor = this.tempR;
     this.updateScaleFactor();
-}
+};
 
 XMLscene.prototype.createPickableSquares = function(){
   let x = -5.1;
@@ -300,3 +388,11 @@ XMLscene.prototype.createPickableSquares = function(){
     this.quadrados.push(square);
   }
 };
+
+/*XMLscene.prototype.movePiece = function(finalPos){
+    var p1 = [this.blackPieces[0].position[0],0,this.blackPieces[0].position[1]];
+    var p2 = [this.blackPieces[0].position[0],10,this.blackPieces[0].position[1]];
+    var p3 = [finalPos[0],10,finalPos[2]];
+    var p4 = finalPos;
+    this.pieceAnimation = new BezierAnimation(this,5,1,[p1,p2,p3,p4]);
+};*/

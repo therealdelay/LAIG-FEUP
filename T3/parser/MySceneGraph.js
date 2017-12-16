@@ -1509,6 +1509,10 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       }
       if (sizeChildren == 0)
         return "at least one descendant must be defined for each intermediate node";
+
+      /*if(nodeID == 'blackPiece')
+        this.generateBlackPieces(this.nodes[nodeID]);*/
+
     }
     else
       this.onXMLMinorError("unknown tag name <" + nodeName);
@@ -1517,6 +1521,13 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
   console.log("Parsed nodes");
   return null ;
 };
+
+/*MySceneGraph.prototype.generateBlackPieces(node){
+  for(var i = 0; i < 10; i++){
+    //array de peças pretas para guardar
+    //criar classes de peças e criar funções para as outras 2 peças
+  }
+};*/
 
 /*
 * Callback to be executed on any read error
@@ -1629,11 +1640,15 @@ if(node.currAnimation != null)
 
 this.scene.multMatrix(node.transformMatrix);
 
-for (i = 0; i < node.leaves.length; i++)
+for (i = 0; i < node.leaves.length; i++){
+  if(node.nodeID != 'blackPiece' && node.nodeID != 'whitePiece' && node.nodeID != 'hengePiece')
     node.leaves[i].display();
+}
 
-for (var i = 0; i < node.children.length; i++)
+for (var i = 0; i < node.children.length; i++){
+  if(node.nodeID != 'blackPiece' && node.nodeID != 'whitePiece' && node.nodeID != 'hengePiece')
   this.nodesRecursive(this.nodes[node.children[i]]);
+}
 
 this.scene.popMatrix();
 
