@@ -28,9 +28,7 @@ function XMLscene(interface) {
 
     this.lightValues = {};
 	this.quadrados = [];
-	this.blackPieces = [];
-  	this.whitePieces = [];
-  	this.hengePieces = [];
+	this.pieces = [];
     this.pickableID = 0;
     this.currentPiece = null;
 };
@@ -45,16 +43,19 @@ XMLscene.prototype.logPicking = function (){
 				var obj = this.pickResults[i][0];
 				if (obj){
 					var customId = this.pickResults[i][1];				
-					console.log("Picked object: " + obj + ", with pick id " + customId);
+					//console.log("Picked object: " + obj + ", with pick id " + customId);
 
                     if(this.pickResults[i][0] instanceof RegularPiece){
-                        if(this.pickResults[i][0].type == 'black')
-                            this.currentPiece = this.blackPieces[customId-1];
-                        else
-                            this.currentPiece = this.whitePieces[customId-1];
+                        if(this.pickResults[i][0].type == 'black'){
+                            this.currentPiece = this.pieces[customId-1];
+                        }
+                        else{
+                            this.currentPiece = this.pieces[customId-1];
+                        }
                     }
-                    else if(this.pickResults[i][0] instanceof HengePiece)
-                        this.currentPiece = this.hengePieces[customId-1];
+                    else if(this.pickResults[i][0] instanceof HengePiece){
+                        this.currentPiece = this.pieces[customId-1];
+                    }
 
                     if(this.currentPiece !== null){
                         if(this.pickResults[i][0] instanceof MySquare){
@@ -75,7 +76,7 @@ XMLscene.prototype.logPicking = function (){
 XMLscene.prototype.init = function(application) {
     CGFscene.prototype.init.call(this, application);
     
-    this.camera = new CGFcamera(0.5,0.5,500,[0,15,15],[0,0,0]);
+    this.camera = new CGFcamera(0.35,0.5,500,[0,15,15],[0,0,0]);
 
     this.enableTextures(true);
     
@@ -107,12 +108,17 @@ XMLscene.prototype.init = function(application) {
 	this.darkMaterial.setSpecular(0,0,0,1);
 	this.darkMaterial.setShininess(0);
 
+    this.redMaterial = new CGFappearance(this);
+    this.redMaterial.setAmbient(0,0,0,1);
+    this.redMaterial.setDiffuse(0.5,0,0,1);
+    this.redMaterial.setSpecular(0.8,0,0,0.5);
+    this.redMaterial.setShininess(0.3);   
+
     this.blackMaterial = new CGFappearance(this);
     this.blackMaterial.setAmbient(0,0,0,1);
     this.blackMaterial.setDiffuse(0,0,0,1);
     this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
     this.blackMaterial.setShininess(0.3);   
-
 
     this.createPieces();
 };
@@ -121,8 +127,8 @@ XMLscene.prototype.createPieces = function() {
     var x = -15;
     var z = -8;
     for(var i = 0; i < 10; i++){
-        this.blackPieces.push(new RegularPiece(this,'black',[x,z]));
-        this.whitePieces.push(new RegularPiece(this,'white',[x+28,z]));
+        this.pieces.push(new RegularPiece(this,'black',[x,z]));
+        this.pieces.push(new RegularPiece(this,'white',[x+28,z]));
         if(x > -15){
             x = -15;
             z += 2;
@@ -132,8 +138,8 @@ XMLscene.prototype.createPieces = function() {
     }
 
     for(var j = 0; j < 2; j++){
-        this.hengePieces.push(new HengePiece(this,'black',[x,z]));
-        this.hengePieces.push(new HengePiece(this,'white',[x+28,z]));
+        this.pieces.push(new HengePiece(this,'black',[x,z]));
+        this.pieces.push(new HengePiece(this,'white',[x+28,z]));
         if(x > -15){
             x = -15;
             z += 2;
@@ -141,7 +147,7 @@ XMLscene.prototype.createPieces = function() {
         else
             x += 2;
     }
-    this.hengePieces.push(new HengePiece(this,'white',[x+30,z]));
+    this.pieces.push(new HengePiece(this,'white',[x+30,z]));
 };
 
 /**
@@ -172,7 +178,7 @@ XMLscene.prototype.initLights = function() {
             this.lights[i].setDiffuse(light[3][0], light[3][1], light[3][2], light[3][3]);
             this.lights[i].setSpecular(light[4][0], light[4][1], light[4][2], light[4][3]);
             
-            this.lights[i].setVisible(true);
+            this.lights[i].setVisible(false);
             if (light[0])
                 this.lights[i].enable();
             else
@@ -262,7 +268,7 @@ XMLscene.prototype.display = function() {
         for (var key in this.lightValues) {
             if (this.lightValues.hasOwnProperty(key)) {
                 if (this.lightValues[key]) {
-                    this.lights[i].setVisible(true);
+                    this.lights[i].setVisible(false);
                     this.lights[i].enable();
                 }
                 else {
@@ -304,9 +310,12 @@ XMLscene.prototype.displayPickableCircles = function() {
     this.pickableID = 0;
     let j = 0;
     for(; j < this.quadrados.length; j++){
-        if(this.currentPiece !== null)
+        if(this.currentPiece !== null){
             this.registerForPick(j+1,this.quadrados[j]);
-        this.darkMaterial.apply();
+            this.redMaterial.apply();
+        }
+        else
+            this.darkMaterial.apply();
         this.quadrados[j].display();
     }    
     this.pickableID += j+1;
@@ -315,28 +324,11 @@ XMLscene.prototype.displayPickableCircles = function() {
 
 XMLscene.prototype.displayPieces = function() {
     let w = 0;
-    for(; w < this.whitePieces.length; w++){
+    for(; w < this.pieces.length; w++){
         if(this.currentPiece == null)
-            this.registerForPick(/*this.pickableID*/1+w,this.whitePieces[w]);
-        this.whitePieces[w].display();
+            this.registerForPick(1+w,this.pieces[w]);
+        this.pieces[w].display();
     }
-    this.pickableID += w;
-
-    let b = 0;
-    for(; b < this.blackPieces.length; b++){
-        if(this.currentPiece == null)
-            this.registerForPick(/*this.pickableID*/1+b,this.blackPieces[b]);
-        this.blackPieces[b].display();
-    }
-    this.pickableID += b;
-
-    let h = 0;
-    for(; h < this.hengePieces.length; h++){
-        if(this.currentPiece == null)
-            this.registerForPick(/*this.pickableID*/1+h,this.hengePieces[h]);
-        this.hengePieces[h].display();   
-    }
-    this.pickableID += h+1;
 };
 
 /**
@@ -353,7 +345,7 @@ XMLscene.prototype.update = function(currTime){
     var delta = currTime - this.initialTime;
     
     if(this.moveCam){
-        if(Math.abs(this.camera.position[0] - this.finalPos[0]) >= 0.01 || Math.abs(this.camera.position[1] - this.finalPos[1]) >= 0.01 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
+        if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
             if(delta <= 10000){
                 if(this.camera.position[0] < this.finalPos[0])
                     this.camera.orbit("y", delta/1000*40*DEGREE_TO_RAD);
@@ -384,14 +376,13 @@ XMLscene.prototype.createPickableSquares = function(){
   	}
   	else
   		x += 2.55;
-  	console.log(x);
     this.quadrados.push(square);
   }
 };
 
 /*XMLscene.prototype.movePiece = function(finalPos){
-    var p1 = [this.blackPieces[0].position[0],0,this.blackPieces[0].position[1]];
-    var p2 = [this.blackPieces[0].position[0],10,this.blackPieces[0].position[1]];
+    var p1 = [this.pieces[0].position[0],0,this.pieces[0].position[1]];
+    var p2 = [this.pieces[0].position[0],10,this.pieces[0].position[1]];
     var p3 = [finalPos[0],10,finalPos[2]];
     var p4 = finalPos;
     this.pieceAnimation = new BezierAnimation(this,5,1,[p1,p2,p3,p4]);

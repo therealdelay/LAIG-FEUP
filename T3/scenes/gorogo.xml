@@ -23,7 +23,7 @@
   <LIGHTS>    
    <LIGHT id="light0">                                    
     <enable value ="1" />                              
-    <position  x="10" y="11" z="15" w="1" />           
+    <position  x="7.5" y="15" z="7.5" w="1" />           
     <ambient r="0.2" g="0.2" b="0.2" a="1.0" />          
     <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />                                        
     <specular r="0.9" g="0.9" b="0.9" a="1.0" />      
@@ -31,7 +31,7 @@
 
   <LIGHT id="light1">                                    
     <enable value ="1" />                             
-    <position x="11" y="12" z="11" w="1" />            
+    <position x="7.5" y="15" z="-7.5" w="1" />            
     <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
     <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />                                           
     <specular r="0.9" g="0.9" b="0.9" a="1.0" />  
@@ -39,7 +39,7 @@
 
   <LIGHT id="light2">                                   
     <enable value ="1" />                              
-    <position x="14" y="11" z="14" w="1" />                
+    <position x="-7.5" y="15" z="7.5" w="1" />                
     <ambient r="0.2" g="0.2" b="0.2" a="1.0" />      
     <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />                            
     <specular r="0.9" g="0.9" b="0.9" a="1.0" />     
@@ -47,7 +47,7 @@
 
   <LIGHT id="light3">                                   
     <enable value ="1" />                          
-    <position x="17" y="7.3" z="5.8"  w="0" />                 
+    <position x="-7.5" y="15" z="-7.5"  w="0" />                 
     <ambient r="0.2" g="0.2" b="0.2" a="1.0" />             
     <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />       
     <specular r="0.9" g="0.9" b="0.9" a="1.0" />      
