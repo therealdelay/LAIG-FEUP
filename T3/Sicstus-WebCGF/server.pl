@@ -1,6 +1,14 @@
 :-use_module(library(sockets)).
 :-use_module(library(lists)).
 :-use_module(library(codesio)).
+:-use_module(library(random)).
+
+:-include('utils.pl').
+:-include('getsandsets.pl').
+:-include('menu.pl').
+:-include('point2d.pl').
+:-include('ai.pl').
+:-include('play.pl').
 :-include('gorogo.pl').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,7 +113,24 @@ print_header_line(_).
 % Require your Prolog Files here
 
 parse_input(handshake, handshake).
-parse_input(gorogo, Game) :- initGamePvP(Game), play(Game).
+
+% Init game
+parse_input(gorogo, Msg) :- initGamePvP(Game),
+							Msg = Game. 
+
+/*
+parse_input([play, Game], Msg) :-	%getPlay(Game, Play, Turn),
+							applyPlay(Game,Play,GameTmp1),
+							updateGameCycle(GameTmp1,GameTmp2),
+							NextTurn is Turn+1,
+							playCycle(GameTmp2,Winner,NextTurn),
+							Msg = GameTmp2.*/
+
+			/*
+							applyPlay(Game, Play, GameTmp1),
+							updateGameCycle(GameTmp1, GameTmp2),
+							Msg = GameTmp2.*/
+
 parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.

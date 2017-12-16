@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Sicstus Prolog HTTP Server Test</title>
-	</head>
-	<body>
-		<h1>Sicstus HTTP Test</h1>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Sicstus Prolog HTTP Server Test</title>
+</head>
+<body>
+	<h1>Sicstus HTTP Test</h1>
 	
-		<div>
-			<input id="query_field" type="Text" value="handshake"/>
-			<br>
-			<button id="send_button" type="button" onClick="makeRequest();"> Send </button>
-		</div>
-		<h3> Result: </h3>
-		<div id="query_result"></div>
-		
-		<script>
-			function getPrologRequest(requestString, onSuccess, onError, port)
-			{
-				var requestPort = port || 8081
-				var request = new XMLHttpRequest();
-				request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+	<div>
+		<input id="query_field" type="Text" value="handshake"/>
+		<br>
+		<button id="send_button" type="button" onClick="makeRequest();"> Send </button>
+	</div>
+	<h3> Result: </h3>
+	<div id="query_result"></div>
 
-				request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
-				request.onerror = onError || function(){console.log("Error waiting for response");};
+	<script>
+		function getPrologRequest(requestString, onSuccess, onError, port)
+		{
+			var requestPort = port || 8081
+			var request = new XMLHttpRequest();
+			request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
 
-				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-				request.send();
-			}
+			request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
+			request.onerror = onError || function(){console.log("Error waiting for response");};
+
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			request.send();
+		}
 		
-			function makeRequest()
-			{
+		function makeRequest()
+		{
 				// Get Parameter Values
 				var requestString = document.querySelector("#query_field").value;				
 				
@@ -41,8 +41,27 @@
 			//Handle the Reply
 			function handleReply(data){
 				document.querySelector("#query_result").innerHTML=data.target.response;
+
+				var data = data.target.response;
+				var dataJson = data.replace(/([a-z])\w+/g, "\"$&\"");
+				console.log(dataJson);
+
+				try{
+					var jsonData = JSON.parse(dataJson);
+				}
+				catch(e){
+					console.log(e);
+				}
+
+				console.log("Board:::  ");
+				for(var i = 0; i < jsonData[0].length; i++ ) {
+					console.log(i + ": "+ (jsonData[0][i]).toString()) ;
+				}
+				console.log("Pieces Human:::  " + jsonData[1]);
+				console.log("Pieces Bot:::  " + jsonData[2]);
+				console.log("Player:::  " + jsonData[3]);
 			}
-		
+
 		</script>
 	</body>
-</html>
+	</html>
