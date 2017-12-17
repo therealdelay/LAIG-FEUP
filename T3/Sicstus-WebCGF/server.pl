@@ -118,13 +118,16 @@ parse_input(handshake, handshake).
 parse_input(gorogo, Msg) :- initGamePvP(Game),
 							Msg = Game. 
 
-/*
-parse_input([play, Game], Msg) :-	%getPlay(Game, Play, Turn),
+parse_input([playCycle, Game], Msg) :-
+	playCycle(Game,Winner,1);
+
+
+parse_input([Play, Game], Msg) :-	getPlay(Game, Play, Turn),
 							applyPlay(Game,Play,GameTmp1),
 							updateGameCycle(GameTmp1,GameTmp2),
 							NextTurn is Turn+1,
 							playCycle(GameTmp2,Winner,NextTurn),
-							Msg = GameTmp2.*/
+							Msg = GameTmp2.
 
 			/*
 							applyPlay(Game, Play, GameTmp1),
