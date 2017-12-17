@@ -1,4 +1,4 @@
-%:-use_module(library(lists)).
+:-use_module(library(lists)).
 :-use_module(library(random)).
 :-include('utils.pl').
 :-include('getsandsets.pl').
@@ -146,7 +146,7 @@ checkValidType(Play,_):-
 	Type = 'h'.
 
 validPlay(Game,Play,Turn):-
-	checkValidType(Play,Turn),
+	%checkValidType(Play,Turn),
 	checkEmptyCell(Game,Play),
 	checkPieceStock(Game,Play),
 	checkInBoard(Play),
@@ -245,7 +245,8 @@ waitForBot(Game):-
 	getCurrentPlayer(Game,Player),
 	getPlayerInfo(Game,Player,Info),
 	getPlayerType(Info,PlayerType),
-	ite((PlayerType == easyBot ; PlayerType == hardBot),(write('  Press Enter to continue'),nl,waitForEnter),true).
+	ite((PlayerType == easyBot ; PlayerType == hardBot),
+		(write('  Press Enter to continue'),nl,waitForEnter),true).
 	
 updateGameCycle(Game,GameRes):-
 	updateGame(Game,GameTmp1),
@@ -262,6 +263,8 @@ playCycle(Game,Winner,_):-
 	endOfGame(Game,Winner),
 	printGame(Game).
 	
+
+%feito	
 playCycle(Game,Winner,Turn):-
 	printGame(Game),
 	waitForBot(Game),
@@ -271,10 +274,16 @@ playCycle(Game,Winner,Turn):-
 	NextTurn is Turn+1,
 	playCycle(GameTmp2,Winner,NextTurn).
 
-
-initGamePvP(Game):-
+%feito
+initGamePvP(Game):- 
 	initialBoard(Board),
 	WhiteInfo = [10,3,0,human],
 	BlackInfo = [10,2,0,easyBot],
 	Player = whitePlayer,
 	Game = [Board, WhiteInfo, BlackInfo, Player].
+
+reload :- reconsult(gorogo).
+
+teste(Game, Play, NewGame) :-	
+	applyPlay(Game, Play, NewGameTmp),
+	updateGameCycle(NewGameTmp, NewGame).

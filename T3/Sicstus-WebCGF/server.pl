@@ -113,26 +113,29 @@ print_header_line(_).
 % Require your Prolog Files here
 
 parse_input(handshake, handshake).
+parse_input(test(C,N), Res) :- test(C,Res,N).
+parse_input(quit, goodbye).
 
 % Init game
-parse_input(gorogo, Msg) :- initGamePvP(Game),
-							Msg = Game. 
+parse_input(gorogo, Game) :- 
+	initGamePvP(Game). 
 
-parse_input([playCycle, Game], Msg) :-
-	playCycle(Game,Winner,1);
+% Get Play (bot)
+parse_input(getplay(Game,Turn), Play) :- 
+	getPlay(Game, Play, Turn).
+
+% Apply Play and get new Board 
+parse_input(applyPlay(Game, Play), NewGame) :-	
+	applyPlay(Game, Play, NewGameTmp),
+	updateGameCycle(NewGameTmp, NewGame).
+
+% verify if game has ended after each turn
+parse_input(endOfGame(Game, Winner), Winner) :- 
+	endOfGame(Game,Winner).
 
 
-parse_input([Play, Game], Msg) :-	getPlay(Game, Play, Turn),
-							applyPlay(Game,Play,GameTmp1),
-							updateGameCycle(GameTmp1,GameTmp2),
-							NextTurn is Turn+1,
-							playCycle(GameTmp2,Winner,NextTurn),
-							Msg = GameTmp2.
 
-			/*
-							applyPlay(Game, Play, GameTmp1),
-							updateGameCycle(GameTmp1, GameTmp2),
-							Msg = GameTmp2.*/
+%parse_input(play(Game), Play) :-	write(Game), Play = 'Pim'.
 
 parse_input(quit, goodbye).
 

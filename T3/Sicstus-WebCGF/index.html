@@ -43,23 +43,33 @@
 				document.querySelector("#query_result").innerHTML=data.target.response;
 
 				var data = data.target.response;
-				var dataJson = data.replace(/([a-z])\w+/g, "\"$&\"");
-				console.log(dataJson);
 
-				try{
-					var jsonData = JSON.parse(dataJson);
-				}
-				catch(e){
-					console.log(e);
+				console.log(data);
+
+				if(data == "Bad Request")
+					console.log("Bad Request");
+				else if(data == "Syntax Error")
+					console.log("Syntax Error");
+				else{
+
+					var dataJson = data.replace(/([a-z])\w+/g, "\"$&\"");
+
+					try{
+						var jsonData = JSON.parse(dataJson);
+					}
+					catch(e){
+						console.log(e);
+					}
+
+					console.log("Board:::  ");
+					for(var i = 0; i < jsonData[0].length; i++ ) {
+						console.log(i + ": "+ (jsonData[0][i]).toString()) ;
+					}
+					console.log("Pieces Human:::  " + jsonData[1]);
+					console.log("Pieces Bot:::  " + jsonData[2]);
+					console.log("Player:::  " + jsonData[3]);
 				}
 
-				console.log("Board:::  ");
-				for(var i = 0; i < jsonData[0].length; i++ ) {
-					console.log(i + ": "+ (jsonData[0][i]).toString()) ;
-				}
-				console.log("Pieces Human:::  " + jsonData[1]);
-				console.log("Pieces Bot:::  " + jsonData[2]);
-				console.log("Player:::  " + jsonData[3]);
 			}
 
 		</script>
