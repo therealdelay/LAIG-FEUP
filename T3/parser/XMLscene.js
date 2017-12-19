@@ -31,6 +31,8 @@ function XMLscene(interface) {
 	this.pieces = [];
     this.pickableID = 0;
     this.currentPiece = null;
+
+    this.Game = new Game(this);
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -302,6 +304,14 @@ XMLscene.prototype.display = function() {
     this.clearPickRegistration();
 
     this.popMatrix();
+
+
+//teste
+    if(Game.changeStatus){
+        this.Game.parseJsonGame();
+        console.log("GAME STATUS::::");
+        console.log("Board::" + this.Game.board);  
+    }
     
     // ---- END Background, camera and axis setup
 };
@@ -378,6 +388,11 @@ XMLscene.prototype.createPickableSquares = function(){
   		x += 2.55;
     this.quadrados.push(square);
   }
+
+
+    //teste
+  this.Game.startGame();
+  console.log("Init GAME"); 
 };
 
 /*XMLscene.prototype.movePiece = function(finalPos){
