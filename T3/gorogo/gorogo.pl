@@ -219,6 +219,7 @@ endOfGame(Game,Winner):-
 endOfGame(Game,Winner):-
 	checkPiecesLeft(Game,Winner).
 
+endOfGame(_,none).
 
 
 %------------UPDATE_GAME-----------------
