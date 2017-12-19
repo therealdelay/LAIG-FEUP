@@ -110,12 +110,11 @@ parse_input(test(C,N), Res) :- test(C,Res,N).
 
 parse_input(initGame, Game) :- initGamePvP(Game).
 
-parse_input(getPlay(Game,Turn), Play) :- 
-				getPlay(Game,Play,Turn).
+parse_input(getPlay(Game,Turn), Play) :- getPlay(Game,Play,Turn).
 
 parse_input(play(Game,Play), GameRes) :- 
-				applyPlay(Game,Play,GameRes),
-				updateGameCycle(Game,GameRes).
+	applyPlay(Game,Play,GameTmp),
+	updateGameCycle(GameTmp, GameRes).
 
 parse_input(endOfGame(Game), Winner) :- endOfGame(Game,Winner).
 

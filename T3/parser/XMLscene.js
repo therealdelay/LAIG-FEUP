@@ -306,11 +306,25 @@ XMLscene.prototype.display = function() {
     this.popMatrix();
 
 
-//teste
+    //teste
     if(Game.changeStatus){
-        this.Game.parseJsonGame();
-        console.log("GAME STATUS::::");
-        console.log("Board::" + this.Game.board);  
+        this.Game.getReplay();
+
+        if(this.Game.lastRequest == "initGame"){
+            console.log("initGame::");
+
+            //cena manhosa para que funcione
+            this.Game.currPlayer = "blackPlayer";
+            this.Game.getPlay();
+        }
+        else if(this.Game.lastRequest == "getPlay"){ 
+            this.Game.play();
+        }
+        else if(this.Game.lastRequest == "play"){
+
+             console.log("New board::" + this.Game.board);
+             console.log("New Player::" + this.Game.currPlayer);
+        }
     }
     
     // ---- END Background, camera and axis setup

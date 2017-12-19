@@ -27,9 +27,6 @@ MyServer.prototype.getPrologRequest = function(requestString, onSuccess, onError
 };
 		
 MyServer.prototype.makeRequest = function(requestString){	
-
-	console.log("makeRequest");
-
 	// Make Request
 	this.getPrologRequest(requestString, this.handleReply); 
 }
@@ -37,18 +34,13 @@ MyServer.prototype.makeRequest = function(requestString){
 //Handle the Reply
 MyServer.prototype.handleReply = function(data){
 
-	var data = data.target.response;
-	data.replace(/([a-z])\w+/g, "\"$&\"");
-
-	if(data == "Bad Request")
+	if(data.target.response == "Bad Request")
 		console.log("Bad Request");
-	else if(data == "Syntax Error")
+	else if(data.target.response == "Syntax Error")
 		console.log("Syntax Error");
-
-	else if(data != "goodbye") {
-			console.log("RESPONSE:::: " + data); 
-			console.log(typeof(Game));
-        	Game.currStatus = data;
+	else if(data.target.response != "goodbye") {
+			console.log("RESPONSE:::: " + data.target.response); 
+        	Game.currReplay = data.target.response;
         	Game.changeStatus = true;
 	}
 };
