@@ -1,14 +1,7 @@
 :-use_module(library(sockets)).
 :-use_module(library(lists)).
 :-use_module(library(codesio)).
-:-use_module(library(random)).
 
-:-include('utils.pl').
-:-include('getsandsets.pl').
-:-include('menu.pl').
-:-include('point2d.pl').
-:-include('ai.pl').
-:-include('play.pl').
 :-include('gorogo.pl').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,28 +107,16 @@ print_header_line(_).
 
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
-parse_input(quit, goodbye).
 
-% Init game
-parse_input(gorogo, Game) :- 
-	initGamePvP(Game). 
+parse_input(initGame, Game) :- initGamePvP(Game).
 
-% Get Play (bot)
-parse_input(getplay(Game,Turn), Play) :- 
-	getPlay(Game, Play, Turn).
+parse_input(getPlay(Game,Turn), Play) :- getPlay(Game,Play,Turn).
 
-% Apply Play and get new Board 
-parse_input(applyPlay(Game, Play), NewGame) :-	
-	applyPlay(Game, Play, NewGameTmp),
-	updateGameCycle(NewGameTmp, NewGame).
+parse_input(play(Game,Play), GameRes) :- 
+	applyPlay(Game,Play,GameTmp),
+	updateGameCycle(GameTmp, GameRes).
 
-% verify if game has ended after each turn
-parse_input(endOfGame(Game, Winner), Winner) :- 
-	endOfGame(Game,Winner).
-
-
-
-%parse_input(play(Game), Play) :-	write(Game), Play = 'Pim'.
+parse_input(endOfGame(Game), Winner) :- endOfGame(Game,Winner).
 
 parse_input(quit, goodbye).
 

@@ -33,6 +33,13 @@ function XMLscene(interface) {
     this.currentPiece = null;
 
     this.piecesGraph = new PiecesGraph(this);
+
+    this.Game = new Game(this);
+    this.WhitePlayer = null;
+    this.BlackPlayer = null;
+    this.isConfiguredPlayerWhite = false;
+    this.isConfiguredPlayerBlack = false;
+    this.gamePlayerOptions = ['Human', 'Easy Bot', 'Hard Bot'];
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -231,10 +238,13 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.initLights();
 
     // Adds lights group
-    this.interface.addLightsGroup(this.graph.lights);
+    //this.interface.addLightsGroup(this.graph.lights);
 
     // Adds shaders group
-    this.interface.addShadersGroup();
+    //this.interface.addShadersGroup();
+
+    // Adds game group
+    this.interface.addGameGroup();
 };
 
 
@@ -308,6 +318,42 @@ XMLscene.prototype.display = function() {
         this.multMatrix(this.pieceMatrix);*/
 
     this.popMatrix();
+
+    console.log("blackPieces" + this.Game.blackPieces);
+    console.log("whitePieces" + this.Game.whitePieces);
+
+    //teste
+    if(Game.changeStatus){
+        this.Game.getReplay();
+
+        if(this.Game.lastRequest == "initGame"){
+            console.log("initGame::");
+
+            //cena manhosa para que funcione o teste
+            this.Game.currPlayer = "blackPlayer";
+            this.Game.getPlay();
+        }
+        else if(this.Game.lastRequest == "getPlay"){ 
+            this.Game.play();
+        }
+        else if(this.Game.lastRequest == "play"){
+
+             console.log("New board::" + this.Game.board);
+             console.log("New Player::" + this.Game.currPlayer);
+        }
+    }
+
+
+   if(this.WhitePlayer != null  && !this.isConfiguredPlayerWhite){
+        this.Game.configWhitePlayer();
+        this.isConfiguredPlayerWhite = true;
+    }
+
+    if(this.BlackPlayer != null  && !this.isConfiguredPlayerBlack){
+        this.Game.configBlackPlayer();
+        this.isConfiguredPlayerBlack = true;
+    }
+
     
     // ---- END Background, camera and axis setup
 };
@@ -395,6 +441,11 @@ XMLscene.prototype.createPickableSquares = function(){
   		x += 2.55;
     this.quadrados.push(square);
   }
+
+
+    //teste
+  this.Game.startGame();
+  console.log("Init GAME"); 
 };
 
 /*XMLscene.prototype.movePiece = function(finalPos){

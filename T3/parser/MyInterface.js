@@ -64,6 +64,19 @@ MyInterface.prototype.addShadersGroup = function(){
 	this.gui.add(this.scene, 'selectable');	
 };
 
+/**
+ * Adds a group for shaders and add nodes selectable
+ */
+MyInterface.prototype.addGameGroup = function(){
+
+	var group = this.gui.addFolder("Menu");
+
+    group.open();
+
+	this.gui.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions);
+	this.gui.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions);
+};
+
 MyInterface.prototype.processKeyDown = function(event) {
 	CGFinterface.prototype.processKeyDown.call(this,event);
 	switch (event.keyCode)
