@@ -17,6 +17,15 @@ function RegularPiece(scene, type, position) {
 		default:
 			break;
 	}
+
+	this.startTime = 0;
+	this.currAnimation = null;
+	this.transformMatrix = mat4.create();
+    mat4.identity(this.transformMatrix);
+
+    // Animation Matrix
+    this.animationMatrix = mat4.create();
+    mat4.identity(this.animationMatrix);
 };
 
 RegularPiece.prototype = Object.create(CGFobject.prototype);
@@ -40,4 +49,20 @@ RegularPiece.prototype.display = function () {
 
 RegularPiece.prototype.updateCoords = function (position) {
 	this.position = position;
+};
+
+RegularPiece.prototype.update = function(currTime){
+    // First time
+    if(this.startTime == 0){
+        this.startTime = currTime;
+        return;
+    }
+
+    console.log(this.position);
+    let deltaTime = currTime - this.startTime;
+    if(this.currAnimation != null){
+        this.animationMatrix = this.currAnimation.getMatrix(deltaTime);
+    }
+
+    this.startTime = currTime;
 };

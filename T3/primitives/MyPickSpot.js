@@ -1,4 +1,4 @@
-function MySquare(scene,id,x,z) {
+function MyPickSpot(scene,id,x,z) {
  	CGFobject.call(this,scene);
 
     this.scene = scene;
@@ -8,10 +8,10 @@ function MySquare(scene,id,x,z) {
 	this.id = id;
 };
 
-MySquare.prototype = Object.create(CGFobject.prototype);
-MySquare.prototype.constructor=MySquare;
+MyPickSpot.prototype = Object.create(CGFobject.prototype);
+MyPickSpot.prototype.constructor=MyPickSpot;
 
-MySquare.prototype.display = function(){
+MyPickSpot.prototype.display = function(){
     this.scene.pushMatrix();
  	  this.scene.translate(this.x, 0.01, this.z);
  	  this.scene.scale(0.6,0.6,0.6);

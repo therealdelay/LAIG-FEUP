@@ -31,6 +31,8 @@ function XMLscene(interface) {
 	this.pieces = [];
     this.pickableID = 0;
     this.currentPiece = null;
+
+    this.piecesGraph = new PiecesGraph(this);
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -58,7 +60,7 @@ XMLscene.prototype.logPicking = function (){
                     }
 
                     if(this.currentPiece !== null){
-                        if(this.pickResults[i][0] instanceof MySquare){
+                        if(this.pickResults[i][0] instanceof MyPickSpot){
                             this.currentPiece.updateCoords([this.pickResults[i][0].x,this.pickResults[i][0].z]);
                             this.currentPiece = null;
                         }
@@ -296,15 +298,23 @@ XMLscene.prototype.display = function() {
     
     this.displayPickableCircles();
     this.clearPickRegistration();
-   /* if(this.pieceMatrix !== null)
-        this.multMatrix(this.pieceMatrix);*/
     this.displayPieces();
     this.clearPickRegistration();
+
+
+    /*this.displayRealPieces();
+    this.clearPickRegistration();*/
+   /* if(this.pieceMatrix !== null)
+        this.multMatrix(this.pieceMatrix);*/
 
     this.popMatrix();
     
     // ---- END Background, camera and axis setup
 };
+
+/*XMLscene.prototype.displayRealPieces(){
+
+}*/
 
 XMLscene.prototype.displayPickableCircles = function() {
     this.pickableID = 0;
@@ -357,6 +367,13 @@ XMLscene.prototype.update = function(currTime){
             this.moveCam = false;
     }
 
+   /* for(var i = 0; i < this.pieces.length; i++){
+        //console.log(this.pieces[i].currAnimation);
+        this.pieces[i].update(currTime);
+        /*if(this.pieces[i].currAnimation !== null)
+            this.multMatrix(this.pieces[i].currAnimation.getMatrix());*/
+    //}
+
     //this.paintOptions();
     this.initialTime = currTime;
 
@@ -369,7 +386,7 @@ XMLscene.prototype.createPickableSquares = function(){
   let x = -5.1;
   let z = -5.1;
   for(let i = 0; i < 25; i++){
-  	let square = new MySquare(this, i, x,z);
+  	let square = new MyPickSpot(this, i, x,z);
   	if(x >= 5){
   		x = -5.1;
   		z += 2.55;

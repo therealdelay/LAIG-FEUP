@@ -68,4 +68,4 @@ MyGraphNode.prototype.update = function(currTime){
     }
 
     this.startTime = currTime;
-}
+};

@@ -10,6 +10,15 @@ function HengePiece(scene, player, position) {
 	this.body = new MyCylinder(this.scene, 0.4, 0.9, 0.9, 20, 20, 1, 1);
 	this.coverPart1 = new MySphere(this.scene, 1, 20, 20);
 	this.coverPart2 = new MySphere(this.scene, 1, 20, 20);
+
+    this.startTime = 0;
+    this.currAnimation = null;
+    this.transformMatrix = mat4.create();
+    mat4.identity(this.transformMatrix);
+
+    // Animation Matrix
+    this.animationMatrix = mat4.create();
+    mat4.identity(this.animationMatrix);
 };
 
 HengePiece.prototype = Object.create(CGFobject.prototype);
@@ -40,6 +49,29 @@ HengePiece.prototype.display = function () {
     this.scene.popMatrix();
 };
 
-HengePiece.prototype.updateCoords = function (position){
+HengePiece.prototype.updateCoords = function (position) {
+   /*var p1 = [this.position[0],0,this.position[1]];
+    var p2 = [this.position[0],15,this.position[1]];
+    var p3 = [position[0],15,position[1]];
+    var p4 = [position[0],0,position[1]];
+    var cp = [p1,p2,p3,p4];
+    this.currAnimation = new BezierAnimation(this.scene, 1, 1, cp);*/
     this.position = position;
-}
+};
+
+HengePiece.prototype.update = function(currTime){
+    // First time
+    if(this.startTime == 0){
+        this.startTime = currTime;
+        return;
+    }
+
+    let deltaTime = currTime - this.startTime;
+    if(this.currAnimation != null){
+        this.animationMatrix = this.currAnimation.getMatrix(deltaTime);
+        if(this.currAnimation.finish)
+            this.currAnimation = null;
+    }
+
+    this.startTime = currTime;
+};
