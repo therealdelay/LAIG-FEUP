@@ -93,6 +93,7 @@ Game.prototype.getReplay = function() {
 		this.whitePieces = jsonData[1];
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
+
 	}
 	else if(this.lastRequest ==  "getPlay") {
 		this.moves.push({ play: Game.currReplay, player:this.currPlayer});
@@ -116,4 +117,12 @@ Game.prototype.gameInFormat = function() {
 	gameJson.push(this.currPlayer); 
 
 	return "[" + gameJson + "]";
+}
+
+Game.prototype.configWhitePlayer = function() {
+	this.whitePieces[this.whitePieces.length-1] = this.scene.WhitePlayer;
+}
+
+Game.prototype.configBlackPlayer = function() {
+	this.blackPieces[this.blackPieces.length-1] = this.scene.BlackPlayer;
 }
