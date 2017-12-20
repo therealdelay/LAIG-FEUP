@@ -337,9 +337,8 @@ XMLscene.prototype.display = function() {
         }
     }
 
-console.log("passou ");
+
    if(this.WhitePlayer != null  && !this.isConfiguredPlayerWhite){
-    console.log("VAI ALTERAR O WHITE!!!!");
         this.Game.configWhitePlayer();
         this.isConfiguredPlayerWhite = true;
     }
