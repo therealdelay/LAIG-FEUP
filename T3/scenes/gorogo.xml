@@ -68,8 +68,63 @@
     <amplif_factor s="1" t="1" />   
   </TEXTURE>
 
+  <TEXTURE id="metal">
+    <file path="../textures/metal.jpg" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
   <TEXTURE id="zero">
     <file path="../textures/0.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+  <TEXTURE id="one">
+    <file path="../textures/1.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="two">
+    <file path="../textures/2.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="three">
+    <file path="../textures/3.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="four">
+    <file path="../textures/4.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="five">
+    <file path="../textures/5.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+      <TEXTURE id="six">
+    <file path="../textures/6.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="seven">
+    <file path="../textures/7.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="eight">
+    <file path="../textures/8.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="nine">
+    <file path="../textures/9.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
+    <TEXTURE id="ten">
+    <file path="../textures/10.png" />                
     <amplif_factor s="1" t="1" />   
   </TEXTURE>
 
@@ -332,7 +387,16 @@
   <TEXTURE id="null" />                  
   
   <DESCENDANTS>
-    <LEAF id="cylinder1" type="cylinder" args="1 1 1 20 20 1 1" />
+    <LEAF id="cylinder" type="cylinder" args="1 1 1 20 20 1 1" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="cilindro1">       
+  <MATERIAL id="null" />
+  <TEXTURE id="null" />                  
+  
+  <DESCENDANTS>
+    <LEAF id="cylinder1" type="cylinder" args="1 1 1 20 20 0 0" />
   </DESCENDANTS>
 </NODE>
 
@@ -387,6 +451,8 @@
     <NODEREF id="face1" />
     <NODEREF id="face2" />
     <NODEREF id="face3" />
+    <NODEREF id="rings1" />
+    <NODEREF id="rings2" />
   </DESCENDANTS>
 </NODE>
 
@@ -429,6 +495,130 @@
    <NODEREF id="cube" />
  </DESCENDANTS>
 </NODE>
+
+<NODE id="rings2">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />    
+
+ <TRANSLATION x="6" y="0" z="0" />         
+  
+<DESCENDANTS>
+   <NODEREF id="rings1" />
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="rings1">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="metal" />             
+  
+<DESCENDANTS>
+   <NODEREF id="ring" />
+   <NODEREF id="ring1" />
+   <NODEREF id="ring2" />
+   <NODEREF id="ring3" />
+   <NODEREF id="ring4" />
+   <NODEREF id="ring5" />
+   <NODEREF id="ring6" />
+   <NODEREF id="ring7" />
+   <NODEREF id="ring8" />
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring8">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="4" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring7">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="3.5" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring6">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="3" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring5">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="2.5" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring4">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="2" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring3">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="1.5" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring2">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="1" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+
+<NODE id="ring1">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="0.5" y="0" z="0" />
+  <DESCENDANTS>
+    <NODEREF id="ring" />         
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="ring">       
+  <MATERIAL id="null" />     
+  <TEXTURE id="null" />             
+  <TRANSLATION x="2.45" y="4.8" z="-2.25" />
+  <ROTATION axis="y" angle="90" />
+  <SCALE sx="0.6" sy="0.6" sz="0.15" />
+  <DESCENDANTS>
+    <NODEREF id="cilindro1" />         
+ </DESCENDANTS>
+</NODE>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- A cube face -->
 <NODE id="facecube1">       
