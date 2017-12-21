@@ -6,6 +6,7 @@ function MyPickSpot(scene,id,x,z) {
  	this.x = x;
  	this.z = z;
 	this.id = id;
+	this.isOption = true;
 };
 
 MyPickSpot.prototype = Object.create(CGFobject.prototype);

@@ -95,12 +95,30 @@
     <emission r="0" g="0" b="0" a="1" />        
   </MATERIAL>
 
+  <!-- Dark Material -->
+  <MATERIAL id="darkMaterial">                                  
+    <shininess value="0.1" />
+    <specular r="0" g="0" b="0" a="1" />        
+    <diffuse r="0" g="0" b="0" a="1" />       
+    <ambient r="0" g="0" b="0" a="1" />         
+    <emission r="0" g="0" b="0" a="1" />        
+  </MATERIAL>
+
     <!-- White Material -->
   <MATERIAL id="whiteMaterial">                                  
     <shininess value="1" />
     <specular r="0.2" g="0.2" b="0.2" a="1" />        
     <diffuse r="0.5" g="0.5" b="0.5" a="1" />       
     <ambient r="0.2" g="0.2" b="0.2" a="1" />         
+    <emission r="0" g="0" b="0" a="1" />        
+  </MATERIAL>
+
+      <!-- Red Material -->
+  <MATERIAL id="redMaterial">                                  
+    <shininess value="0.3" />
+    <specular r="0.8" g="0" b="0" a="0.5" />        
+    <diffuse r="0.5" g="0" b="0" a="1" />       
+    <ambient r="0" g="0" b="0" a="1" />         
     <emission r="0" g="0" b="0" a="1" />        
   </MATERIAL>
 

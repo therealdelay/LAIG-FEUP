@@ -4,6 +4,8 @@ function HengePiece(scene, player, position) {
 	this.player = player;
 	this.position = position;
 
+    this.isPlayed = false;
+
 	this.material1 = this.scene.whiteMaterial;
 	this.material2 = this.scene.blackMaterial;
 

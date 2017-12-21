@@ -27,7 +27,7 @@ function XMLscene(interface) {
     this.initialTime = d.getTime();
 
     this.lightValues = {};
-	this.quadrados = [];
+	this.spots = [];
 	this.pieces = [];
     this.pickableID = 0;
     this.currentPiece = null;
@@ -56,12 +56,7 @@ XMLscene.prototype.logPicking = function (){
 					//console.log("Picked object: " + obj + ", with pick id " + customId);
 
                     if(this.pickResults[i][0] instanceof RegularPiece){
-                        if(this.pickResults[i][0].type == 'black'){
-                            this.currentPiece = this.pieces[customId-1];
-                        }
-                        else{
-                            this.currentPiece = this.pieces[customId-1];
-                        }
+                        this.currentPiece = this.pieces[customId-1];
                     }
                     else if(this.pickResults[i][0] instanceof HengePiece){
                         this.currentPiece = this.pieces[customId-1];
@@ -70,6 +65,8 @@ XMLscene.prototype.logPicking = function (){
                     if(this.currentPiece !== null){
                         if(this.pickResults[i][0] instanceof MyPickSpot){
                             this.animatePiece(this.pickResults[i][0]);
+                            console.log(this.pickResults[i][0].isOption);
+                            this.pickResults[i][0].isOption = false;
                         }
                     }
 				}
@@ -83,8 +80,9 @@ XMLscene.prototype.animatePiece = function (pickResult){
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [pickResult.x,10,pickResult.z];
-    var p4 = [pickResult.x,0,pickResult.z];
+    var p4 = [pickResult.x,0.3,pickResult.z];
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
+    this.currentPiece.isPlayed = true;
     this.currentPiece = null;
 }
 /**
@@ -207,27 +205,6 @@ XMLscene.prototype.initLights = function() {
     }
 };
 
-XMLscene.prototype.updateCamera = function(view){
-	switch(view){
-		case 'ai':
-            this.finalPos = [0,15,15];
-            this.moveCam = true;
-            break;
-        case 'black':
-            this.finalPos = [-15,15,0];
-            this.moveCam = true;
-            break;
-        case 'white':
-            this.finalPos = [15,15,0];
-            this.moveCam = true;
-            break;
-        default:
-            this.finalPos = [0,15,15];
-            this.moveCam = true;
-            break;
-	}
-};
-
 /* Handler called when the graph is finally loaded. 
  * As loading is asynchronous, this may be called already after the application has started the run loop
  */
@@ -254,9 +231,6 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.interface.addGameGroup();
     
     this.createPieces();
-
-    //this.currAnimation = new BezierAnimation(this, 0, 1, [this.pieces[0].position,[this.pieces[0].position[0],15,this.pieces[0].position[1]],[0,15,0,0],[0,0,0,0]]);
-    //console.log(this.currAnimation);
 };
 
 
@@ -325,8 +299,8 @@ XMLscene.prototype.display = function() {
 
     this.popMatrix();
 
-    console.log("blackPieces" + this.Game.blackPieces);
-    console.log("whitePieces" + this.Game.whitePieces);
+    /*console.log("blackPieces" + this.Game.blackPieces);
+    console.log("whitePieces" + this.Game.whitePieces);*/
 
     //teste
     if(Game.changeStatus){
@@ -363,34 +337,77 @@ XMLscene.prototype.display = function() {
     // ---- END Background, camera and axis setup
 };
 
-/*XMLscene.prototype.displayRealPieces(){
-
-}*/
-
 XMLscene.prototype.displayPickableCircles = function() {
     this.pickableID = 0;
     let j = 0;
-    for(; j < this.quadrados.length; j++){
-        if(this.currentPiece !== null){
-            this.registerForPick(j+1,this.quadrados[j]);
-            this.redMaterial.apply();
+    for(; j < this.spots.length; j++){
+        if((this.currentPiece !== null) && this.spots[j].isOption){
+            this.registerForPick(j+1,this.spots[j]);
+            this.graph.materials['redMaterial'].apply();
         }
         else
-            this.darkMaterial.apply();
-        this.quadrados[j].display();
+            this.graph.materials['darkMaterial'].apply();
+        this.spots[j].display();
+        this.clearPickRegistration();
     }    
     this.pickableID += j+1;
-
 };
 
 XMLscene.prototype.displayPieces = function() {
     let w = 0;
     for(; w < this.pieces.length; w++){
-        if(this.currentPiece == null)
+        if((this.currentPiece == null) && (this.pieces[w].isPlayed == false))
             this.registerForPick(1+w,this.pieces[w]);
+        
         this.pieces[w].display();
+        this.clearPickRegistration();
     }
 };
+
+
+/**
+ * Update the camera position to start the animation
+ * @param view
+ */
+XMLscene.prototype.updateCamera = function(view){
+    switch(view){
+        case 'ai':
+            this.finalPos = [0,15,15];
+            this.moveCam = true;
+            break;
+        case 'black':
+            this.finalPos = [-15,15,0];
+            this.moveCam = true;
+            break;
+        case 'white':
+            this.finalPos = [15,15,0];
+            this.moveCam = true;
+            break;
+        default:
+            this.finalPos = [0,15,15];
+            this.moveCam = true;
+            break;
+    }
+};
+
+/**
+ * Updates the camera current position, in case the camera is moving
+ * @param deltaTime
+ */
+XMLscene.prototype.animateCamera = function(deltaTime){
+    if(this.moveCam){
+        if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
+            if(deltaTime <= 10000){
+                if(this.camera.position[0] < this.finalPos[0])
+                    this.camera.orbit("y", deltaTime/1000*40*DEGREE_TO_RAD);
+                else
+                    this.camera.orbit("y", -deltaTime/1000*40*DEGREE_TO_RAD);
+            }
+        }
+        else
+            this.moveCam = false;
+    }
+}
 
 /**
  * Update the scale factor and Red component from the given current time.
@@ -405,26 +422,7 @@ XMLscene.prototype.update = function(currTime){
     this.time = currTime/1000; 
     var delta = currTime - this.initialTime;
     
-    if(this.moveCam){
-        if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
-            if(delta <= 10000){
-                if(this.camera.position[0] < this.finalPos[0])
-                    this.camera.orbit("y", delta/1000*40*DEGREE_TO_RAD);
-                else
-                    this.camera.orbit("y", -delta/1000*40*DEGREE_TO_RAD);
-            }
-        }
-        else
-            this.moveCam = false;
-    }
-
-   /* for(var i = 0; i < this.pieces.length; i++){
-        //console.log(this.pieces[i].currAnimation);
-        this.pieces[i].update(currTime);
-        /*if(this.pieces[i].currAnimation !== null)
-            this.multMatrix(this.pieces[i].currAnimation.getMatrix());*/
-    //}
-
+    this.animateCamera(delta);
 
     for(var i = 0; i < this.pieces.length; i++){
         if (this.pieces[i].currAnimation != null){
@@ -432,7 +430,7 @@ XMLscene.prototype.update = function(currTime){
             this.pieces[i].updateCoords([this.pieces[i].currAnimation.transformationMatrix[12],this.pieces[i].currAnimation.transformationMatrix[13],this.pieces[i].currAnimation.transformationMatrix[14]]);
         }
     }
-    //this.paintOptions();
+
     this.initialTime = currTime;
 
     this.tempR = 0.5*(Math.sin(4*this.time));
@@ -451,7 +449,7 @@ XMLscene.prototype.createPickableSquares = function(){
   	}
   	else
   		x += 2.55;
-    this.quadrados.push(square);
+    this.spots.push(square);
   }
 
 
@@ -459,11 +457,3 @@ XMLscene.prototype.createPickableSquares = function(){
   this.Game.startGame();
   console.log("Init GAME"); 
 };
-
-/*XMLscene.prototype.movePiece = function(finalPos){
-    var p1 = [this.pieces[0].position[0],0,this.pieces[0].position[1]];
-    var p2 = [this.pieces[0].position[0],10,this.pieces[0].position[1]];
-    var p3 = [finalPos[0],10,finalPos[2]];
-    var p4 = finalPos;
-    this.pieceAnimation = new BezierAnimation(this,5,1,[p1,p2,p3,p4]);
-};*/
