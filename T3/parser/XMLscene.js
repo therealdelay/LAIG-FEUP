@@ -69,7 +69,8 @@ XMLscene.prototype.logPicking = function (){
 
                     if(this.currentPiece !== null){
                         if(this.pickResults[i][0] instanceof MyPickSpot){
-                            this.currentPiece.updateCoords([this.pickResults[i][0].x,this.pickResults[i][0].z]);
+                            //this.currentPiece.updateCoords([this.pickResults[i][0].x,this.pickResults[i][0].z]);
+                            this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [this.currentPiece.position,[this.currentPiece.position[0],15,this.currentPiece.position[1]],[this.pickResults[i][0].x,0,this.pickResults[i][0].z],[this.pickResults[i][0].x,0,this.pickResults[i][0].z]]);
                             this.currentPiece = null;
                         }
                     }
@@ -136,8 +137,8 @@ XMLscene.prototype.createPieces = function() {
     var x = -15;
     var z = -8;
     for(var i = 0; i < 10; i++){
-        this.pieces.push(new RegularPiece(this,'black',[x,z]));
-        this.pieces.push(new RegularPiece(this,'white',[x+28,z]));
+        this.pieces.push(new RegularPiece(this,'black',[x,0,z]));
+        this.pieces.push(new RegularPiece(this,'white',[x+28,0,z]));
         if(x > -15){
             x = -15;
             z += 2;
@@ -147,8 +148,8 @@ XMLscene.prototype.createPieces = function() {
     }
 
     for(var j = 0; j < 2; j++){
-        this.pieces.push(new HengePiece(this,'black',[x,z]));
-        this.pieces.push(new HengePiece(this,'white',[x+28,z]));
+        this.pieces.push(new HengePiece(this,'black',[x,0,z]));
+        this.pieces.push(new HengePiece(this,'white',[x+28,0,z]));
         if(x > -15){
             x = -15;
             z += 2;
@@ -156,7 +157,7 @@ XMLscene.prototype.createPieces = function() {
         else
             x += 2;
     }
-    this.pieces.push(new HengePiece(this,'white',[x+30,z]));
+    this.pieces.push(new HengePiece(this,'white',[x+30,0,z]));
 };
 
 /**
@@ -247,6 +248,9 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.interface.addGameGroup();
     
     this.createPieces();
+
+    //this.currAnimation = new BezierAnimation(this, 0, 1, [this.pieces[0].position,[this.pieces[0].position[0],15,this.pieces[0].position[1]],[0,15,0,0],[0,0,0,0]]);
+    //console.log(this.currAnimation);
 };
 
 
@@ -349,7 +353,6 @@ XMLscene.prototype.display = function() {
         this.Game.configBlackPlayer();
         this.isConfiguredPlayerBlack = true;
     }
-
     
     // ---- END Background, camera and axis setup
 };
@@ -416,6 +419,13 @@ XMLscene.prototype.update = function(currTime){
             this.multMatrix(this.pieces[i].currAnimation.getMatrix());*/
     //}
 
+
+    for(var i = 0; i < this.pieces.length; i++){
+        if (this.pieces[i].currAnimation != null){
+            this.pieces[i].currAnimation.getMatrix(delta);
+            this.pieces[i].updateCoords([this.pieces[i].currAnimation.transformationMatrix[12],this.pieces[i].currAnimation.transformationMatrix[13],this.pieces[i].currAnimation.transformationMatrix[14]]);
+        }
+    }
     //this.paintOptions();
     this.initialTime = currTime;
 

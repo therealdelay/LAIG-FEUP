@@ -20,12 +20,6 @@ function RegularPiece(scene, type, position) {
 
 	this.startTime = 0;
 	this.currAnimation = null;
-	this.transformMatrix = mat4.create();
-    mat4.identity(this.transformMatrix);
-
-    // Animation Matrix
-    this.animationMatrix = mat4.create();
-    mat4.identity(this.animationMatrix);
 };
 
 RegularPiece.prototype = Object.create(CGFobject.prototype);
@@ -35,14 +29,14 @@ RegularPiece.prototype.display = function (position) {
     
     this.scene.pushMatrix();
     	this.material.apply();
-    	this.scene.translate(this.position[0],0,this.position[1]);
+    	this.scene.translate(this.position[0],this.position[1],this.position[2]);
         //this.scene.translate(position[0],0,position[1]);
     	this.scene.rotate(-90*DEGREE_TO_RAD, 1,0,0);
     	this.body.display();
     this.scene.popMatrix();
 
     this.scene.pushMatrix();
-        this.scene.translate(this.position[0],0.4,this.position[1]);
+        this.scene.translate(this.position[0],this.position[1]+0.4,this.position[2]);
         //this.scene.translate(position[0],0.4,position[1]);
     	this.scene.scale(0.9,0.2,0.9);
     	this.cover.display();
@@ -60,11 +54,11 @@ RegularPiece.prototype.update = function(currTime){
         return;
     }
 
-    console.log(this.position);
+   /* console.log(this.position);
     let deltaTime = currTime - this.startTime;
     if(this.currAnimation != null){
         this.animationMatrix = this.currAnimation.getMatrix(deltaTime);
     }
-
+*/
     this.startTime = currTime;
 };
