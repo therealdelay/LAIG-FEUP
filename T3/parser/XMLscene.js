@@ -374,7 +374,7 @@ XMLscene.prototype.displayPieces = function() {
  * @param view
  */
 XMLscene.prototype.updateCamera = function(view){
-    switch(view){
+    switch(this.CameraView){
         case 'ai':
             this.finalPos = [0,15,15];
             this.moveCam = true;
@@ -422,11 +422,13 @@ XMLscene.prototype.update = function(currTime){
 		this.graph.nodes[index].update(currTime);
 	}
 
-    //this.interface.update();
+    this.interface.update();
 
     //to seconds
     this.time = currTime/1000; 
     var delta = currTime - this.initialTime;
+
+    this.updateCamera();
     
     this.animateCamera(delta);
 

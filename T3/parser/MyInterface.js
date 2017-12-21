@@ -51,20 +51,28 @@ MyInterface.prototype.addLightsGroup = function(lights) {
     }
 };
 
+MyInterface.prototype.removeFolder = function(name){
+	console.log(this.gui.__folders[name]);
+	var folder = this.gui.__folders[name];
+	if (!folder) {
+	    return;
+	}
+	folder.close();
+	this.gui.__ul.removeChild(folder.domElement.parentNode);
+	delete this.gui.__folders[name];
+}
+
 MyInterface.prototype.addCameraGroup = function(){
-
-	var group = this.gui.addFolder("Camera");
-
-	group.open();
-
-	group.add(this.scene, 'CameraAutomatic');
-	group.add(this.scene, 'CameraView', this.scene.cameraViews);
-	this.noViews = false;
-
+	this.gui.add(this.scene, 'CameraAutomatic');
 };
 
 MyInterface.prototype.addCameraViews = function(){
+	
+	var group = this.gui.addFolder("Camera");
+
+	group.open();
 	group.add(this.scene, 'CameraView', this.scene.cameraViews);
+	this.noViews = false;
 }
 
 /**
@@ -98,38 +106,34 @@ MyInterface.prototype.addGameGroup = function(){
 
 MyInterface.prototype.processKeyDown = function(event) {
 	CGFinterface.prototype.processKeyDown.call(this,event);
+	if(!this.scene.CameraAutomatic)
+		return;
 	switch (event.keyCode)
 	{
 		case (66):
 		case (98):	//b
-			this.scene.updateCamera('black');
+			this.scene.CameraView = 'black';
 			break;
 
 		case (87):
 		case (119):	//w
-			this.scene.updateCamera('white');
+			this.scene.CameraView = 'white';
 			break;
 
 		case (68):
 		case (100):	//d
-			this.scene.updateCamera('ai');
+			this.scene.CameraView = 'ai';
 			break;
 	}
 };
 
 MyInterface.prototype.update = function(){
-	/*if(!this.scene.CameraAutomatic && this.noViews){
-		this.gui.add(this.scene, 'CameraView', this.scene.cameraViews);
+	if(this.scene.CameraAutomatic){
+		this.removeFolder("Camera");
 		this.noViews = false;
 	}
-	else if(this.scene.CameraAutomatic && !this.noViews){
-		//this.gui.remove(this.scene)
-	}*/
-
-	
-	if(this.scene.CameraAutomatic && !this.noViews){
-		this.gui['__folders']['Camera'][1].remove();
-		this.noViews = true;	
+	else if(!this.scene.CameraAutomatic && !this.noViews){
+		this.addCameraViews();
+		this.noViews = true;
 	}
-	console.log(this.gui['__folders']['Camera']['__controllers']);
 }
