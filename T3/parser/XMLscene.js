@@ -16,11 +16,6 @@ function XMLscene(interface) {
 	this.sinTime = -Math.PI/2;
 	this.R = 1;
 	this.tempR = 1;
-	this.cam = [0,0,0];
-	this.currentView = 'ai';
-	this.lastCamTime = 0;
-    this.finalPos = [0,0,0];
-    this.moveCam = false;
 
     var d = new Date();
 
@@ -41,6 +36,14 @@ function XMLscene(interface) {
     this.isConfiguredPlayerWhite = false;
     this.isConfiguredPlayerBlack = false;
     this.gamePlayerOptions = ['Human', 'Easy Bot', 'Hard Bot'];
+
+    this.cam = [0,0,0];
+    this.CameraAutomatic = true;
+    this.CameraView = 'ai';
+    this.cameraViews = ['ai','black','white'];
+    this.finalPos = [0,0,0];
+    this.moveCam = false;
+
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -229,6 +232,7 @@ XMLscene.prototype.onGraphLoaded = function() {
 
     // Adds game group
     this.interface.addGameGroup();
+    this.interface.addCameraGroup();
     
     this.createPieces();
 };
@@ -417,6 +421,8 @@ XMLscene.prototype.update = function(currTime){
 	for(var index in this.graph.nodes){
 		this.graph.nodes[index].update(currTime);
 	}
+
+    //this.interface.update();
 
     //to seconds
     this.time = currTime/1000; 

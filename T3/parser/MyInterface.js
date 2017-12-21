@@ -26,6 +26,8 @@ MyInterface.prototype.init = function(application) {
     
     this.gui = new dat.GUI();
 
+    this.noViews = true;
+
     return true;
 };
 
@@ -49,6 +51,21 @@ MyInterface.prototype.addLightsGroup = function(lights) {
     }
 };
 
+MyInterface.prototype.addCameraGroup = function(){
+
+	var group = this.gui.addFolder("Camera");
+
+	group.open();
+
+	group.add(this.scene, 'CameraAutomatic');
+	group.add(this.scene, 'CameraView', this.scene.cameraViews);
+	this.noViews = false;
+
+};
+
+MyInterface.prototype.addCameraViews = function(){
+	group.add(this.scene, 'CameraView', this.scene.cameraViews);
+}
 
 /**
  * Adds a group for shaders and add nodes selectable
@@ -73,8 +90,10 @@ MyInterface.prototype.addGameGroup = function(){
 
     group.open();
 
-	this.gui.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions);
-	this.gui.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions);
+	//this.gui.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions);
+	//this.gui.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions);
+	group.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions);
+	group.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions);
 };
 
 MyInterface.prototype.processKeyDown = function(event) {
@@ -97,3 +116,20 @@ MyInterface.prototype.processKeyDown = function(event) {
 			break;
 	}
 };
+
+MyInterface.prototype.update = function(){
+	/*if(!this.scene.CameraAutomatic && this.noViews){
+		this.gui.add(this.scene, 'CameraView', this.scene.cameraViews);
+		this.noViews = false;
+	}
+	else if(this.scene.CameraAutomatic && !this.noViews){
+		//this.gui.remove(this.scene)
+	}*/
+
+	
+	if(this.scene.CameraAutomatic && !this.noViews){
+		this.gui['__folders']['Camera'][1].remove();
+		this.noViews = true;	
+	}
+	console.log(this.gui['__folders']['Camera']['__controllers']);
+}
