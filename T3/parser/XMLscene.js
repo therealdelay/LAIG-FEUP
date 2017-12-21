@@ -69,9 +69,7 @@ XMLscene.prototype.logPicking = function (){
 
                     if(this.currentPiece !== null){
                         if(this.pickResults[i][0] instanceof MyPickSpot){
-                            //this.currentPiece.updateCoords([this.pickResults[i][0].x,this.pickResults[i][0].z]);
-                            this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [this.currentPiece.position,[this.currentPiece.position[0],15,this.currentPiece.position[1]],[this.pickResults[i][0].x,0,this.pickResults[i][0].z],[this.pickResults[i][0].x,0,this.pickResults[i][0].z]]);
-                            this.currentPiece = null;
+                            this.animatePiece(this.pickResults[i][0]);
                         }
                     }
 				}
@@ -81,6 +79,14 @@ XMLscene.prototype.logPicking = function (){
 	}
 };
 
+XMLscene.prototype.animatePiece = function (pickResult){
+    var p1 = this.currentPiece.position;
+    var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
+    var p3 = [pickResult.x,10,pickResult.z];
+    var p4 = [pickResult.x,0,pickResult.z];
+    this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
+    this.currentPiece = null;
+}
 /**
  * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
  */
