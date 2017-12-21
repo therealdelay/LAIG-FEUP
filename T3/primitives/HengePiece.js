@@ -24,11 +24,12 @@ function HengePiece(scene, player, position) {
 HengePiece.prototype = Object.create(CGFobject.prototype);
 HengePiece.prototype.constructor=HengePiece;
 
-HengePiece.prototype.display = function () {
+HengePiece.prototype.display = function (position) {
     
     this.scene.pushMatrix();
     	this.material1.apply();
-    	this.scene.translate(this.position[0],0,this.position[1]);
+        this.scene.translate(this.position[0],0,this.position[1]);
+        //this.scene.translate(position[0],0,position[1]);
     	this.scene.rotate(-90*DEGREE_TO_RAD, 1,0,0);
     	this.body.display();
     this.scene.popMatrix();
@@ -36,6 +37,7 @@ HengePiece.prototype.display = function () {
     this.scene.pushMatrix();
     	this.material1.apply();
     	this.scene.translate(this.position[0],0.4,this.position[1]);
+        //this.scene.translate(position[0],0.4,position[1]);
     	this.scene.scale(0.9,0.2,0.9);
     	this.coverPart1.display();
     this.scene.popMatrix();
@@ -43,6 +45,7 @@ HengePiece.prototype.display = function () {
     this.scene.pushMatrix();
     	this.material2.apply();
     	this.scene.translate(this.position[0],0.4,this.position[1]);
+        //this.scene.translate(position[0],0.4,position[1]);
     	this.scene.scale(0.6,0.25,0.6);
     	this.scene.rotate(-90*DEGREE_TO_RAD, 1,0,0);
     	this.coverPart2.display();

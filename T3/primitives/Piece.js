@@ -1,4 +1,4 @@
-function Piece(scene, name){
+function Piece(scene, name, position){
 	CGFobject.call(this,scene);
 	this.scene = scene;
 	this.name = name;
@@ -6,9 +6,11 @@ function Piece(scene, name){
 	this.animation = null;
 	this.timer = null;
 	this.player = null;
+	this.position = position;
 
 	this.piece = this.scene.piecesGraph.pieceNodes[name];
-	this.piece.setIsParent(true);
+	//this.piece.setIsParent(true);
+	this.isParent = true;
 
 	this.material = this.scene.graph.materials[this.piece.materialID];
 
@@ -20,8 +22,11 @@ Piece.prototype.constructor = Piece;
 
 Piece.prototype.display = function (currNode, parentMaterial, currTime){
 	var currMaterial;
+	console.log(currNode.nodeID);
 	var leavesLength = currNode.leaves.length;
 	var childrenLength = currNode.children.length;
+	console.log(currNode.children);
+	console.log(currNode.leaves);
 	var i;
 	var j;
 
@@ -37,7 +42,7 @@ Piece.prototype.display = function (currNode, parentMaterial, currTime){
 	this.scene.pushMatrix();
 	this.scene.multMatrix(currNode.transformMatrix);
 
-	if(this.animation != null && currNode.isParent){
+	if(this.animation != null && this.isParent){
 		this.animation.update(currTime, this.piece);
 		this.animation.applyMatrix();
 	}

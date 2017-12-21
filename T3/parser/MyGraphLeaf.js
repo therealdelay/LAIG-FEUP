@@ -5,7 +5,7 @@
  function MyGraphLeaf(graph, xmlelem) {
   this.graph = graph;
   this.part = null;
-  var type = graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch']);
+  var type = graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch', 'peca', 'henge']);
   var args = graph.reader.getString(xmlelem, 'args');
 
   args = args.split(" ");
@@ -21,10 +21,25 @@
       this.createSphere(graph, args); break;
     case 'patch':
       this.createPatch(graph, xmlelem, args); break;
+    case 'peca':
+      this.createPiece(graph, args); break;
+    case 'henge':
+      this.createHenge(graph, args); break;
     default:
       this.createRectangle(graph, [0,0,0,0]); break;
   }
 }
+
+MyGraphLeaf.prototype.createPiece = function (graph, args){
+
+  this.part = new RegularPiece(graph.scene, args[0]);
+}
+
+MyGraphLeaf.prototype.createHenge = function (graph, args){
+
+  this.part = new HengePiece(graph.scene, args[0]);
+}
+
 
 /**
  * Create rectangle
@@ -132,5 +147,64 @@ MyGraphLeaf.prototype.display = function () {
   if(tex != null)
     this.part.setTexCoordsAmp(tex[1], tex[2]);
 
-  this.part.display();
+  if(this.part instanceof RegularPiece){
+    if(this.part.type == 'black'){
+      var x = -15;
+      var z = -8;
+      for(var i = 0; i < 10; i++){
+        this.part.display([x,z]);
+        if(x > -15){
+            x = -15;
+            z += 2;
+        }
+        else
+            x += 2;
+      }
+    }
+    else if(this.part.type == 'white'){
+      var x = 13;
+      var z = -8;
+      for(var i = 0; i < 10; i++){
+        this.part.display([x,z]);
+        if(x > 13){
+            x = 13;
+            z += 2;
+        }
+        else
+            x += 2;
+      }
+    }
+  }
+  else if(this.part instanceof HengePiece){
+    console.log('Henge');
+    console.log(this.part);
+    var xw = 13;
+    var zw = 2;
+    var xb = -15;
+    var zb = 2;
+    for(var i = 0; i < 2; i++){
+      if(this.part.player == 'white'){
+        this.part.display([xw,zw]);
+        if(xw > 13){
+            xw = 13;
+            zw += 2;
+        }
+        else
+            xw += 2;
+      }
+      else if(this.part.player == 'black'){
+        this.part.display([xb,zb]);
+        if(xb > -15){
+            xb = -15;
+            zb += 2;
+        }
+        else
+            xb += 2;
+      }
+    }
+    if(this.part.player == 'white')
+        this.part.display([xw,zw]);
+  }
+  else
+    this.part.display();
 };

@@ -33,6 +33,7 @@ function XMLscene(interface) {
     this.currentPiece = null;
 
     this.piecesGraph = new PiecesGraph(this);
+    this.blackPieces = [];
 
     this.Game = new Game(this);
     this.WhitePlayer = null;
@@ -129,7 +130,6 @@ XMLscene.prototype.init = function(application) {
     this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
     this.blackMaterial.setShininess(0.3);   
 
-    this.createPieces();
 };
 
 XMLscene.prototype.createPieces = function() {
@@ -245,6 +245,8 @@ XMLscene.prototype.onGraphLoaded = function() {
 
     // Adds game group
     this.interface.addGameGroup();
+    
+    this.createPieces();
 };
 
 
@@ -310,12 +312,6 @@ XMLscene.prototype.display = function() {
     this.clearPickRegistration();
     this.displayPieces();
     this.clearPickRegistration();
-
-
-    /*this.displayRealPieces();
-    this.clearPickRegistration();*/
-   /* if(this.pieceMatrix !== null)
-        this.multMatrix(this.pieceMatrix);*/
 
     this.popMatrix();
 

@@ -133,8 +133,49 @@
       <NODEREF id="blackPiece" />
       <NODEREF id="whitePiece" />
       <NODEREF id="hengePiece" />
+      <!--NODEREF id="pecaPreta" />
+      <NODEREF id="pecaBranca" />
+      <NODEREF id="pecaHengePreta" />
+      <NODEREF id="pecaHengeBranca" /-->
     </DESCENDANTS>
   </NODE>
+
+
+<NODE id="pecaPreta" >
+ <MATERIAL id="null" />
+ <TEXTURE id="null" />
+
+ <DESCENDANTS>
+    <LEAF type="peca" args="black" />
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="pecaBranca" >
+ <MATERIAL id="whiteMaterial" />
+ <TEXTURE id="null" />
+
+ <DESCENDANTS>
+    <LEAF type="peca" args="white" />
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="pecaHengePreta" >
+ <MATERIAL id="whiteMaterial" />
+ <TEXTURE id="null" />
+
+ <DESCENDANTS>
+    <LEAF type="henge" args="black" />
+ </DESCENDANTS>
+</NODE>
+
+<NODE id="pecaHengeBranca" >
+ <MATERIAL id="whiteMaterial" />
+ <TEXTURE id="null" />
+
+ <DESCENDANTS>
+    <LEAF type="henge" args="white" />
+ </DESCENDANTS>
+</NODE>
 
 <NODE id="blackPiece">
  <MATERIAL id="blackMaterial" />    

@@ -31,17 +31,19 @@ function RegularPiece(scene, type, position) {
 RegularPiece.prototype = Object.create(CGFobject.prototype);
 RegularPiece.prototype.constructor=RegularPiece;
 
-RegularPiece.prototype.display = function () {
+RegularPiece.prototype.display = function (position) {
     
     this.scene.pushMatrix();
     	this.material.apply();
     	this.scene.translate(this.position[0],0,this.position[1]);
+        //this.scene.translate(position[0],0,position[1]);
     	this.scene.rotate(-90*DEGREE_TO_RAD, 1,0,0);
     	this.body.display();
     this.scene.popMatrix();
 
     this.scene.pushMatrix();
-    	this.scene.translate(this.position[0],0.4,this.position[1]);
+        this.scene.translate(this.position[0],0.4,this.position[1]);
+        //this.scene.translate(position[0],0.4,position[1]);
     	this.scene.scale(0.9,0.2,0.9);
     	this.cover.display();
     this.scene.popMatrix();
