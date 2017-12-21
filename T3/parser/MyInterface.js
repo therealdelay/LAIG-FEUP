@@ -31,7 +31,6 @@ MyInterface.prototype.init = function(application) {
     return true;
 };
 
-
 /**
  * Adds a folder containing the IDs of the lights passed as parameter.
  */
@@ -52,7 +51,6 @@ MyInterface.prototype.addLightsGroup = function(lights) {
 };
 
 MyInterface.prototype.removeFolder = function(name){
-	console.log(this.gui.__folders[name]);
 	var folder = this.gui.__folders[name];
 	if (!folder) {
 	    return;
@@ -63,7 +61,7 @@ MyInterface.prototype.removeFolder = function(name){
 }
 
 MyInterface.prototype.addCameraGroup = function(){
-	this.gui.add(this.scene, 'CameraAutomatic');
+	this.gui.add(this.scene, 'CameraAutomatic').name("Automatic Camera");
 };
 
 MyInterface.prototype.addCameraViews = function(){
@@ -92,17 +90,25 @@ MyInterface.prototype.addShadersGroup = function(){
 /**
  * Adds a group for shaders and add nodes selectable
  */
-MyInterface.prototype.addGameGroup = function(){
+MyInterface.prototype.addConfigGroup = function(){
 
-	var group = this.gui.addFolder("Menu");
-
+	var group = this.gui.addFolder("Configurations");
     group.open();
 
-	//this.gui.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions);
-	//this.gui.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions);
-	group.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions);
-	group.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions);
+
+	group.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions).name("White Player");
+	group.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions).name("Black Player");
+
+	group.add(this.scene, 'startGame').name("Start Game");
 };
+
+MyInterface.prototype.addGameGroup = function(){
+	var group = this.gui.addFolder("Menu");
+    group.open();
+
+	group.add(this.scene, 'undoPlay').name("Undo Play");
+	group.add(this.scene, 'pauseGame').name("Pause Game");
+}
 
 MyInterface.prototype.processKeyDown = function(event) {
 	CGFinterface.prototype.processKeyDown.call(this,event);

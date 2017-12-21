@@ -201,15 +201,13 @@
     <DESCENDANTS>
       <NODEREF id="board" />
       <NODEREF id="whiteBoard" />
+      <NODEREF id="whiteWonBoard" />
       <NODEREF id="blackBoard" />
+      <NODEREF id="blackWonBoard" />
       <NODEREF id="scoreTable" />
       <NODEREF id="blackPiece" />
       <NODEREF id="whitePiece" />
       <NODEREF id="hengePiece" />
-      <!--NODEREF id="pecaPreta" />
-      <NODEREF id="pecaBranca" />
-      <NODEREF id="pecaHengePreta" />
-      <NODEREF id="pecaHengeBranca" /-->
     </DESCENDANTS>
   </NODE>
 
@@ -325,8 +323,21 @@
   <MATERIAL id="null" />    
   <TEXTURE id="wood" />            
   
-  <TRANSLATION x="12" y="-1" z="9.5" />
-  <SCALE sx="4" sy="1" sz="19" />
+  <TRANSLATION x="12" y="-1" z="8" />
+  <SCALE sx="4" sy="1" sz="16" />
+
+  <DESCENDANTS>
+    <NODEREF id="cube" />
+  </DESCENDANTS>
+</NODE>
+
+<NODE id="whiteWonBoard" >      
+  <MATERIAL id="null" />    
+  <TEXTURE id="wood" />            
+  
+  <TRANSLATION x="11" y="-1" z="15" />
+  <ROTATION axis="y" angle="90"/>
+  <SCALE sx="4" sy="1" sz="10" />
 
   <DESCENDANTS>
     <NODEREF id="cube" />
@@ -337,12 +348,25 @@
   <MATERIAL id="null" />    
   <TEXTURE id="wood" />            
   
-  <TRANSLATION x="-16" y="-1" z="9.5" />
-  <SCALE sx="4" sy="1" sz="19" />
+  <TRANSLATION x="-16" y="-1" z="8" />
+  <SCALE sx="4" sy="1" sz="16" />
 
   <DESCENDANTS>
     <NODEREF id="cube" />
  </DESCENDANTS>
+</NODE>
+
+<NODE id="blackWonBoard" >      
+  <MATERIAL id="null" />    
+  <TEXTURE id="wood" />            
+  
+  <TRANSLATION x="-1" y="-1" z="15" />
+  <ROTATION axis="y" angle="90"/>
+  <SCALE sx="4" sy="1" sz="10" />
+
+  <DESCENDANTS>
+    <NODEREF id="cube" />
+  </DESCENDANTS>
 </NODE>
 
 <NODE id="board" >      

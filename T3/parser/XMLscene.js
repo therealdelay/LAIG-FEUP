@@ -17,9 +17,9 @@ function XMLscene(interface) {
 	this.R = 1;
 	this.tempR = 1;
 
-    var d = new Date();
+    this.d = new Date();
 
-    this.initialTime = d.getTime();
+    this.initialTime = this.d.getTime();
 
     this.lightValues = {};
 	this.spots = [];
@@ -44,6 +44,12 @@ function XMLscene(interface) {
     this.finalPos = [0,0,0];
     this.moveCam = false;
 
+    this.blackSpotX = 10;
+    this.blackSpotZ = 12;
+    this.whiteSpotX = -2;
+    this.whiteSpotZ = 12;
+
+    this.first = 0;
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -67,8 +73,8 @@ XMLscene.prototype.logPicking = function (){
 
                     if(this.currentPiece !== null){
                         if(this.pickResults[i][0] instanceof MyPickSpot){
-                            this.animatePiece(this.pickResults[i][0]);
-                            console.log(this.pickResults[i][0].isOption);
+                            var newPos = [this.pickResults[i][0].x,this.pickResults[i][0].z];
+                            this.animatePiece(newPos);
                             this.pickResults[i][0].isOption = false;
                         }
                     }
@@ -79,11 +85,11 @@ XMLscene.prototype.logPicking = function (){
 	}
 };
 
-XMLscene.prototype.animatePiece = function (pickResult){
+XMLscene.prototype.animatePiece = function (newPos){
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
-    var p3 = [pickResult.x,10,pickResult.z];
-    var p4 = [pickResult.x,0.3,pickResult.z];
+    var p3 = [newPos[0],10,newPos[1]];
+    var p4 = [newPos[0],0.3,newPos[1]];
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
     this.currentPiece = null;
@@ -142,7 +148,7 @@ XMLscene.prototype.init = function(application) {
 
 XMLscene.prototype.createPieces = function() {
     var x = -15;
-    var z = -8;
+    var z = -5;
     for(var i = 0; i < 10; i++){
         this.pieces.push(new RegularPiece(this,'black',[x,0,z]));
         this.pieces.push(new RegularPiece(this,'white',[x+28,0,z]));
@@ -231,8 +237,9 @@ XMLscene.prototype.onGraphLoaded = function() {
     //this.interface.addShadersGroup();
 
     // Adds game group
-    this.interface.addGameGroup();
+    this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
     this.interface.addCameraGroup();
+    this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
     
     this.createPieces();
 };
@@ -284,22 +291,17 @@ XMLscene.prototype.display = function() {
 
         // Displays the scene.
 		this.graph.displayScene();
-
-        this.pushMatrix();
-            this.translate(10,10,10);
-            
-        this.popMatrix();
+        this.displayPickableCircles();
+        this.clearPickRegistration();
+        this.displayPieces();
+        this.clearPickRegistration();
     }
-	else
-	{
-		// Draw axis
-		//this.axis.display();
-	}
+    else
+    {
+        // Draw axis
+        //this.axis.display();
+    }
     
-    this.displayPickableCircles();
-    this.clearPickRegistration();
-    this.displayPieces();
-    this.clearPickRegistration();
 
     this.popMatrix();
 
@@ -366,6 +368,15 @@ XMLscene.prototype.displayPieces = function() {
         this.pieces[w].display();
         this.clearPickRegistration();
     }
+
+    //Apenas para testar o movimento das peças "comidas"
+    /*if(this.first == 0){
+        for(var i = 0; i < 20; i +=2){
+            this.winBlackPiece(this.pieces[i]);
+            this.winWhitePiece(this.pieces[i+1]);
+        }
+        this.first = 1;
+    }*/
 };
 
 
@@ -399,6 +410,7 @@ XMLscene.prototype.updateCamera = function(view){
  * @param deltaTime
  */
 XMLscene.prototype.animateCamera = function(deltaTime){
+    this.updateCamera();
     if(this.moveCam){
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
             if(deltaTime <= 10000){
@@ -427,8 +439,6 @@ XMLscene.prototype.update = function(currTime){
     //to seconds
     this.time = currTime/1000; 
     var delta = currTime - this.initialTime;
-
-    this.updateCamera();
     
     this.animateCamera(delta);
 
@@ -440,6 +450,7 @@ XMLscene.prototype.update = function(currTime){
     }
 
     this.initialTime = currTime;
+
 
     this.tempR = 0.5*(Math.sin(4*this.time));
     this.tempScaleFactor = this.tempR;
@@ -465,3 +476,39 @@ XMLscene.prototype.createPickableSquares = function(){
   this.Game.startGame();
   console.log("Init GAME"); 
 };
+
+XMLscene.prototype.winBlackPiece = function (piece){
+    this.currentPiece = piece;
+    this.animatePiece([this.blackSpotX,this.blackSpotZ]);
+
+    if(this.blackSpotZ > 12){
+        this.blackSpotZ = 12;
+        this.blackSpotX -= 2;
+    }
+    else
+        this.blackSpotZ += 2;
+};
+
+XMLscene.prototype.winWhitePiece = function (piece){
+    this.currentPiece = piece;
+    this.animatePiece([this.whiteSpotX,this.whiteSpotZ]);
+
+    if(this.whiteSpotZ > 12){
+        this.whiteSpotZ = 12;
+        this.whiteSpotX -= 2;
+    }
+    else
+        this.whiteSpotZ += 2;
+};
+
+XMLscene.prototype.startGame = function(){
+    console.log("New Game");
+}
+
+XMLscene.prototype.undoPlay = function(){
+    console.log("Undo Play");
+}
+
+XMLscene.prototype.pauseGame = function(){
+    console.log("Pause Game");
+}
