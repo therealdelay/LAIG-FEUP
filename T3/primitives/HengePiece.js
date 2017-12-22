@@ -15,6 +15,7 @@ function HengePiece(scene, player, position) {
 
     this.startTime = 0;
     this.currAnimation = null;
+    this.type = 'h';
 };
 
 HengePiece.prototype = Object.create(CGFobject.prototype);
@@ -73,4 +74,8 @@ HengePiece.prototype.update = function(currTime){
     }
 */
     this.startTime = currTime;
+};
+
+HengePiece.prototype.getType = function() {
+    return this.type;
 };

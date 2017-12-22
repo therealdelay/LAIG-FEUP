@@ -90,6 +90,11 @@ XMLscene.prototype.animatePiece = function (newPos){
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [newPos[0],10,newPos[1]];
     var p4 = [newPos[0],0.3,newPos[1]];
+
+    //add to game board in prolog
+    if(this.WhitePlayer == 'Human' || this.BlackPlayer == 'Human')
+        this.Game.addHumanMoveToGame(p4);
+
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
     this.currentPiece = null;
@@ -305,27 +310,34 @@ XMLscene.prototype.display = function() {
 
     this.popMatrix();
 
-    /*console.log("blackPieces" + this.Game.blackPieces);
-    console.log("whitePieces" + this.Game.whitePieces);*/
-
     //teste
     if(Game.changeStatus){
         this.Game.getReplay();
 
-        if(this.Game.lastRequest == "initGame"){
-            console.log("initGame::");
-
-            //cena manhosa para que funcione o teste
-            this.Game.currPlayer = "blackPlayer";
-            this.Game.getPlay();
-        }
-        else if(this.Game.lastRequest == "getPlay"){ 
-            this.Game.play();
-        }
-        else if(this.Game.lastRequest == "play"){
-
-             console.log("New board::" + this.Game.board);
-             console.log("New Player::" + this.Game.currPlayer);
+        switch(this.Game.currState){
+            case 0:
+                console.log("initGame::");
+                break;
+            case 1:
+                console.log("case 1::");
+                this.Game.getPlay();
+                break;
+            case 2: 
+                console.log("case 2::");
+                this.Game.play();
+                console.log("New board::" + this.Game.board);
+                console.log("New Player::" + this.Game.currPlayer);
+                break;
+            case 3:
+                console.log("case 3::");
+                this.Game.endOfGame();
+                break;
+            case 4:
+                console.log("case 4::");
+                //display ganhar
+                break;
+            default: 
+                console.warn("ERROR!!!");
         }
     }
 
@@ -339,6 +351,13 @@ XMLscene.prototype.display = function() {
         this.Game.configBlackPlayer();
         this.isConfiguredPlayerBlack = true;
     }
+
+    if(this.isConfiguredPlayerBlack && this.isConfiguredPlayerWhite && !this.Game.isConf){
+        this.Game.isConf == true;
+        this.Game.currState = 1;
+    }
+
+
     
     // ---- END Background, camera and axis setup
 };

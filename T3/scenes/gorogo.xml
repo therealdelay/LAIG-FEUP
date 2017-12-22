@@ -726,28 +726,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <NODE id="rings2">       
   <MATERIAL id="null" />     
   <TEXTURE id="null" />    
@@ -883,13 +861,6 @@
     <NODEREF id="facecube1" />        
   </DESCENDANTS>
 </NODE>
-
-
-
-
-
-
-
 
 
 

@@ -57,3 +57,6 @@ Piece.prototype.display = function (currNode, parentMaterial, currTime){
 
 	this.scene.popMatrix();
 };
+
+Piece.prototype.getType = function() {
+};

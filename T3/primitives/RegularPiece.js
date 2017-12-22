@@ -22,6 +22,7 @@ function RegularPiece(scene, type, position) {
 
 	this.startTime = 0;
 	this.currAnimation = null;
+    this.type = 'n';
 };
 
 RegularPiece.prototype = Object.create(CGFobject.prototype);
@@ -63,4 +64,8 @@ RegularPiece.prototype.update = function(currTime){
     }
 */
     this.startTime = currTime;
+};
+
+RegularPiece.prototype.getType = function() {
+    return this.type;
 };

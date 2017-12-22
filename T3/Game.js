@@ -18,7 +18,10 @@ function Game(scene) {
 	// TODO history of moves - add after replay of play
 	this.moves = [];
 
+	this.states = [0,1,2,3,4];
+	this.currState = 0;
 	this.endOfGame = false;
+	this.isConf = false;
 };
 
 //initGame -> Game
@@ -32,15 +35,22 @@ Game.prototype.startGame = function() {
 	this.lastRequest = "initGame";
 };
 
-//getPlay(Game,Turn) -> play of bot
+//getPlay(Game,Turn)
 Game.prototype.getPlay = function() {
-	var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
 
-	console.log("sendMsg ::: " + sendMsg);
-
-	this.server.makeRequest(sendMsg);
-	this.lastRequest = "getPlay";
-};
+	if((this.scene.WhitePlayer == 'human' || this.scene.BlackPlayerPlayer == 'human')
+		&& this.moves.length > 0 && this.moves[this.moves.length-1].currPlayer == this.currPlayer){
+		this.lastRequest = "getPlay";
+		this.currState = 2;
+		Game.changeStatus = true;
+	}
+	else { 
+			var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
+			console.log("sendMsg ::: " + sendMsg);
+			this.server.makeRequest(sendMsg);
+			this.lastRequest = "getPlay";
+		}
+	};
 
 //play(Game,Play) -> newGameState
 Game.prototype.play = function() {
@@ -94,12 +104,25 @@ Game.prototype.getReplay = function() {
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
 
+		if(this.lastRequest ==  "initGame")
+			this.currState = 1;
+		else{
+			let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1]);
+			this.scene.animatePiece(move);
+			this.currState = 3;
+		}
+
 	}
 	else if(this.lastRequest ==  "getPlay") {
-		this.moves.push({ play: Game.currReplay, player:this.currPlayer});
+		let move = [Game.currReplay[2], Game.currReplay[4]];
+		this.moves.push({ play: move, player:this.currPlayer});
+		this.currState = 2;
 	}
 	else if(this.lastRequest ==  "endOfGame") {
 		//do something
+		//se não houver vencdedor
+		this.currState = 0;
+		//senão this.currState = 3;
 	}
 
 	Game.changeStatus = false;
@@ -125,4 +148,19 @@ Game.prototype.configWhitePlayer = function() {
 
 Game.prototype.configBlackPlayer = function() {
 	this.blackPieces[this.blackPieces.length-1] = this.scene.BlackPlayer;
+}
+
+Game.prototype.addHumanMoveToGame = function(point){
+	let pointX = point[0] / 2.55 + 3;
+	let pointY = point[2] / 2.55 + 3;
+	let type = this.scene.currentPiece.getType();
+	let newMove = [[[pointX,pointY],type]];
+    this.moves.push({play: newMove, player:this.currPlayer});
+}
+
+Game.prototype.convertCoordsOffProlog = function(move) {
+	var newMove = [];
+	newMove.push((move[0] - 3) * 2.55);
+	newMove.push((move[1] - 3) * 2.55);
+	return newMove;
 }
