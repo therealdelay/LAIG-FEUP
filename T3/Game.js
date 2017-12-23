@@ -5,6 +5,7 @@ function Game(scene) {
 
 	Game.currReplay = "";
 	Game.changeStatus = false;
+	this.firstTime = true;
 	this.lastRequest = "";
 
 	this.board = [];
@@ -38,19 +39,19 @@ Game.prototype.startGame = function() {
 //getPlay(Game,Turn)
 Game.prototype.getPlay = function() {
 
-	if((this.scene.WhitePlayer == 'human' || this.scene.BlackPlayerPlayer == 'human')
+	/*if((this.scene.WhitePlayer == 'human' || this.scene.BlackPlayerPlayer == 'human')
 		&& this.moves.length > 0 && this.moves[this.moves.length-1].currPlayer == this.currPlayer){
 		this.lastRequest = "getPlay";
 		this.currState = 2;
 		Game.changeStatus = true;
 	}
-	else { 
-			var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
-			console.log("sendMsg ::: " + sendMsg);
-			this.server.makeRequest(sendMsg);
-			this.lastRequest = "getPlay";
-		}
-	};
+	else { */
+	var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
+	console.log("sendMsg ::: " + sendMsg);
+	this.server.makeRequest(sendMsg);
+	this.lastRequest = "getPlay";
+		//}
+};
 
 //play(Game,Play) -> newGameState
 Game.prototype.play = function() {
@@ -84,7 +85,7 @@ Game.prototype.endOfGame = function() {
 // Get server replay's
 Game.prototype.getReplay = function() {
 
-	if(this.lastRequest ==  "initGame" || this.lastRequest ==  "play") {
+	if((this.lastRequest ==  "initGame" && this.firstTime) || this.lastRequest ==  "play") {
 		try{
 			var jsonData = JSON.parse(Game.currReplay.replace(/([a-z])\w+/g, "\"$&\""));
 		}
@@ -104,18 +105,20 @@ Game.prototype.getReplay = function() {
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
 
-		if(this.lastRequest ==  "initGame")
-			this.currState = 1;
-		else{
-			let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1]);
-			this.scene.animatePiece(move);
+		if(this.lastRequest ==  "play"){
+			let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
+			// move = [[x,y],type]
+			//selecionar peça das peças disponiveis	
+			//this.scene.animatePiece(move);
 			this.currState = 3;
 		}
+		else this.firstTime = false;
 
 	}
 	else if(this.lastRequest ==  "getPlay") {
-		let move = [Game.currReplay[2], Game.currReplay[4]];
-		this.moves.push({ play: move, player:this.currPlayer});
+		let coords = [];
+		coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[13] + ']');
+		this.moves.push({ play: coords, player:this.currPlayer});
 		this.currState = 2;
 	}
 	else if(this.lastRequest ==  "endOfGame") {
@@ -127,6 +130,13 @@ Game.prototype.getReplay = function() {
 
 	Game.changeStatus = false;
 };
+
+Game.prototype.selectPiece = function() {
+	var i = 0;
+	while(i < this.scene.pieces.length){
+
+	}
+}
 
 Game.prototype.gameInFormat = function() {
 
@@ -143,11 +153,17 @@ Game.prototype.gameInFormat = function() {
 }
 
 Game.prototype.configWhitePlayer = function() {
+	console.log("WhitePlayer 2  ::: " + this.scene.WhitePlayer);
+	console.log("whitePieces ::: " + this.whitePieces);
 	this.whitePieces[this.whitePieces.length-1] = this.scene.WhitePlayer;
+	console.log("whitePieces 2 ::: " + this.whitePieces);
 }
 
 Game.prototype.configBlackPlayer = function() {
+	console.log("BlackPlayer 2 ::: " + this.scene.BlackPlayer);
+	console.log("blackPieces ::: " + this.blackPieces);
 	this.blackPieces[this.blackPieces.length-1] = this.scene.BlackPlayer;
+	console.log("blackPieces 2 ::: " + this.blackPieces);
 }
 
 Game.prototype.addHumanMoveToGame = function(point){
@@ -159,8 +175,12 @@ Game.prototype.addHumanMoveToGame = function(point){
 }
 
 Game.prototype.convertCoordsOffProlog = function(move) {
-	var newMove = [];
-	newMove.push((move[0] - 3) * 2.55);
-	newMove.push((move[1] - 3) * 2.55);
+	var newX = (move[0][2] - 3) * 2.55;
+	var newY = (move[0][4] - 3) * 2.55;
+
+	let newMove = [];
+	newMove.push('[[' + newX + ',' + newY + '],' + move[0][7] + ']');
+
+	console.log("newMove: " + newMove);
 	return newMove;
 }

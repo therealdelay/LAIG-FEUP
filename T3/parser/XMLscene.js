@@ -35,7 +35,7 @@ function XMLscene(interface) {
     this.BlackPlayer = null;
     this.isConfiguredPlayerWhite = false;
     this.isConfiguredPlayerBlack = false;
-    this.gamePlayerOptions = ['Human', 'Easy Bot', 'Hard Bot'];
+    this.gamePlayerOptions = ['human', 'easyBot', 'hardBot'];
 
     this.cam = [0,0,0];
     this.CameraAutomatic = true;
@@ -92,8 +92,8 @@ XMLscene.prototype.animatePiece = function (newPos){
     var p4 = [newPos[0],0.3,newPos[1]];
 
     //add to game board in prolog
-    if(this.WhitePlayer == 'Human' || this.BlackPlayer == 'Human')
-        this.Game.addHumanMoveToGame(p4);
+    //if(this.WhitePlayer == 'Human' || this.BlackPlayer == 'Human')
+        //this.Game.addHumanMoveToGame(p4);
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
@@ -149,6 +149,9 @@ XMLscene.prototype.init = function(application) {
     this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
     this.blackMaterial.setShininess(0.3);   
 
+    //start Game
+    this.Game.startGame();
+    console.log("initGame::");
 };
 
 XMLscene.prototype.createPieces = function() {
@@ -310,13 +313,12 @@ XMLscene.prototype.display = function() {
 
     this.popMatrix();
 
-    //teste
     if(Game.changeStatus){
         this.Game.getReplay();
 
         switch(this.Game.currState){
             case 0:
-                console.log("initGame::");
+                console.log("Waiting choose players...");             
                 break;
             case 1:
                 console.log("case 1::");
@@ -324,6 +326,7 @@ XMLscene.prototype.display = function() {
                 break;
             case 2: 
                 console.log("case 2::");
+                //apply in interface
                 this.Game.play();
                 console.log("New board::" + this.Game.board);
                 console.log("New Player::" + this.Game.currPlayer);
@@ -343,18 +346,21 @@ XMLscene.prototype.display = function() {
 
 
    if(this.WhitePlayer != null  && !this.isConfiguredPlayerWhite){
+        console.log("WhitePlayer::: " + this.WhitePlayer);
         this.Game.configWhitePlayer();
         this.isConfiguredPlayerWhite = true;
     }
 
     if(this.BlackPlayer != null  && !this.isConfiguredPlayerBlack){
+        console.log("BlackPlayer::: " + this.BlackPlayer);
         this.Game.configBlackPlayer();
         this.isConfiguredPlayerBlack = true;
     }
 
     if(this.isConfiguredPlayerBlack && this.isConfiguredPlayerWhite && !this.Game.isConf){
-        this.Game.isConf == true;
+        this.Game.isConf = true;
         this.Game.currState = 1;
+        Game.changeStatus = true;
     }
 
 
@@ -489,11 +495,6 @@ XMLscene.prototype.createPickableSquares = function(){
   		x += 2.55;
     this.spots.push(square);
   }
-
-
-    //teste
-  this.Game.startGame();
-  console.log("Init GAME"); 
 };
 
 XMLscene.prototype.winBlackPiece = function (piece){
