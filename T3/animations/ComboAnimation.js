@@ -9,6 +9,7 @@ function ComboAnimation(scene, id, animations) {
 	Animation.call(this);
 	this.scene = scene;
 	this.id = id;
+	this.finish = false;
 
 	this.animations = animations;
 
@@ -38,4 +39,8 @@ ComboAnimation.prototype.getMatrix = function(deltaTime){
 		}
 	}
 		return this.transformationMatrix;		
+};
+
+ComboAnimation.prototype.getStatus = function() {
+	return this.finish;
 };

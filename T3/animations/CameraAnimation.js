@@ -74,3 +74,7 @@ CameraAnimation.prototype.update = function(deltaTime) {
 
 	return this.initPos;
 };
+
+CameraAnimation.prototype.getStatus = function() {
+	return this.finish;
+};

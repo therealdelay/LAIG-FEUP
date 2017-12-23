@@ -79,3 +79,7 @@ HengePiece.prototype.update = function(currTime){
 HengePiece.prototype.getType = function() {
     return this.type;
 };
+
+HengePiece.prototype.getAnimation = function() {
+    return this.currAnimation;
+};

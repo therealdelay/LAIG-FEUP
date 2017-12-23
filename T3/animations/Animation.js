@@ -13,3 +13,7 @@ Animation.prototype.update = function(deltaTime) {
 Animation.prototype.getMatrix = function(deltaTime){
 	console.log("Este método tem que ser instanciado nas classes filhas!");
 };
+
+Animation.prototype.getStatus = function() {
+	console.log("Este método tem que ser instanciado nas classes filhas!");
+};

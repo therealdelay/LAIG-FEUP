@@ -50,6 +50,7 @@ function XMLscene(interface) {
     this.whiteSpotZ = 12;
 
     this.first = 0;
+    this.lastStatus = "menu";
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -97,7 +98,7 @@ XMLscene.prototype.animatePiece = function (newPos){
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
-    this.currentPiece = null;
+    
 }
 /**
  * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
@@ -148,10 +149,6 @@ XMLscene.prototype.init = function(application) {
     this.blackMaterial.setDiffuse(0,0,0,1);
     this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
     this.blackMaterial.setShininess(0.3);   
-
-    //start Game
-    this.Game.startGame();
-    console.log("initGame::");
 };
 
 XMLscene.prototype.createPieces = function() {
@@ -313,54 +310,55 @@ XMLscene.prototype.display = function() {
 
     this.popMatrix();
 
-    if(Game.changeStatus){
-        this.Game.getReplay();
+    if(this.Game.currState != this.lastStatus){
 
         switch(this.Game.currState){
-            case 0:
+            case "menu":
                 console.log("Waiting choose players...");             
                 break;
-            case 1:
-                console.log("case 1::");
+            case "getPlay":
                 this.Game.getPlay();
                 break;
-            case 2: 
-                console.log("case 2::");
-                //apply in interface
+            case "applyPlay": 
                 this.Game.play();
-                console.log("New board::" + this.Game.board);
-                console.log("New Player::" + this.Game.currPlayer);
                 break;
-            case 3:
-                console.log("case 3::");
+            case "animationPlay":
+                console.log("Waiting animation..."); 
+                break;
+            case "verifyStatus":
+                console.log("case 4::");
                 this.Game.endOfGame();
                 break;
-            case 4:
-                console.log("case 4::");
+            case "endGame":
                 //display ganhar
                 break;
             default: 
                 console.warn("ERROR!!!");
         }
+
+        this.lastStatus = this.Game.currState;
     }
 
+    this.Game.getReplay();
 
+    if(this.Game.currState == "animationPlay" && this.currentPiece.getAnimation().getStatus()){
+        this.Game.currState = "verifyStatus";
+        this.currentPiece = null;
+    }
+        
    if(this.WhitePlayer != null  && !this.isConfiguredPlayerWhite){
-        console.log("WhitePlayer::: " + this.WhitePlayer);
         this.Game.configWhitePlayer();
         this.isConfiguredPlayerWhite = true;
     }
 
     if(this.BlackPlayer != null  && !this.isConfiguredPlayerBlack){
-        console.log("BlackPlayer::: " + this.BlackPlayer);
         this.Game.configBlackPlayer();
         this.isConfiguredPlayerBlack = true;
     }
 
     if(this.isConfiguredPlayerBlack && this.isConfiguredPlayerWhite && !this.Game.isConf){
         this.Game.isConf = true;
-        this.Game.currState = 1;
-        Game.changeStatus = true;
+        this.Game.currState = "getPlay";
     }
 
 

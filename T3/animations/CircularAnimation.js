@@ -67,3 +67,7 @@ CircularAnimation.prototype.getMatrix = function(currTime){
 	this.update(currTime);
 	return this.translationMatrix;
 };
+
+CircularAnimation.prototype.getStatus = function() {
+	return this.finish;
+};

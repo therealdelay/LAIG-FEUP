@@ -70,6 +70,6 @@ RegularPiece.prototype.getType = function() {
     return this.type;
 };
 
-RegularPiece.prototype.getType = function() {
-    return this.type;
+RegularPiece.prototype.getAnimation = function() {
+    return this.currAnimation;
 };

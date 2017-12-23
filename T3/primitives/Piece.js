@@ -60,3 +60,6 @@ Piece.prototype.display = function (currNode, parentMaterial, currTime){
 
 Piece.prototype.getType = function() {
 };
+
+Piece.prototype.getAnimation = function() {
+};

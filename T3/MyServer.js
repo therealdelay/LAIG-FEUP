@@ -38,10 +38,9 @@ MyServer.prototype.handleReply = function(data){
 		console.log("Bad Request");
 	else if(data.target.response == "Syntax Error")
 		console.log("Syntax Error");
-	else if(data.target.response != "goodbye") {
+	else {
 			console.log("RESPONSE:::: " + data.target.response); 
         	Game.currReplay = data.target.response;
-        	Game.changeStatus = true;
 	}
 };
 

@@ -3,15 +3,18 @@ Game.prototype.constructor = Game;
 function Game(scene) {
 	this.scene = scene;
 
+	//init server
+	this.server = new MyServer(this);
+	this.try = 10;
+
 	Game.currReplay = "";
-	Game.changeStatus = false;
 	this.firstTime = true;
 	this.lastRequest = "";
 
-	this.board = [];
-	this.blackPieces = [];
-	this.whitePieces = [];
-	this.currPlayer = "";
+	this.board = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+	this.blackPieces = [10,2,0,"easyBot"];
+	this.whitePieces = [10,3,0,"human"];
+	this.currPlayer = "whitePlayer";
 
 	// TODO increments it after each turn 
 	this.turn = 1; 
@@ -19,21 +22,20 @@ function Game(scene) {
 	// TODO history of moves - add after replay of play
 	this.moves = [];
 
-	this.states = [0,1,2,3,4];
-	this.currState = 0;
-	this.endOfGame = false;
+	this.states = ["menu","getPlay","applyPlay","animationPlay","verifyStatus","endGame"];
+	this.currState = "menu";
+	this.endGame = false;
 	this.isConf = false;
 };
 
-//initGame -> Game
-Game.prototype.startGame = function() {
 
-	//init server
-	this.server = new MyServer(this);
-
-	var sendMsg = "initGame";
-	this.server.makeRequest(sendMsg);
-	this.lastRequest = "initGame";
+Game.prototype.repeteRequest = function() {
+	if(this.currState == "getPlay")
+		this.getPlay();
+	else if(this.currState == "play")
+		this.play();
+	else if(this.currState == "endGame") 
+		this.endOfGame();
 };
 
 //getPlay(Game,Turn)
@@ -43,13 +45,12 @@ Game.prototype.getPlay = function() {
 		&& this.moves.length > 0 && this.moves[this.moves.length-1].currPlayer == this.currPlayer){
 		this.lastRequest = "getPlay";
 		this.currState = 2;
-		Game.changeStatus = true;
 	}
 	else { */
 	var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
 	console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
-	this.lastRequest = "getPlay";
+
 		//}
 };
 
@@ -58,13 +59,9 @@ Game.prototype.play = function() {
 
 	//get last move on list of moves
 	var lastPlay = this.moves[this.moves.length-1].play;
-
 	var sendMsg = "play(" + this.gameInFormat() + "," + lastPlay.toString() + ")";
-
 	console.log("sendMsg ::: " + sendMsg);
-
 	this.server.makeRequest(sendMsg);
-	this.lastRequest = "play";
 
 	// TODO after response -> switch currPlayer
 };
@@ -72,11 +69,8 @@ Game.prototype.play = function() {
 //endOfGame(Game) -> winner 
 Game.prototype.endOfGame = function() {
 	var sendMsg = "endOfGame(" + this.gameInFormat() + ")";
-
 	console.log("sendMsg ::: " + sendMsg);
-
 	this.server.makeRequest(sendMsg);
-	this.lastRequest = "endOfGame";
 
 	// TODO after response -> verify Winner
 };
@@ -85,7 +79,22 @@ Game.prototype.endOfGame = function() {
 // Get server replay's
 Game.prototype.getReplay = function() {
 
-	if((this.lastRequest ==  "initGame" && this.firstTime) || this.lastRequest ==  "play") {
+	if(Game.currReplay == ""){
+
+		if(this.try < 10)
+			this.try += 1;
+		else{
+			this.try = 0;
+			//this.repeteRequest();
+		}
+
+		return false;
+	}
+
+	console.log(this.currState);
+	console.log(Game.currReplay);
+
+	if(this.currState == "applyPlay") {
 		try{
 			var jsonData = JSON.parse(Game.currReplay.replace(/([a-z])\w+/g, "\"$&\""));
 		}
@@ -105,47 +114,43 @@ Game.prototype.getReplay = function() {
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
 
-		if(this.lastRequest ==  "play"){
-			let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
-			
-
-			// move = [[x,y],type]
-			//selecionar peça das peças disponiveis	
-			this.selectPiece(move[1]);
-			this.scene.animatePiece([move[0][0],move[0][1]]);
-			this.currState = 3;
-		}
-		else this.firstTime = false;
-
+		this.currState = "animationPlay";
 	}
-	else if(this.lastRequest ==  "getPlay") {
+	else if(this.currState ==  "getPlay") {
 		let coords = [];
 		coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[13] + ']');
 		this.moves.push({ play: coords, player:this.currPlayer});
-		this.currState = 2;
+		this.currState = "applyPlay";
+
+		let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
+		// move = [[x,y],type]
+		//selecionar peça das peças disponiveis	
+		this.selectPiece(move[1]);
+		this.scene.animatePiece([move[0][0],move[0][1]]);
+		
 	}
-	else if(this.lastRequest ==  "endOfGame") {
-		//do something
-		//se não houver vencdedor
-		this.currState = 0;
-		//senão this.currState = 3;
+	else if(this.currState ==  "verifyStatus") {
+		
+		if(Game.currReplay == 'none'){
+			this.currState = "getPlay";
+			this.turn += 1;
+		}
+		else
+			this.currState = "endGame";
 	}
 
-	Game.changeStatus = false;
+	Game.currReplay = "";
+	return true;
 };
 
 Game.prototype.selectPiece = function(type) {
-	console.log("selectPiece entrou");
-	console.log("type " + type);
-	console.log("Player color" + this.currPlayer);
 	var i = 0;
 	var found = false;
 	while(i < this.scene.pieces.length && !found) {
-		console.log("getType " + this.scene.pieces[i].getType());
-		console.log("getPlayer " + this.scene.pieces[i].player);
-		console.log((this.scene.pieces[i].player).indexOf(this.currPlayer));
-		if(this.scene.pieces[i].getType() == type && (this.currPlayer).indexOf(this.scene.pieces[i].player) !== -1){
-			console.log("PIMMMMMM");
+		if(this.scene.pieces[i].getType() == type && 
+			(this.currPlayer).indexOf(this.scene.pieces[i].player) !== -1
+			&& !this.scene.pieces[i].isPlayed){
+
 			this.scene.currentPiece = this.scene.pieces[i];
 			found = true;
 		}
@@ -168,17 +173,11 @@ Game.prototype.gameInFormat = function() {
 }
 
 Game.prototype.configWhitePlayer = function() {
-	console.log("WhitePlayer 2  ::: " + this.scene.WhitePlayer);
-	console.log("whitePieces ::: " + this.whitePieces);
 	this.whitePieces[this.whitePieces.length-1] = this.scene.WhitePlayer;
-	console.log("whitePieces 2 ::: " + this.whitePieces);
 }
 
 Game.prototype.configBlackPlayer = function() {
-	console.log("BlackPlayer 2 ::: " + this.scene.BlackPlayer);
-	console.log("blackPieces ::: " + this.blackPieces);
 	this.blackPieces[this.blackPieces.length-1] = this.scene.BlackPlayer;
-	console.log("blackPieces 2 ::: " + this.blackPieces);
 }
 
 Game.prototype.addHumanMoveToGame = function(point){

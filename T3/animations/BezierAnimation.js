@@ -70,3 +70,7 @@ BezierAnimation.prototype.qfunction = function(time){
 	let qz = Math.pow(1 - time, 3) * this.p1[2] + 3 * time * Math.pow(1 - time, 2) * this.p2[2] + 3 * Math.pow(time, 2) * (1 - time) * this.p3[2] + Math.pow(time, 3) * this.p4[2];
 	return vec3.fromValues(qx, qy, qz);
 }
+
+BezierAnimation.prototype.getStatus = function() {
+	return this.finish;
+};

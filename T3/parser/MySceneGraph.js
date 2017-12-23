@@ -1482,7 +1482,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
         var animationId = this.reader.getString(anim[0], 'id');
 
-        this.log("   ANIMATIONREFS parse: " + animationId);
+        //this.log("   ANIMATIONREFS parse: " + animationId);
 
         if (animationId == null )
           this.onXMLMinorError("unable to parse animation id");
@@ -1510,7 +1510,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
           var curId = this.reader.getString(descendants[j], 'id');
 
-          this.log("   Descendant: "+curId);
+          //this.log("   Descendant: "+curId);
 
           if (curId == null )
             this.onXMLMinorError("unable to parse descendant id");
@@ -1561,7 +1561,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
     else
       this.onXMLMinorError("unknown tag name <" + nodeName);
   }
-  console.log("Parsed nodes");
+  //console.log("Parsed nodes");
   return null ;
 };
 
@@ -1631,7 +1631,7 @@ MySceneGraph.prototype.displayScene = function() {
 
   this.nodesRecursive(this.nodes.root);
 
-  this.log("Graph should be rendered here...");
+  //this.log("Graph should be rendered here...");
 };
 
 /**
