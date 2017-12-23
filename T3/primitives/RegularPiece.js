@@ -1,7 +1,7 @@
-function RegularPiece(scene, type, position) {
+function RegularPiece(scene, player, position) {
 	CGFobject.call(this,scene);
 	this.scene = scene;
-	this.type = type;
+	this.player = player;
 	this.position = position;
 
     this.isPlayed = false;
@@ -9,7 +9,7 @@ function RegularPiece(scene, type, position) {
 	this.body = new MyCylinder(this.scene, 0.4, 0.9, 0.9, 20, 20, 1, 1); //scene, height, botRad, topRad, stacks, slices, top, bottom)
 	this.cover = new MySphere(this.scene, 1, 20, 20);
 
-	switch(type){
+	switch(player){
 		case 'black':
 			this.material = this.scene.blackMaterial;
 			break;
@@ -64,6 +64,10 @@ RegularPiece.prototype.update = function(currTime){
     }
 */
     this.startTime = currTime;
+};
+
+RegularPiece.prototype.getType = function() {
+    return this.type;
 };
 
 RegularPiece.prototype.getType = function() {

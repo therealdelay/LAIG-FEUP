@@ -107,9 +107,12 @@ Game.prototype.getReplay = function() {
 
 		if(this.lastRequest ==  "play"){
 			let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
+			
+
 			// move = [[x,y],type]
 			//selecionar peça das peças disponiveis	
-			//this.scene.animatePiece(move);
+			this.selectPiece(move[1]);
+			this.scene.animatePiece([move[0][0],move[0][1]]);
 			this.currState = 3;
 		}
 		else this.firstTime = false;
@@ -131,10 +134,22 @@ Game.prototype.getReplay = function() {
 	Game.changeStatus = false;
 };
 
-Game.prototype.selectPiece = function() {
+Game.prototype.selectPiece = function(type) {
+	console.log("selectPiece entrou");
+	console.log("type " + type);
+	console.log("Player color" + this.currPlayer);
 	var i = 0;
-	while(i < this.scene.pieces.length){
-
+	var found = false;
+	while(i < this.scene.pieces.length && !found) {
+		console.log("getType " + this.scene.pieces[i].getType());
+		console.log("getPlayer " + this.scene.pieces[i].player);
+		console.log((this.scene.pieces[i].player).indexOf(this.currPlayer));
+		if(this.scene.pieces[i].getType() == type && (this.currPlayer).indexOf(this.scene.pieces[i].player) !== -1){
+			console.log("PIMMMMMM");
+			this.scene.currentPiece = this.scene.pieces[i];
+			found = true;
+		}
+		i++;
 	}
 }
 
@@ -178,8 +193,11 @@ Game.prototype.convertCoordsOffProlog = function(move) {
 	var newX = (move[0][2] - 3) * 2.55;
 	var newY = (move[0][4] - 3) * 2.55;
 
-	let newMove = [];
-	newMove.push('[[' + newX + ',' + newY + '],' + move[0][7] + ']');
+	let newMove = [], newCoords = [];
+	newCoords.push(newX);
+	newCoords.push(newY);
+	newMove.push(newCoords);
+	newMove.push(move[0][7]);
 
 	console.log("newMove: " + newMove);
 	return newMove;
