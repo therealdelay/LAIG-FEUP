@@ -93,8 +93,11 @@ XMLscene.prototype.animatePiece = function (newPos){
     var p4 = [newPos[0],0.3,newPos[1]];
 
     //add to game board in prolog
-    //if(this.WhitePlayer == 'Human' || this.BlackPlayer == 'Human')
-        //this.Game.addHumanMoveToGame(p4);
+    if((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') ||
+     (this.Game.currPlayer == 'blackPlayer' && this.Game.blackType =='human')) {
+        //get human play
+        this.Game.addHumanMoveToGame(p4);
+    }
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
@@ -317,9 +320,11 @@ XMLscene.prototype.display = function() {
                 console.log("Waiting choose players...");             
                 break;
             case "getPlay":
+            console.log("getPlay::");
                 this.Game.getPlay();
                 break;
             case "applyPlay": 
+                console.log("play::");
                 this.Game.play();
                 break;
             case "animationPlay":

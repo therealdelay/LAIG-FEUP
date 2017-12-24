@@ -14,6 +14,10 @@ function Game(scene) {
 	this.board = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
 	this.blackPieces = [10,2,0,"easyBot"];
 	this.whitePieces = [10,3,0,"human"];
+
+	this.blackType = "easyBot";
+	this.whiteType = "human";
+
 	this.currPlayer = "whitePlayer";
 
 	// TODO increments it after each turn 
@@ -28,30 +32,15 @@ function Game(scene) {
 	this.isConf = false;
 };
 
-
-Game.prototype.repeteRequest = function() {
-	if(this.currState == "getPlay")
-		this.getPlay();
-	else if(this.currState == "play")
-		this.play();
-	else if(this.currState == "endGame") 
-		this.endOfGame();
-};
-
 //getPlay(Game,Turn)
 Game.prototype.getPlay = function() {
 
-	/*if((this.scene.WhitePlayer == 'human' || this.scene.BlackPlayerPlayer == 'human')
-		&& this.moves.length > 0 && this.moves[this.moves.length-1].currPlayer == this.currPlayer){
-		this.lastRequest = "getPlay";
-		this.currState = 2;
+	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') ||
+	 (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
+		var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
+		console.log("sendMsg ::: " + sendMsg);
+		this.server.makeRequest(sendMsg);
 	}
-	else { */
-	var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
-	console.log("sendMsg ::: " + sendMsg);
-	this.server.makeRequest(sendMsg);
-
-		//}
 };
 
 //play(Game,Play) -> newGameState
@@ -174,18 +163,25 @@ Game.prototype.gameInFormat = function() {
 
 Game.prototype.configWhitePlayer = function() {
 	this.whitePieces[this.whitePieces.length-1] = this.scene.WhitePlayer;
+	this.whiteType = this.scene.WhitePlayer;
 }
 
 Game.prototype.configBlackPlayer = function() {
 	this.blackPieces[this.blackPieces.length-1] = this.scene.BlackPlayer;
+	this.blackType = this.scene.BlackPlayer;
 }
 
 Game.prototype.addHumanMoveToGame = function(point){
 	let pointX = point[0] / 2.55 + 3;
 	let pointY = point[2] / 2.55 + 3;
 	let type = this.scene.currentPiece.getType();
-	let newMove = [[[pointX,pointY],type]];
+	let newMove = [];
+
+    newMove.push('[[' + pointX + ',' + pointY + '],' + type + ']');
+
     this.moves.push({play: newMove, player:this.currPlayer});
+ 
+	this.currState = "applyPlay";
 }
 
 Game.prototype.convertCoordsOffProlog = function(move) {
