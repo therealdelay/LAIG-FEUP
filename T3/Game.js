@@ -51,8 +51,6 @@ Game.prototype.play = function() {
 	var sendMsg = "play(" + this.gameInFormat() + "," + lastPlay.toString() + ")";
 	console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
-
-	// TODO after response -> switch currPlayer
 };
 
 //endOfGame(Game) -> winner 
@@ -68,20 +66,8 @@ Game.prototype.endOfGame = function() {
 // Get server replay's
 Game.prototype.getReplay = function() {
 
-	if(Game.currReplay == ""){
-
-		if(this.try < 10)
-			this.try += 1;
-		else{
-			this.try = 0;
-			//this.repeteRequest();
-		}
-
-		return false;
-	}
-
-	console.log(this.currState);
-	console.log(Game.currReplay);
+	if(Game.currReplay == "")
+		return;
 
 	if(this.currState == "applyPlay") {
 		try{
@@ -115,8 +101,7 @@ Game.prototype.getReplay = function() {
 		// move = [[x,y],type]
 		//selecionar peça das peças disponiveis	
 		this.selectPiece(move[1]);
-		this.scene.animatePiece([move[0][0],move[0][1]]);
-		
+		this.scene.animatePiece([move[0][0],move[0][1]]);	
 	}
 	else if(this.currState ==  "verifyStatus") {
 		
@@ -129,7 +114,6 @@ Game.prototype.getReplay = function() {
 	}
 
 	Game.currReplay = "";
-	return true;
 };
 
 Game.prototype.selectPiece = function(type) {

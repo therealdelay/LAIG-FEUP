@@ -320,18 +320,15 @@ XMLscene.prototype.display = function() {
                 console.log("Waiting choose players...");             
                 break;
             case "getPlay":
-            console.log("getPlay::");
                 this.Game.getPlay();
                 break;
             case "applyPlay": 
-                console.log("play::");
                 this.Game.play();
                 break;
             case "animationPlay":
                 console.log("Waiting animation..."); 
                 break;
             case "verifyStatus":
-                console.log("case 4::");
                 this.Game.endOfGame();
                 break;
             case "endGame":
@@ -366,9 +363,6 @@ XMLscene.prototype.display = function() {
         this.Game.currState = "getPlay";
     }
 
-
-    
-    // ---- END Background, camera and axis setup
 };
 
 XMLscene.prototype.displayPickableCircles = function() {
@@ -530,6 +524,7 @@ XMLscene.prototype.startGame = function(){
 
 XMLscene.prototype.undoPlay = function(){
     console.log("Undo Play");
+    this.Game.undoLastPlay();
 }
 
 XMLscene.prototype.pauseGame = function(){

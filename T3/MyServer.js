@@ -23,7 +23,7 @@ MyServer.prototype.getPrologRequest = function(requestString, onSuccess, onError
 	};
 
 	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-	request.send();
+	request.send(null);
 };
 		
 MyServer.prototype.makeRequest = function(requestString){	
