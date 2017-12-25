@@ -58,7 +58,7 @@ XMLscene.prototype.constructor = XMLscene;
 
 XMLscene.prototype.logPicking = function (){
 	if (this.pickMode == false) {
-		if (this.pickResults != null && this.pickResults.length > 0) {
+		if ((this.pickResults != null) && (this.pickResults.length > 0)) {
 			for (var i=0; i< this.pickResults.length; i++) {
 				var obj = this.pickResults[i][0];
 				if (obj){
@@ -93,8 +93,7 @@ XMLscene.prototype.animatePiece = function (newPos){
     var p4 = [newPos[0],0.3,newPos[1]];
 
     //add to game board in prolog
-    if((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') ||
-     (this.Game.currPlayer == 'blackPlayer' && this.Game.blackType =='human')) {
+    if(((this.Game.currPlayer == 'whitePlayer') && (this.Game.whiteType =='human')) || ((this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human'))) {
         //get human play
         this.Game.addHumanMoveToGame(p4);
     }
@@ -343,22 +342,22 @@ XMLscene.prototype.display = function() {
 
     this.Game.getReplay();
 
-    if(this.Game.currState == "animationPlay" && this.currentPiece.getAnimation().getStatus()){
+    if((this.Game.currState == "animationPlay") && (this.currentPiece.getAnimation().getStatus())){
         this.Game.currState = "verifyStatus";
         this.currentPiece = null;
     }
         
-   if(this.WhitePlayer != null  && !this.isConfiguredPlayerWhite){
+   if((this.WhitePlayer != null)  && (!this.isConfiguredPlayerWhite)){
         this.Game.configWhitePlayer();
         this.isConfiguredPlayerWhite = true;
     }
 
-    if(this.BlackPlayer != null  && !this.isConfiguredPlayerBlack){
+    if((this.BlackPlayer != null)  && (!this.isConfiguredPlayerBlack)){
         this.Game.configBlackPlayer();
         this.isConfiguredPlayerBlack = true;
     }
 
-    if(this.isConfiguredPlayerBlack && this.isConfiguredPlayerWhite && !this.Game.isConf){
+    if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
         this.Game.isConf = true;
         this.Game.currState = "getPlay";
     }
@@ -369,7 +368,7 @@ XMLscene.prototype.displayPickableCircles = function() {
     this.pickableID = 0;
     let j = 0;
     for(; j < this.spots.length; j++){
-        if((this.currentPiece !== null) && this.spots[j].isOption){
+        if((this.currentPiece !== null) && (this.spots[j].isOption)){
             this.registerForPick(j+1,this.spots[j]);
             this.graph.materials['redMaterial'].apply();
         }

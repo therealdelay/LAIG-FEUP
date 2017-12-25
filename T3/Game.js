@@ -35,8 +35,7 @@ function Game(scene) {
 //getPlay(Game,Turn)
 Game.prototype.getPlay = function() {
 
-	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') ||
-	 (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
+	if(!(((this.currPlayer == 'whitePlayer') && (this.whiteType =='human')) || ((this.currPlayer == 'blackPlayer') && (this.blackType =='human')))){ 
 		var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
 		console.log("sendMsg ::: " + sendMsg);
 		this.server.makeRequest(sendMsg);
@@ -65,9 +64,15 @@ Game.prototype.endOfGame = function() {
 
 // Get server replay's
 Game.prototype.getReplay = function() {
-
-	if(Game.currReplay == "")
+	console.log("curr");
+	console.log(Game.currReplay);
+	console.log("stat");
+	console.log(this.currState);
+	if(Game.currReplay == ""){
+		console.log("entrei");
 		return;
+	}
+	console.log("nao entrei");
 
 	if(this.currState == "applyPlay") {
 		try{
@@ -77,6 +82,7 @@ Game.prototype.getReplay = function() {
 			console.log(e);
 		}
 		console.log("Board:::  ");
+		console.log(jsonData);
 		for(var i = 0; i < jsonData[0].length; i++ ) {
 			console.log(i + ": "+ (jsonData[0][i]).toString()) ;
 		}
@@ -93,10 +99,14 @@ Game.prototype.getReplay = function() {
 	}
 	else if(this.currState ==  "getPlay") {
 		let coords = [];
-		coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[13] + ']');
+		
+		if(Game.currReplay[13] == ',')
+			coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[14] + ']');
+		else
+			coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[13] + ']');	
 		this.moves.push({ play: coords, player:this.currPlayer});
 		this.currState = "applyPlay";
-
+		
 		let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
 		// move = [[x,y],type]
 		//selecionar peça das peças disponiveis	
@@ -119,11 +129,8 @@ Game.prototype.getReplay = function() {
 Game.prototype.selectPiece = function(type) {
 	var i = 0;
 	var found = false;
-	while(i < this.scene.pieces.length && !found) {
-		if(this.scene.pieces[i].getType() == type && 
-			(this.currPlayer).indexOf(this.scene.pieces[i].player) !== -1
-			&& !this.scene.pieces[i].isPlayed){
-
+	while((i < this.scene.pieces.length) && !found) {
+		if((this.scene.pieces[i].getType() == type) && ((this.currPlayer).indexOf(this.scene.pieces[i].player) !== -1) && (!this.scene.pieces[i].isPlayed)){
 			this.scene.currentPiece = this.scene.pieces[i];
 			found = true;
 		}
