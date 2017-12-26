@@ -120,6 +120,8 @@ parse_input(endOfGame(Game), Winner) :- endOfGame(Game,Winner).
 
 parse_input(getAllValidPlays(Game,Turn), Plays) :- getAllValidPlays(Game,Plays,Turn).
 
+%getAllValidPlays([[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],[10,3,0,human],[10,2,0,easyBot],whitePlayer],1)
+
 parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.

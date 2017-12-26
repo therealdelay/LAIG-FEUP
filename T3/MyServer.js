@@ -40,7 +40,7 @@ MyServer.prototype.handleReply = function(data){
 		console.log("Syntax Error");
 	else {
 			console.log("RESPONSE:::: " + data.target.response); 
-        	Game.currReplay = data.target.response;
+        	Game.currReply = data.target.response;
 	}
 };
 

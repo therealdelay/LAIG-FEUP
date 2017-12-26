@@ -319,6 +319,7 @@ XMLscene.prototype.display = function() {
                 console.log("Waiting choose players...");             
                 break;
             case "getPlay":
+                this.Game.getAllValidPlays();
                 this.Game.getPlay();
                 break;
             case "applyPlay": 
@@ -340,7 +341,7 @@ XMLscene.prototype.display = function() {
         this.lastStatus = this.Game.currState;
     }
 
-    this.Game.getReplay();
+    this.Game.getReply();
 
     if((this.Game.currState == "animationPlay") && (this.currentPiece.getAnimation().getStatus())){
         this.Game.currState = "verifyStatus";
@@ -389,15 +390,6 @@ XMLscene.prototype.displayPieces = function() {
         this.pieces[w].display();
         this.clearPickRegistration();
     }
-
-    //Apenas para testar o movimento das peças "comidas"
-    /*if(this.first == 0){
-        for(var i = 0; i < 20; i +=2){
-            this.winBlackPiece(this.pieces[i]);
-            this.winWhitePiece(this.pieces[i+1]);
-        }
-        this.first = 1;
-    }*/
 };
 
 

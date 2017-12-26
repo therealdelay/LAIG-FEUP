@@ -7,7 +7,7 @@ function Game(scene) {
 	this.server = new MyServer(this);
 	this.try = 10;
 
-	Game.currReplay = "";
+	Game.currReply = "";
 	this.firstTime = true;
 	this.lastRequest = "";
 
@@ -23,7 +23,7 @@ function Game(scene) {
 	// TODO increments it after each turn 
 	this.turn = 1; 
 
-	// TODO history of moves - add after replay of play
+	// TODO history of moves - add after reply of play
 	this.moves = [];
 
 	this.states = ["menu","getPlay","applyPlay","animationPlay","verifyStatus","endGame"];
@@ -62,27 +62,19 @@ Game.prototype.endOfGame = function() {
 };
 
 
-// Get server replay's
-Game.prototype.getReplay = function() {
-	console.log("curr");
-	console.log(Game.currReplay);
-	console.log("stat");
-	console.log(this.currState);
-	if(Game.currReplay == ""){
-		console.log("entrei");
+// Get server reply's
+Game.prototype.getReply = function() {
+	if(Game.currReply == "")
 		return;
-	}
-	console.log("nao entrei");
 
 	if(this.currState == "applyPlay") {
 		try{
-			var jsonData = JSON.parse(Game.currReplay.replace(/([a-z])\w+/g, "\"$&\""));
+			var jsonData = JSON.parse(Game.currReply.replace(/([a-z])\w+/g, "\"$&\""));
 		}
 		catch(e){
 			console.log(e);
 		}
 		console.log("Board:::  ");
-		console.log(jsonData);
 		for(var i = 0; i < jsonData[0].length; i++ ) {
 			console.log(i + ": "+ (jsonData[0][i]).toString()) ;
 		}
@@ -100,10 +92,10 @@ Game.prototype.getReplay = function() {
 	else if(this.currState ==  "getPlay") {
 		let coords = [];
 		
-		if(Game.currReplay[13] == ',')
-			coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[14] + ']');
+		if(Game.currReply[13] == ',')
+			coords.push('[[' + Game.currReply[2] + ',' + Game.currReply[4] + '],' + Game.currReply[14] + ']');
 		else
-			coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[13] + ']');	
+			coords.push('[[' + Game.currReply[2] + ',' + Game.currReply[4] + '],' + Game.currReply[13] + ']');	
 		this.moves.push({ play: coords, player:this.currPlayer});
 		this.currState = "applyPlay";
 		
@@ -115,15 +107,21 @@ Game.prototype.getReplay = function() {
 	}
 	else if(this.currState ==  "verifyStatus") {
 		
-		if(Game.currReplay == 'none'){
+		if(Game.currReply == 'none'){
 			this.currState = "getPlay";
 			this.turn += 1;
 		}
 		else
 			this.currState = "endGame";
 	}
+	else if(this.currState == "validPlays"){
+		console.log("valid");
+		//console.log(Game.currReply);
+		this.getAllValidSpots(Game.currReply);
+		this.currState = "getPlay";
+	}
 
-	Game.currReplay = "";
+	Game.currReply = "";
 };
 
 Game.prototype.selectPiece = function(type) {
@@ -188,3 +186,27 @@ Game.prototype.convertCoordsOffProlog = function(move) {
 	console.log("newMove: " + newMove);
 	return newMove;
 }
+
+Game.prototype.getAllValidPlays = function(){
+	var sendMsg = "getAllValidPlays([[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],[10,3,0,human],[10,2,0,easyBot],whitePlayer],1)";
+	console.log("sendMsg ::: " + sendMsg);
+	this.server.makeRequest(sendMsg);
+
+	this.currState = "validPlays";
+};
+
+Game.prototype.getAllValidSpots = function(array){
+	array = array.replace(/\|\_[0-9]*/g, '');
+	array = array.replace(/\[\[\[/g, "[[");
+	array = array.replace(/\]\]/g, "]");
+
+	var moves = [];
+	for(var i = 0; i < array.length; i+=10){
+		var coords = [];
+		coords.push(array[i+2],array[i+4]);
+		var type = array[i+7];
+		var move = [coords,type];
+		moves.push(move);
+	}	
+	console.log(moves);
+};
