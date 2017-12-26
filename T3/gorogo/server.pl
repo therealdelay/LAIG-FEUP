@@ -118,6 +118,8 @@ parse_input(play(Game,Play), GameRes) :-
 
 parse_input(endOfGame(Game), Winner) :- endOfGame(Game,Winner).
 
+parse_input(getAllValidPlays(Game,Turn), Plays) :- getAllValidPlays(Game,Plays,Turn).
+
 parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.

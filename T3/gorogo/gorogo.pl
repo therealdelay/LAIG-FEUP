@@ -178,8 +178,10 @@ applyPlay(Game,Play,GameRes):-
 	setBoardCell(GameTmp,X,Y,Piece,GameRes).
 	
 	
-	
-	
+getAllValidPlays(Game,Plays,Turn):-
+	findall(Play,validPlay(Game,Play,Turn),Plays),
+	write(Plays).	
+
 %-------------END_OF_GAME--------------
 
 checkInvalidMovesLeft(Game,Winner):-
@@ -278,4 +280,4 @@ initGamePvP(Game):-
 	WhiteInfo = [10,3,0,human],
 	BlackInfo = [10,2,0,easyBot],
 	Player = whitePlayer,
-	Game = [Board, WhiteInfo, BlackInfo, Player].
+	Game = [Board, WhiteInfo, BlackInfo, Player].	
