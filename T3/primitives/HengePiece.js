@@ -3,6 +3,7 @@ function HengePiece(scene, player, position) {
 	this.scene = scene;
 	this.player = player;
 	this.position = position;
+    this.boardPosition = null;
 
     this.isPlayed = false;
 
@@ -82,4 +83,8 @@ HengePiece.prototype.getType = function() {
 
 HengePiece.prototype.getAnimation = function() {
     return this.currAnimation;
+};
+
+HengePiece.prototype.getBoardPosition = function() {
+    return this.boardPosition;
 };

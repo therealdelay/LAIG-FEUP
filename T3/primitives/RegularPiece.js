@@ -3,6 +3,7 @@ function RegularPiece(scene, player, position) {
 	this.scene = scene;
 	this.player = player;
 	this.position = position;
+    this.boardPosition = null;
 
     this.isPlayed = false;
 
@@ -72,4 +73,8 @@ RegularPiece.prototype.getType = function() {
 
 RegularPiece.prototype.getAnimation = function() {
     return this.currAnimation;
+};
+
+RegularPiece.prototype.getBoardPosition = function() {
+    return this.boardPosition;
 };

@@ -210,3 +210,35 @@ Game.prototype.getAllValidSpots = function(array){
 	}	
 	console.log(moves);
 };
+
+Game.prototype.undoLastPlay = function() {
+
+	if(this.moves.length < 1)
+		return;
+ 	let tmpMove = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
+	let lastMove = [];
+	lastMove.push(tmpMove[0][0]);
+	lastMove.push(0.3);
+	lastMove.push(tmpMove[0][1]);
+
+	console.log("LAST MOVE " + lastMove);
+
+	var i = 0, found = false;
+	while(i < this.scene.pieces.length && !found){
+		if(this.scene.pieces[i].boardPosition != null)
+			console.log("piece pos " +this.scene.pieces[i].boardPosition);
+		if(this.scene.pieces[i].boardPosition != null && this.scene.pieces[i].boardPosition[0] == lastMove[0]
+			&& this.scene.pieces[i].boardPosition[1] == lastMove[1] 
+			&& this.scene.pieces[i].boardPosition[2] == lastMove[2]){
+			found = true;
+		}
+		i++;
+	}
+
+	if(found){
+		console.log("FOUND");
+		this.scene.invertAnimatePiece(this.scene.pieces[i], lastMove);
+	}
+	else
+		console.warn("error!!!");
+}
