@@ -51,6 +51,7 @@ function XMLscene(interface) {
 
     this.first = 0;
     this.lastStatus = "menu";
+    this.pause = false;
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -100,7 +101,30 @@ XMLscene.prototype.animatePiece = function (newPos){
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
-    
+    this.currentPiece.boardPosition = p4;   
+}
+
+XMLscene.prototype.invertAnimatePiece = function (piece, lastMove){
+
+    this.currentPiece = piece;
+
+    console.log("pimmm " + lastMove);
+    console.log("pimmm " + this.currentPiece);
+    console.log("pimmm " + this.currentPiece.position);
+
+    var p1 = lastMove;
+    var p2 = [lastMove[0], 10, lastMove[2]];
+    var p3 = [this.currentPiece.position[0],10,this.currentPiece.position[1]];
+    var p4 = [this.currentPiece.position[0],0.3,this.currentPiece.position[1]];
+
+    console.log(p1);
+    console.log(p2);
+    console.log(p3);
+    console.log(p4);
+
+    this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
+    this.currentPiece.isPlayed = false;
+    this.currentPiece.boardPosition = null;  
 }
 /**
  * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
@@ -311,6 +335,8 @@ XMLscene.prototype.display = function() {
     
 
     this.popMatrix();
+    if(this.pause)
+        return;
 
     if(this.Game.currState != this.lastStatus){
 
@@ -528,4 +554,9 @@ XMLscene.prototype.undoPlay = function(){
 
 XMLscene.prototype.pauseGame = function(){
     console.log("Pause Game");
+
+    if(this.pause)
+        this.pause = false;
+    else 
+        this.pause = true;
 }

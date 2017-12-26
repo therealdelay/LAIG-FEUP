@@ -6,7 +6,8 @@ function Piece(scene, name, position){
 	this.animation = null;
 	this.timer = null;
 	this.player = null;
-	this.position = position;
+	//this.position = position;
+	this.boardPosition = null;
 
 	this.piece = this.scene.piecesGraph.pieceNodes[name];
 	//this.piece.setIsParent(true);
@@ -59,6 +60,9 @@ Piece.prototype.display = function (currNode, parentMaterial, currTime){
 };
 
 Piece.prototype.getType = function() {
+};
+
+Piece.prototype.getBoardPosition = function() {
 };
 
 Piece.prototype.getAnimation = function() {
