@@ -188,7 +188,17 @@ Game.prototype.convertCoordsOffProlog = function(move) {
 }
 
 Game.prototype.getAllValidPlays = function(){
-	var sendMsg = "getAllValidPlays([[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],[10,3,0,human],[10,2,0,easyBot],whitePlayer],1)";
+	var b = "[";
+	for(var i = 0; i < this.board.length; i++){
+		b += '[';
+		b += this.board[i].toString();
+		b += ']';
+		if(i != 4)
+			b += ',';
+	}
+	b += ']';
+
+	var sendMsg = "getAllValidPlays([" + b + ",[" + this.whitePieces + "],[" + this.blackPieces + "]," + this.currPlayer + "]," + this.turn  + ")";
 	console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
 
