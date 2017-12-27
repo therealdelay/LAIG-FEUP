@@ -334,7 +334,7 @@ XMLscene.prototype.display = function() {
                 console.log("Waiting choose players...");             
                 break;
             case "getPlay":
-                this.Game.getAllValidPlays();
+                //this.Game.getAllValidPlays();
                 this.Game.getPlay();
                 break;
             case "applyPlay": 
@@ -531,6 +531,10 @@ XMLscene.prototype.startGame = function(){
 XMLscene.prototype.undoPlay = function(){
     console.log("Undo Play");
     this.Game.undoLastPlay();
+}
+
+XMLscene.prototype.videoGame = function(){
+    console.log("Video Game");
 }
 
 XMLscene.prototype.pauseGame = function(){
