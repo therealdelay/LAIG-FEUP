@@ -45,11 +45,18 @@ Game.prototype.getPlay = function() {
 
 //play(Game,Play) -> newGameState
 Game.prototype.play = function() {
-
+	var sendMsg = null;
+	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
+		var lastPlay = this.moves[this.moves.length-1].pointF;
+		var pieceType = this.moves[this.moves.length-1].piece;
+		var sendMsg = "play(" + this.gameInFormat() + ",[[" + lastPlay.toString() + "]," + pieceType + "])";
+	}
+	else{
+		var lastPlay = this.moves[this.moves.length-1].pointF;
+ 		//console.log(lastPlay);
+ 		var sendMsg = "play(" + this.gameInFormat() + "," + lastPlay.toString() + ")";
+	}
 	//get last move on list of moves
-	var lastPlay = this.moves[this.moves.length-1].pointF;
-	var pieceType = this.moves[this.moves.length-1].piece;
-	var sendMsg = "play(" + this.gameInFormat() + ",[[" + lastPlay.toString() + "]," + pieceType + "])";
 	//console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
 };
