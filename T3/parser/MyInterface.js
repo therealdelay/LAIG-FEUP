@@ -148,7 +148,7 @@ MyInterface.prototype.update = function(){
 		return;
 	}
 
-	if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human')){ 
+	if((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='human') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='human')){ 
 		if((this.scene.Game.turn % 2) == 1)
 			this.scene.CameraView = 'white';
 		else

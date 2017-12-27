@@ -12,6 +12,7 @@ function Game(scene) {
 	this.lastRequest = "";
 
 	this.board = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+	this.lastBoard = null;
 	this.blackPieces = [10,2,0,"easyBot"];
 	this.whitePieces = [10,3,0,"human"];
 
@@ -91,8 +92,10 @@ Game.prototype.getReply = function() {
 		//console.log("Pieces Human:::  " + jsonData[1]);
 		//console.log("Pieces Bot:::  " + jsonData[2]);
 		//console.log("Player:::  " + jsonData[3]);
-
+		this.lastBoard = this.board;
 		this.board = jsonData[0];
+		console.log(this.lastBoard);
+		console.log(this.board);
 		this.whitePieces = jsonData[1];
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
@@ -228,7 +231,7 @@ Game.prototype.convertCoordsOffProlog = function(move) {
 Game.prototype.getAllValidPlays = function(){
  	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human')))
  		return;
- 	
+
     var sendMsg = "getAllValidPlays(" + this.gameInFormat().toString() + "," + this.turn.toString()  + ")";
     ////console.log("sendMsg ::: " + sendMsg);
     this.server.makeRequest(sendMsg);
