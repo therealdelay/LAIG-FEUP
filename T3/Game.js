@@ -77,12 +77,8 @@ Game.prototype.getReply = function() {
 		return;
 
 	if(this.currState == "applyPlay") {
-		Game.currReply = Game.currReply.replace(/[r]\]\,\[/g, "r]|[");
-		Game.currReply = Game.currReply.replace(/\[\[\[\[/g, "[[[");
-		var array = Game.currReply.split('|');
-		console.log(array[1]);
 		try{
-			var jsonData = JSON.parse(array[0].replace(/([a-z])\w+/g, "\"$&\""));
+			var jsonData = JSON.parse(Game.currReply.replace(/([a-z])\w+/g, "\"$&\""));
 		}
 		catch(e){
 			console.log(e);

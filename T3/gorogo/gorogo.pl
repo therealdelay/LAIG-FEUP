@@ -50,18 +50,14 @@ surrounded(State,X,Y,Player,Opponent,Henge):-
 	surrounded(TmpState,X,UpY,Player,Opponent,Henge), !.
 	
 isSurroundedOpponent(Game,Point,Henge):-
-	write('PASSEI AQUI7'), nl,
 	getBoard(Game,Board),
 	getCurrentPlayer(Game,Player),
 	getNextPlayer(Player,Opponent),
 	getPoint2DXCoord(Point,X),
-	write('PASSEI AQUI8'), nl,
 	getPoint2DYCoord(Point,Y),
 	selectPos(Board,X,Y,Elem),
 	playerPiece(Opponent,OpponentPiece),
-	write('PASSEI AQUI9'), nl,
 	Elem == OpponentPiece,
-	write('PASSEI AQUI10'), nl,
 	surrounded(Board,X,Y,Opponent,Player,Henge).
 	
 isSurroundedPlayer(Game,Point,Henge):-
@@ -243,26 +239,21 @@ clearBoard(Game, [Point|T], GameRes):-
 	clearBoard(GameTmp2,T,GameRes).
 	
 	
-updateGame(Game,GameRes,Points):-
-	write('PASSEI AQUI5'), nl,
+updateGame(Game,GameRes):-
 	findall(Point, isSurroundedOpponent(Game,Point,t), Points),
-		write('PASSEI AQUI6'), nl,
 	clearBoard(Game,Points,GameRes).
-
+	
+	
 waitForBot(Game):-
 	getCurrentPlayer(Game,Player),
 	getPlayerInfo(Game,Player,Info),
 	getPlayerType(Info,PlayerType),
 	ite((PlayerType == easyBot ; PlayerType == hardBot),(write('  Press Enter to continue'),nl,waitForEnter),true).
 	
-updateGameCycle(Game,GameRes,Points):-
-	write('PASSEI AQUI1'), nl,
-	updateGame(Game,GameTmp1,Points),
-		write('PASSEI AQUI2'), nl,
+updateGameCycle(Game,GameRes):-
+	updateGame(Game,GameTmp1),
 	setNextPlayer(GameTmp1,GameTmp2),
-		write('PASSEI AQUI3'), nl,
-	updateGame(GameTmp2,GameRes,Points),
-		write('PASSEI AQUI4'), nl.
+	updateGame(GameTmp2,GameRes).
 	
 play(Game):-
 	playCycle(Game,Winner,1),
