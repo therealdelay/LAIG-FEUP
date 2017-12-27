@@ -70,19 +70,25 @@ Game.prototype.getReply = function() {
 		return;
 
 	if(this.currState == "applyPlay") {
+		console.log(Game.currReply);
 		try{
 			var jsonData = JSON.parse(Game.currReply.replace(/([a-z])\w+/g, "\"$&\""));
 		}
 		catch(e){
 			console.log(e);
 		}
-		/*console.log("Board:::  ");
+		console.log(Game.currReply);
+
+		if(jsonData == null)
+			return;
+
+		console.log("Board:::  ");
 		for(var i = 0; i < jsonData[0].length; i++ ) {
 			console.log(i + ": "+ (jsonData[0][i]).toString()) ;
 		}
 		console.log("Pieces Human:::  " + jsonData[1]);
 		console.log("Pieces Bot:::  " + jsonData[2]);
-		console.log("Player:::  " + jsonData[3]); */
+		console.log("Player:::  " + jsonData[3]);
 
 		this.board = jsonData[0];
 		this.whitePieces = jsonData[1];
@@ -96,12 +102,14 @@ Game.prototype.getReply = function() {
 		var reply = Game.currReply;
 		reply = reply.replace(/\|\_[0-9]*/g, '');
 		coords.push(parseInt(reply[2]),parseInt(reply[4]));
+		
 
 		var move = [];
 		move.push(coords);
 		move.push(reply[7].charAt(0));
 
-		this.currState = "applyPlay";
+
+		this.getAllValidPlays();
 		
 		var newMove = this.convertCoordsOffProlog(move);
 		// move = [[x,y],type]
@@ -116,6 +124,7 @@ Game.prototype.getReply = function() {
 		console.log(this.blackPieces);
 		/*console.log("POINT I " + this.scene.currentPiece.position);
 		console.log("POINT F " + this.scene.currentPiece.boardPosition);*/
+		this.currState = "applyPlay";
 	
 	}
 	else if(this.currState ==  "verifyStatus") {

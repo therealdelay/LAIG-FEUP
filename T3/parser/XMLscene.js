@@ -63,28 +63,40 @@ XMLscene.prototype.logPicking = function (){
 			for (var i=0; i< this.pickResults.length; i++) {
 				var obj = this.pickResults[i][0];
 				if (obj){
-					var customId = this.pickResults[i][1];				
+					var customId = this.pickResults[i][1];	
 					//console.log("Picked object: " + obj + ", with pick id " + customId);
-
+                    
                     if(this.pickResults[i][0] instanceof RegularPiece){
                         this.currentPiece = this.pieces[customId-1];
+                        if(this.currentPiece.selected){
+                            this.currentPiece.selected = false;
+                            this.currentPiece = null;
+                        }
+                        else
+                            this.currentPiece.selected = true;
+                        break;
                     }
                     else if(this.pickResults[i][0] instanceof HengePiece){
                         this.currentPiece = this.pieces[customId-1];
+                        if(this.currentPiece.selected){
+                            this.currentPiece.selected = false;
+                            this.currentPiece = null;
+                        }
+                        else
+                            this.currentPiece.selected = true;
+                        break;
                     }
-
                     if(this.currentPiece !== null){
                         if(this.pickResults[i][0] instanceof MyPickSpot){
                             var newPos = [this.pickResults[i][0].x,this.pickResults[i][0].z];
                             this.animatePiece(newPos);
-                            //this.pickResults[i][0].isOption = false;
                         }
                     }
-				}
-			}
-			this.pickResults.splice(0,this.pickResults.length);
-		}		
-	}
+                }
+            }
+            this.pickResults.splice(0,this.pickResults.length);
+        }       
+    }
 };
 
 XMLscene.prototype.animatePiece = function (newPos){
@@ -332,8 +344,10 @@ XMLscene.prototype.display = function() {
             case "menu":
                 console.log("Waiting choose players...");             
                 break;
-            case "getPlay":
+            case "validPlays":
                 this.Game.getAllValidPlays();
+                break;
+            case "getPlay":
                 this.Game.getPlay();
                 break;
             case "applyPlay": 
@@ -375,6 +389,7 @@ XMLscene.prototype.display = function() {
     if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
         this.Game.isConf = true;
         this.Game.currState = "getPlay";
+        //this.Game.currState = "validPlays";
     }
 };
 
@@ -399,6 +414,9 @@ XMLscene.prototype.displayPieces = function() {
     for(; w < this.pieces.length; w++){
         if((this.currentPiece == null) && (this.pieces[w].isPlayed == false))
             this.registerForPick(1+w,this.pieces[w]);
+
+        else if((this.currentPiece != null) && (this.pieces[w].selected))
+            this.registerForPick(1+w,this.pieces[w]);            
         
         this.pieces[w].display();
         this.clearPickRegistration();
