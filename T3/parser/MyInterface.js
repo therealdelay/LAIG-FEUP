@@ -60,10 +60,6 @@ MyInterface.prototype.removeFolder = function(name){
 	delete this.gui.__folders[name];
 }
 
-MyInterface.prototype.addCameraGroup = function(){
-	this.gui.add(this.scene, 'CameraAutomatic').name("Automatic Camera");
-};
-
 MyInterface.prototype.addCameraViews = function(){
 	
 	var group = this.gui.addFolder("Camera");
@@ -109,6 +105,7 @@ MyInterface.prototype.addGameGroup = function(){
 	group.add(this.scene, 'pauseGame').name("Pause Game");
 	group.add(this.scene, 'undoPlay').name("Undo Play");
 	group.add(this.scene, 'videoGame').name("Review Game");
+	group.add(this.scene, 'CameraAutomatic').name("Automatic Camera");
 
 }
 
@@ -146,8 +143,17 @@ MyInterface.prototype.update = function(){
 		this.noViews = true;
 	}
 
-	if((this.scene.Game.turn % 2) == 1)
-		this.scene.CameraView = 'white';
+	if(this.scene.Game.turn == 0){
+		this.scene.CameraView = 'ai';
+		return;
+	}
+
+	if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human')){ 
+		if((this.scene.Game.turn % 2) == 1)
+			this.scene.CameraView = 'white';
+		else
+			this.scene.CameraView = 'black';
+	}
 	else
-		this.scene.CameraView = 'black';
+		this.scene.CameraView = 'ai';
 }

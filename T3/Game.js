@@ -21,7 +21,7 @@ function Game(scene) {
 	this.currPlayer = "whitePlayer";
 
 	// TODO increments it after each turn 
-	this.turn = 1; 
+	this.turn = 0; 
 
 	// TODO history of moves - add after reply of play
 	this.moves = [];
@@ -34,37 +34,32 @@ function Game(scene) {
 
 //getPlay(Game,Turn)
 Game.prototype.getPlay = function() {
+    console.log("getPlay");
 
-	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || 
-		(this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
+	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
 		var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
-		console.log("sendMsg ::: " + sendMsg);
+		//console.log("sendMsg ::: " + sendMsg);
 		this.server.makeRequest(sendMsg);
 	}
 };
 
 //play(Game,Play) -> newGameState
 Game.prototype.play = function() {
+	console.log("play");
 	var sendMsg = null;
-	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
-		var lastPlay = this.moves[this.moves.length-1].pointF;
-		var pieceType = this.moves[this.moves.length-1].piece;
-		var sendMsg = "play(" + this.gameInFormat() + ",[[" + lastPlay.toString() + "]," + pieceType + "])";
-	}
-	else{
-		var lastPlay = this.moves[this.moves.length-1].pointF;
- 		//console.log(lastPlay);
- 		var sendMsg = "play(" + this.gameInFormat() + "," + lastPlay.toString() + ")";
-	}
+	var lastPlay = this.moves[this.moves.length-1].pointF;
+	//console.log(lastPlay);
+	var sendMsg = "play(" + this.gameInFormat() + ",[[" + lastPlay[0] + "]," + lastPlay[1] + "])";
 	//get last move on list of moves
-	console.log("sendMsg ::: " + sendMsg);
+	//console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
 };
 
 //endOfGame(Game) -> winner 
 Game.prototype.endOfGame = function() {
+	console.log("endOfGame");
 	var sendMsg = "endOfGame(" + this.gameInFormat() + ")";
-	//console.log("sendMsg ::: " + sendMsg);
+	////console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
 
 	// TODO after response -> verify Winner
@@ -77,23 +72,25 @@ Game.prototype.getReply = function() {
 		return;
 
 	if(this.currState == "applyPlay") {
+		console.log("getReply - applyPlay");
+
 		try{
 			var jsonData = JSON.parse(Game.currReply.replace(/([a-z])\w+/g, "\"$&\""));
 		}
 		catch(e){
-			console.log(e);
+			//console.log(e);
 		}
 
 		if(jsonData == null)
 			return;
 
-		console.log("Board:::  ");
+		//console.log("Board:::  ");
 		for(var i = 0; i < jsonData[0].length; i++ ) {
-			console.log(i + ": "+ (jsonData[0][i]).toString()) ;
+			//console.log(i + ": "+ (jsonData[0][i]).toString()) ;
 		}
-		console.log("Pieces Human:::  " + jsonData[1]);
-		console.log("Pieces Bot:::  " + jsonData[2]);
-		console.log("Player:::  " + jsonData[3]);
+		//console.log("Pieces Human:::  " + jsonData[1]);
+		//console.log("Pieces Bot:::  " + jsonData[2]);
+		//console.log("Player:::  " + jsonData[3]);
 
 		this.board = jsonData[0];
 		this.whitePieces = jsonData[1];
@@ -103,6 +100,7 @@ Game.prototype.getReply = function() {
 		this.currState = "animationPlay";
 	}
 	else if(this.currState ==  "getPlay") {
+		console.log("getReply - getPlay");
 		let coords = [];
 		var reply = Game.currReply;
 		reply = reply.replace(/\|\_[0-9]*/g, '');
@@ -128,16 +126,17 @@ Game.prototype.getReply = function() {
 			pieceType = "n";
 		else
 			pieceType = "h";
-		this.moves.push({ pointI: this.scene.currentPiece.position, pointF: coords, player:this.currPlayer, piece: pieceType});
+		this.moves.push({ pointI: this.scene.currentPiece.position, pointF: [coords,pieceType], player:this.currPlayer, piece: pieceType});
 
-		console.log(this.whitePieces);
-		console.log(this.blackPieces);
-		/*console.log("POINT I " + this.scene.currentPiece.position);
-		console.log("POINT F " + this.scene.currentPiece.boardPosition);*/
+		//console.log(this.whitePieces);
+		//console.log(this.blackPieces);
+		///*console.log("POINT I " + this.scene.currentPiece.position);
+		//console.log("POINT F " + this.scene.currentPiece.boardPosition);*/
 		this.currState = "applyPlay";
 	
 	}
 	else if(this.currState ==  "verifyStatus") {
+	console.log("getReply - verifyStatus");
 		
 		if(Game.currReply == 'none'){
 			this.currState = "getPlay";
@@ -148,8 +147,10 @@ Game.prototype.getReply = function() {
 			this.currState = "endGame";
 	}
 	else if(this.currState == "validPlays"){
-		//console.log("valid");
-		//console.log(Game.currReply);
+		////console.log("valid");
+	console.log("getReply - validPlays");
+
+		////console.log(Game.currReply);
 		if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))
 			this.getAllValidSpots(Game.currReply);
 		this.currState = "getPlay";
@@ -159,6 +160,7 @@ Game.prototype.getReply = function() {
 };
 
 Game.prototype.selectPiece = function(type) {
+	console.log("selectPiece");
 	var i = 0;
 	var found = false;
 	while((i < this.scene.pieces.length) && !found) {
@@ -173,7 +175,7 @@ Game.prototype.selectPiece = function(type) {
 }
 
 Game.prototype.gameInFormat = function() {
-
+console.log("gameInFormat");
 	var gameJson = [], aux = [];
 
 	for(var i = 0; i < this.board.length; i++)
@@ -197,12 +199,11 @@ Game.prototype.configBlackPlayer = function() {
 }
 
 Game.prototype.addHumanMoveToGame = function(pointF){
+	console.log("addHumanMoveToGame");
 	let pointX = pointF[0] / 2.55 + 3;
 	let pointY = pointF[2] / 2.55 + 3;
 	let type = this.scene.currentPiece.getType();
-	let newMove = [];
-
-    newMove.push('[[' + pointX + ',' + pointY + '],' + type + ']');
+	let newMove = [[pointX,pointY],type];
 
     this.moves.push({pointI: this.scene.currentPiece.position, pointF: newMove, player:this.currPlayer});
     this.scene.currentPiece.boardPosition = [pointF[0],0.3,pointF[2]];
@@ -210,7 +211,7 @@ Game.prototype.addHumanMoveToGame = function(pointF){
 }
 
 Game.prototype.convertCoordsOffProlog = function(move) {
-	//console.log(move);
+	////console.log(move);
 	var newX = (move[0][0] - 3) * 2.55;
 	var newY = (move[0][1] - 3) * 2.55;
 
@@ -220,14 +221,16 @@ Game.prototype.convertCoordsOffProlog = function(move) {
 	newMove.push(newCoords);
 	newMove.push(move[1]);
 
-	//console.log("newMove: " + newMove);
+	////console.log("newMove: " + newMove);
 	return newMove;
 }
 
 Game.prototype.getAllValidPlays = function(){
- 
+ 	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human')))
+ 		return;
+ 	
     var sendMsg = "getAllValidPlays(" + this.gameInFormat().toString() + "," + this.turn.toString()  + ")";
-    //console.log("sendMsg ::: " + sendMsg);
+    ////console.log("sendMsg ::: " + sendMsg);
     this.server.makeRequest(sendMsg);
     this.currState = "validPlays";
 };
@@ -269,25 +272,14 @@ Game.prototype.undoLastPlay = function() {
 	if(this.moves.length < 1)
 		return;
 
-	console.log(this.moves[this.moves.length-1]);
+	//console.log(this.moves[this.moves.length-1]);
 
  	let tmpMove = null;
 	
-	if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human')){
-		var move = [];
-		move.push(parseInt(this.moves[this.moves.length-1].pointF[0][2]),parseInt(this.moves[this.moves.length-1].pointF[0][4]));
-		var newmove = [];
-		newmove.push(move, this.moves[this.moves.length-1].pointF[0][7]);
-		tmpMove = this.convertCoordsOffProlog(newmove);
-		console.log(tmpMove);
-	}
-	else{
-		var move = [];
-		move.push(this.moves[this.moves.length-1].pointF,this.moves[this.moves.length-1].piece);
-		tmpMove = this.convertCoordsOffProlog(move);
-		console.log(tmpMove);
-	}
-		
+	var move = this.moves[this.moves.length-1].pointF;
+	tmpMove = this.convertCoordsOffProlog(move);
+	//console.log(tmpMove);
+
 	let lastMove = [tmpMove[0][0], 0.3, tmpMove[0][1]];
 	let pointI = this.moves[this.moves.length-1].pointI;
 

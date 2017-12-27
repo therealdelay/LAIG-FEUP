@@ -128,6 +128,11 @@
     <amplif_factor s="1" t="1" />   
   </TEXTURE>
 
+  <TEXTURE id="menu">
+    <file path="../textures/menu.png" />                
+    <amplif_factor s="1" t="1" />   
+  </TEXTURE>
+
 </TEXTURES>
 
 <MATERIALS>

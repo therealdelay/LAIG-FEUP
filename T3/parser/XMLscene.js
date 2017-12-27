@@ -43,7 +43,6 @@ function XMLscene(interface) {
     this.cameraViews = ['ai','black','white'];
     this.finalPos = [0,0,0];
     this.moveCam = false;
-    this.camMoving = false;
 
     this.blackSpotX = 10;
     this.blackSpotZ = 12;
@@ -65,7 +64,7 @@ XMLscene.prototype.logPicking = function (){
 				var obj = this.pickResults[i][0];
 				if (obj){
 					var customId = this.pickResults[i][1];	
-					//console.log("Picked object: " + obj + ", with pick id " + customId);
+					////console.log("Picked object: " + obj + ", with pick id " + customId);
                     
                     if(this.pickResults[i][0] instanceof RegularPiece){
                         this.currentPiece = this.pieces[customId-1];
@@ -101,6 +100,7 @@ XMLscene.prototype.logPicking = function (){
 };
 
 XMLscene.prototype.animatePiece = function (newPos){
+    console.log("animatePiece");
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [newPos[0],10,newPos[1]];
@@ -118,7 +118,7 @@ XMLscene.prototype.animatePiece = function (newPos){
 }
 
 XMLscene.prototype.invertAnimatePiece = function (pointI){
-
+    console.log("invertAnimatePiece");
     var p1 = this.currentPiece.boardPosition;
     var p2 = [this.currentPiece.boardPosition[0], 10, this.currentPiece.boardPosition[2]];
     var p3 = [pointI[0],10,pointI[2]];
@@ -270,8 +270,7 @@ XMLscene.prototype.onGraphLoaded = function() {
 
     // Adds game group
     this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
-    this.interface.addCameraGroup();
-    this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
+    //this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
     
     this.createPieces();
 };
@@ -343,19 +342,19 @@ XMLscene.prototype.display = function() {
 
         switch(this.Game.currState){
             case "menu":
-                console.log("Waiting choose players...");             
+                //this.displayMenuBoard();
                 break;
             /*case "validPlays":
-                this.Game.getAllValidPlays();
                 break;*/
             case "getPlay":
+                this.Game.getAllValidPlays();
                 this.Game.getPlay();
                 break;
             case "applyPlay": 
                 this.Game.play();
                 break;
             case "animationPlay":
-                console.log("Waiting animation..."); 
+                //console.log("Waiting animation..."); 
                 break;
             case "verifyStatus":
                 this.Game.endOfGame();
@@ -372,8 +371,7 @@ XMLscene.prototype.display = function() {
 
     this.Game.getReply();
 
-    if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus() && (this.camMoving == false)){
-        console.log("entrei");
+    if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus()){
         this.Game.currState = "verifyStatus";
         this.currentPiece = null;
     }
@@ -458,7 +456,6 @@ XMLscene.prototype.updateCamera = function(view){
 XMLscene.prototype.animateCamera = function(deltaTime){
     this.updateCamera();
     if(this.moveCam){
-        this.camMoving = true;
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
             if((deltaTime <= 10000) && (!this.pause)){
                 if(this.camera.position[0] < this.finalPos[0])
@@ -467,10 +464,8 @@ XMLscene.prototype.animateCamera = function(deltaTime){
                     this.camera.orbit("y", -deltaTime/1000*50*DEGREE_TO_RAD);
             }
         }
-        else{
-            this.camMoving = false;
+        else
             this.moveCam = false;
-        }
     }
 }
 
@@ -569,21 +564,22 @@ XMLscene.prototype.clearBoard = function(){
 };
 
 XMLscene.prototype.showGame = function(){
+    console.log("showGame");
 
     for(var j = 0; j < this.Game.moves.length; j++){
         for(var i=0; i < this.pieces.length; i++){
-            console.log("pimmmm");
+            //console.log("pimmmm");
             let tmpMove = this.Game.convertCoordsOffProlog((this.Game.moves[j]).pointF);
             let move = [tmpMove[0][0], 0.3, tmpMove[0][1]];
 
             if(this.pieces[i].boardPosition != null){
-            console.log(" this.pieces[i].boardPosition "+ this.pieces[i].boardPosition.toString());
-            console.log("pointF "+ move.toString());
+            //console.log(" this.pieces[i].boardPosition "+ this.pieces[i].boardPosition.toString());
+            //console.log("pointF "+ move.toString());
             }
             if(this.pieces[i].boardPosition != null &&
                 this.pieces[i].boardPosition.toString() == move.toString() ){
                 this.currentPiece = this.pieces[i];
-            console.log("move "+ move);
+            //console.log("move "+ move);
             this.invertAnimatePiece(move);
             this.currentPiece = null;
         }
@@ -592,30 +588,34 @@ XMLscene.prototype.showGame = function(){
 };
 
 XMLscene.prototype.startGame = function(){
-    console.log("New Game");
+    console.log("startGame");
+
+    //console.log("New Game");
     this.clearBoard();
     this.Game = new Game(this);
+    this.Game.turn = 1;
     this.lastStatus = "menu";
     this.WhitePlayer = null;
     this.BlackPlayer = null;
     this.isConfiguredPlayerWhite = false;
     this.isConfiguredPlayerBlack = false;
+    this.interface.addGameGroup();
     //TODO reset pick's
 };
 
 XMLscene.prototype.undoPlay = function(){
-    console.log("Undo Play");
+    //console.log("Undo Play");
     this.Game.undoLastPlay();
 };
 
 XMLscene.prototype.videoGame = function(){
-    console.log("Video Game");
+    //console.log("Video Game");
     this.clearBoard();
    // this.showGame();
 };
 
 XMLscene.prototype.pauseGame = function(){
-    console.log("Pause Game");
+    //console.log("Pause Game");
 
     if(this.pause)
         this.pause = false;
