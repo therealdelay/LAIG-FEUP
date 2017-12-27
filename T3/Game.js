@@ -242,11 +242,8 @@ Game.prototype.undoLastPlay = function() {
 		return;
 
  	let tmpMove = this.convertCoordsOffProlog(this.moves[this.moves.length-1].pointF);
+	let lastMove = [tmpMove[0][0], 0.3, tmpMove[0][1]];
  	let pointI = this.moves[this.moves.length-1].pointI;
-	let lastMove = [];
-	lastMove.push(tmpMove[0][0]);
-	lastMove.push(0.3);
-	lastMove.push(tmpMove[0][1]);
 
 	var i = 0, found = false;
 	while(i < this.scene.pieces.length && !found){

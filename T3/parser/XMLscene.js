@@ -113,7 +113,6 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = false;
-    this.currentPiece.boardPosition = null;  
 }
 /**
  * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
@@ -524,18 +523,67 @@ XMLscene.prototype.winWhitePiece = function (piece){
         this.whiteSpotZ += 2;
 };
 
+XMLscene.prototype.clearBoard = function(){
+
+    for(var i=0; i < this.pieces.length; i++){
+        for(var j = 0; j < this.Game.moves.length; j++){
+            let tmpMove = this.Game.convertCoordsOffProlog((this.Game.moves[j]).pointF);
+            let move = [tmpMove[0][0], 0.3, tmpMove[0][1]];
+            if(this.pieces[i].boardPosition != null &&
+                this.pieces[i].boardPosition.toString() == move.toString()){
+            this.currentPiece = this.pieces[i];
+            this.invertAnimatePiece(this.Game.moves[j].pointI);
+            this.currentPiece = null;
+        }
+    }
+}
+};
+
+XMLscene.prototype.showGame = function(){
+
+    for(var j = 0; j < this.Game.moves.length; j++){
+        for(var i=0; i < this.pieces.length; i++){
+            console.log("pimmmm");
+            let tmpMove = this.Game.convertCoordsOffProlog((this.Game.moves[j]).pointF);
+            let move = [tmpMove[0][0], 0.3, tmpMove[0][1]];
+
+            if(this.pieces[i].boardPosition != null){
+            console.log(" this.pieces[i].boardPosition "+ this.pieces[i].boardPosition.toString());
+            console.log("pointF "+ move.toString());
+            }
+            if(this.pieces[i].boardPosition != null &&
+                this.pieces[i].boardPosition.toString() == move.toString() ){
+                this.currentPiece = this.pieces[i];
+            console.log("move "+ move);
+            this.invertAnimatePiece(move);
+            this.currentPiece = null;
+        }
+    }
+}
+};
+
 XMLscene.prototype.startGame = function(){
     console.log("New Game");
-}
+    this.clearBoard();
+    this.Game = new Game(this);
+    this.lastStatus = "menu";
+    this.WhitePlayer = null;
+    this.BlackPlayer = null;
+    this.isConfiguredPlayerWhite = false;
+    this.isConfiguredPlayerBlack = false;
+    //TODO reset pick's
+};
 
 XMLscene.prototype.undoPlay = function(){
     console.log("Undo Play");
     this.Game.undoLastPlay();
-}
+};
 
 XMLscene.prototype.videoGame = function(){
     console.log("Video Game");
-}
+    this.clearBoard();
+    this.showGame();
+};
 
 XMLscene.prototype.pauseGame = function(){
     console.log("Pause Game");
@@ -544,4 +592,4 @@ XMLscene.prototype.pauseGame = function(){
         this.pause = false;
     else 
         this.pause = true;
-}
+};
