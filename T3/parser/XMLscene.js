@@ -333,7 +333,7 @@ XMLscene.prototype.display = function() {
                 console.log("Waiting choose players...");             
                 break;
             case "getPlay":
-                //this.Game.getAllValidPlays();
+                this.Game.getAllValidPlays();
                 this.Game.getPlay();
                 break;
             case "applyPlay": 
@@ -376,7 +376,6 @@ XMLscene.prototype.display = function() {
         this.Game.isConf = true;
         this.Game.currState = "getPlay";
     }
-
 };
 
 XMLscene.prototype.displayPickableCircles = function() {
@@ -440,7 +439,7 @@ XMLscene.prototype.animateCamera = function(deltaTime){
     this.updateCamera();
     if(this.moveCam){
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
-            if(deltaTime <= 10000){
+            if((deltaTime <= 10000) && (!this.pause)){
                 if(this.camera.position[0] < this.finalPos[0])
                     this.camera.orbit("y", deltaTime/1000*40*DEGREE_TO_RAD);
                 else
@@ -471,7 +470,8 @@ XMLscene.prototype.update = function(currTime){
 
     for(var i = 0; i < this.pieces.length; i++){
         if (this.pieces[i].currAnimation != null){
-            this.pieces[i].currAnimation.getMatrix(delta);
+            if(!this.pause)
+                this.pieces[i].currAnimation.getMatrix(delta);
             this.pieces[i].updateCoords([this.pieces[i].currAnimation.transformationMatrix[12],this.pieces[i].currAnimation.transformationMatrix[13],this.pieces[i].currAnimation.transformationMatrix[14]]);
         }
     }
@@ -538,7 +538,7 @@ XMLscene.prototype.clearBoard = function(){
             if(this.pieces[i].boardPosition != null &&
                 this.pieces[i].boardPosition.toString() == move.toString()){
             this.currentPiece = this.pieces[i];
-            this.invertAnimatePiece(this.Game.moves[j].pointI);
+            this.invertAnimatePiece(this.currentPiece.initialPosition);
             this.currentPiece = null;
         }
     }
@@ -588,7 +588,7 @@ XMLscene.prototype.undoPlay = function(){
 XMLscene.prototype.videoGame = function(){
     console.log("Video Game");
     this.clearBoard();
-    this.showGame();
+   // this.showGame();
 };
 
 XMLscene.prototype.pauseGame = function(){

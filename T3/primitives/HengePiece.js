@@ -2,6 +2,7 @@ function HengePiece(scene, player, position) {
 	CGFobject.call(this,scene);
 	this.scene = scene;
 	this.player = player;
+    this.initialPosition = position;
 	this.position = position;
     this.boardPosition = null;
 

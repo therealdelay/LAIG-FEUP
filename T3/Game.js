@@ -93,27 +93,27 @@ Game.prototype.getReply = function() {
 	}
 	else if(this.currState ==  "getPlay") {
 		let coords = [];
+		var reply = Game.currReply;
+		reply = reply.replace(/\|\_[0-9]*/g, '');
+		coords.push(parseInt(reply[2]),parseInt(reply[4]));
 
-		/*console.log("REPLAY " + Game.currReply[2]);
-		console.log("REPLAY " + Game.currReply[4]);
-		console.log("REPLAY " + Game.currReply[12]);
-		console.log("REPLAY " + Game.currReply[13]);*/
-		
-		if(Game.currReply[12] == ',')
-			coords.push('[[' + Game.currReply[2] + ',' + Game.currReply[4] + '],' + Game.currReply[13] + ']');
-		else
-			coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[12] + ']');	
-		
+		var move = [];
+		move.push(coords);
+		move.push(reply[7].charAt(0));
+
 		this.currState = "applyPlay";
 		
-		let move = this.convertCoordsOffProlog(coords);
+		var newMove = this.convertCoordsOffProlog(move);
 		// move = [[x,y],type]
 		//selecionar peça das peças disponiveis	
-		this.selectPiece(move[1]);
-		this.scene.animatePiece([move[0][0],move[0][1]]);
-		this.scene.currentPiece.boardPosition = [move[0][0],0.3,move[0][1]];
+		this.selectPiece(newMove[1]);
+		this.scene.animatePiece([newMove[0][0],newMove[0][1]]);
+		this.scene.currentPiece.boardPosition = [newMove[0][0],0.3,newMove[0][1]];
 
 		this.moves.push({ pointI: this.scene.currentPiece.position, pointF: coords, player:this.currPlayer});
+
+		console.log(this.whitePieces);
+		console.log(this.blackPieces);
 		/*console.log("POINT I " + this.scene.currentPiece.position);
 		console.log("POINT F " + this.scene.currentPiece.boardPosition);*/
 	
@@ -189,35 +189,26 @@ Game.prototype.addHumanMoveToGame = function(pointF){
 }
 
 Game.prototype.convertCoordsOffProlog = function(move) {
-	var newX = (move[0][2] - 3) * 2.55;
-	var newY = (move[0][4] - 3) * 2.55;
+	//console.log(move);
+	var newX = (move[0][0] - 3) * 2.55;
+	var newY = (move[0][1] - 3) * 2.55;
 
 	let newMove = [], newCoords = [];
 	newCoords.push(newX);
 	newCoords.push(newY);
 	newMove.push(newCoords);
-	newMove.push(move[0][7]);
+	newMove.push(move[1]);
 
-	console.log("newMove: " + newMove);
+	//console.log("newMove: " + newMove);
 	return newMove;
 }
 
 Game.prototype.getAllValidPlays = function(){
-	var b = "[";
-	for(var i = 0; i < this.board.length; i++){
-		b += '[';
-		b += this.board[i].toString();
-		b += ']';
-		if(i != 4)
-			b += ',';
-	}
-	b += ']';
-
-	var sendMsg = "getAllValidPlays([" + b + ",[" + this.whitePieces + "],[" + this.blackPieces + "]," + this.currPlayer + "]," + this.turn  + ")";
-	//console.log("sendMsg ::: " + sendMsg);
-	this.server.makeRequest(sendMsg);
-
-	this.currState = "validPlays";
+ 
+    var sendMsg = "getAllValidPlays(" + this.gameInFormat().toString() + "," + this.turn.toString()  + ")";
+    //console.log("sendMsg ::: " + sendMsg);
+    this.server.makeRequest(sendMsg);
+    this.currState = "validPlays";
 };
 
 Game.prototype.getAllValidSpots = function(array){
@@ -246,7 +237,6 @@ Game.prototype.changeColors = function(array){
 
 		for(var j = 0; j < this.scene.spots.length; j++){
 			if((array[i][0][0] == this.scene.spots[j].pPos[0]) && (array[i][0][1] == this.scene.spots[j].pPos[1]) && ((this.scene.currentPiece instanceof RegularPiece && (array[i][1] === 'n')) || (this.scene.currentPiece instanceof HengePiece && (array[i][1] === 'h')))){
-				console.log(array[i][1]);
 				this.scene.spots[j].isOption = true;
 				break;
 			}
@@ -255,7 +245,6 @@ Game.prototype.changeColors = function(array){
 }
 
 Game.prototype.undoLastPlay = function() {
-
 	if(this.moves.length < 1)
 		return;
 
@@ -280,4 +269,5 @@ Game.prototype.undoLastPlay = function() {
 	this.scene.invertAnimatePiece(pointI);
 	this.scene.currentPiece = null;
 	this.moves.pop();
+	this.turn--;
 }

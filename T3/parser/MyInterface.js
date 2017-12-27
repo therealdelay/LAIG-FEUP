@@ -133,6 +133,7 @@ MyInterface.prototype.processKeyDown = function(event) {
 			this.scene.CameraView = 'ai';
 			break;
 	}
+
 };
 
 MyInterface.prototype.update = function(){
@@ -144,4 +145,9 @@ MyInterface.prototype.update = function(){
 		this.addCameraViews();
 		this.noViews = true;
 	}
+
+	if((this.scene.Game.turn % 2) == 1)
+		this.scene.CameraView = 'white';
+	else
+		this.scene.CameraView = 'black';
 }
