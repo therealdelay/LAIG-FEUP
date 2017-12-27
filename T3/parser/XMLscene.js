@@ -43,6 +43,7 @@ function XMLscene(interface) {
     this.cameraViews = ['ai','black','white'];
     this.finalPos = [0,0,0];
     this.moveCam = false;
+    this.camMoving = false;
 
     this.blackSpotX = 10;
     this.blackSpotZ = 12;
@@ -371,7 +372,8 @@ XMLscene.prototype.display = function() {
 
     this.Game.getReply();
 
-    if((this.Game.currState == "animationPlay") && (this.currentPiece.getAnimation().getStatus())){
+    if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus() && (this.camMoving == false)){
+        console.log("entrei");
         this.Game.currState = "verifyStatus";
         this.currentPiece = null;
     }
@@ -456,16 +458,19 @@ XMLscene.prototype.updateCamera = function(view){
 XMLscene.prototype.animateCamera = function(deltaTime){
     this.updateCamera();
     if(this.moveCam){
+        this.camMoving = true;
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
             if((deltaTime <= 10000) && (!this.pause)){
                 if(this.camera.position[0] < this.finalPos[0])
-                    this.camera.orbit("y", deltaTime/1000*40*DEGREE_TO_RAD);
+                    this.camera.orbit("y", deltaTime/1000*50*DEGREE_TO_RAD);
                 else
-                    this.camera.orbit("y", -deltaTime/1000*40*DEGREE_TO_RAD);
+                    this.camera.orbit("y", -deltaTime/1000*50*DEGREE_TO_RAD);
             }
         }
-        else
+        else{
+            this.camMoving = false;
             this.moveCam = false;
+        }
     }
 }
 

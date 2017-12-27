@@ -57,7 +57,7 @@ Game.prototype.play = function() {
  		var sendMsg = "play(" + this.gameInFormat() + "," + lastPlay.toString() + ")";
 	}
 	//get last move on list of moves
-	//console.log("sendMsg ::: " + sendMsg);
+	console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
 };
 
@@ -77,14 +77,16 @@ Game.prototype.getReply = function() {
 		return;
 
 	if(this.currState == "applyPlay") {
-		console.log(Game.currReply);
+		Game.currReply = Game.currReply.replace(/[r]\]\,\[/g, "r]|[");
+		Game.currReply = Game.currReply.replace(/\[\[\[\[/g, "[[[");
+		var array = Game.currReply.split('|');
+		console.log(array[1]);
 		try{
-			var jsonData = JSON.parse(Game.currReply.replace(/([a-z])\w+/g, "\"$&\""));
+			var jsonData = JSON.parse(array[0].replace(/([a-z])\w+/g, "\"$&\""));
 		}
 		catch(e){
 			console.log(e);
 		}
-		console.log(Game.currReply);
 
 		if(jsonData == null)
 			return;
@@ -144,6 +146,7 @@ Game.prototype.getReply = function() {
 		if(Game.currReply == 'none'){
 			this.currState = "getPlay";
 			this.turn += 1;
+			this.scene.moveCam = false;
 		}
 		else
 			this.currState = "endGame";
@@ -151,7 +154,8 @@ Game.prototype.getReply = function() {
 	else if(this.currState == "validPlays"){
 		//console.log("valid");
 		//console.log(Game.currReply);
-		this.getAllValidSpots(Game.currReply);
+		if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))
+			this.getAllValidSpots(Game.currReply);
 		this.currState = "getPlay";
 	}
 
@@ -269,7 +273,13 @@ Game.prototype.undoLastPlay = function() {
 	if(this.moves.length < 1)
 		return;
 
- 	let tmpMove = this.convertCoordsOffProlog(this.moves[this.moves.length-1].pointF);
+	var move = [];
+	move.push(parseInt(this.moves[this.moves.length-1].pointF[0][2]),parseInt(this.moves[this.moves.length-1].pointF[0][4]));
+	var newmove = [];
+	newmove.push(move, this.moves[this.moves.length-1].pointF[0][7]);
+	console.log(newmove);
+ 	let tmpMove = this.convertCoordsOffProlog(newmove);
+ 	
 	let lastMove = [tmpMove[0][0], 0.3, tmpMove[0][1]];
  	let pointI = this.moves[this.moves.length-1].pointI;
 

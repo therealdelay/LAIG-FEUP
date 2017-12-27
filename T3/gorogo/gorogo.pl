@@ -239,21 +239,26 @@ clearBoard(Game, [Point|T], GameRes):-
 	clearBoard(GameTmp2,T,GameRes).
 	
 	
-updateGame(Game,GameRes):-
+updateGame(Game,GameRes,Points):-
+	write('PASSEI AQUI5'), nl,
 	findall(Point, isSurroundedOpponent(Game,Point,t), Points),
+		write('PASSEI AQUI6'), nl,
 	clearBoard(Game,Points,GameRes).
-	
-	
+
 waitForBot(Game):-
 	getCurrentPlayer(Game,Player),
 	getPlayerInfo(Game,Player,Info),
 	getPlayerType(Info,PlayerType),
 	ite((PlayerType == easyBot ; PlayerType == hardBot),(write('  Press Enter to continue'),nl,waitForEnter),true).
 	
-updateGameCycle(Game,GameRes):-
-	updateGame(Game,GameTmp1),
+updateGameCycle(Game,GameRes,Points):-
+	write('PASSEI AQUI1'), nl,
+	updateGame(Game,GameTmp1,Points),
+		write('PASSEI AQUI2'), nl,
 	setNextPlayer(GameTmp1,GameTmp2),
-	updateGame(GameTmp2,GameRes).
+		write('PASSEI AQUI3'), nl,
+	updateGame(GameTmp2,GameRes,Points),
+		write('PASSEI AQUI4'), nl.
 	
 play(Game):-
 	playCycle(Game,Winner,1),
