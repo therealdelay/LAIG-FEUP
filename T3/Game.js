@@ -48,8 +48,8 @@ Game.prototype.play = function() {
 
 	//get last move on list of moves
 	var lastPlay = this.moves[this.moves.length-1].pointF;
-	//console.log(lastPlay);
-	var sendMsg = "play(" + this.gameInFormat() + "," + lastPlay.toString() + ")";
+	var pieceType = this.moves[this.moves.length-1].piece;
+	var sendMsg = "play(" + this.gameInFormat() + ",[[" + lastPlay.toString() + "]," + pieceType + "])";
 	//console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
 };
@@ -109,7 +109,7 @@ Game.prototype.getReply = function() {
 		move.push(reply[7].charAt(0));
 
 
-		this.getAllValidPlays();
+		//this.getAllValidPlays();
 		
 		var newMove = this.convertCoordsOffProlog(move);
 		// move = [[x,y],type]
@@ -118,7 +118,12 @@ Game.prototype.getReply = function() {
 		this.scene.animatePiece([newMove[0][0],newMove[0][1]]);
 		this.scene.currentPiece.boardPosition = [newMove[0][0],0.3,newMove[0][1]];
 
-		this.moves.push({ pointI: this.scene.currentPiece.position, pointF: coords, player:this.currPlayer});
+		var pieceType = null;
+		if(this.scene.currentPiece instanceof RegularPiece)
+			pieceType = "n";
+		else
+			pieceType = "h";
+		this.moves.push({ pointI: this.scene.currentPiece.position, pointF: coords, player:this.currPlayer, piece: pieceType});
 
 		console.log(this.whitePieces);
 		console.log(this.blackPieces);

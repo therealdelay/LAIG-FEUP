@@ -344,9 +344,9 @@ XMLscene.prototype.display = function() {
             case "menu":
                 console.log("Waiting choose players...");             
                 break;
-            case "validPlays":
+            /*case "validPlays":
                 this.Game.getAllValidPlays();
-                break;
+                break;*/
             case "getPlay":
                 this.Game.getPlay();
                 break;
