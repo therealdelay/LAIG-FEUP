@@ -106,8 +106,10 @@ MyInterface.prototype.addGameGroup = function(){
 	var group = this.gui.addFolder("Menu");
     group.open();
 
-	group.add(this.scene, 'undoPlay').name("Undo Play");
 	group.add(this.scene, 'pauseGame').name("Pause Game");
+	group.add(this.scene, 'undoPlay').name("Undo Play");
+	group.add(this.scene, 'videoGame').name("Review Game");
+
 }
 
 MyInterface.prototype.processKeyDown = function(event) {
