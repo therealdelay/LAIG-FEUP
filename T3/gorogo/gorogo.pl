@@ -50,14 +50,18 @@ surrounded(State,X,Y,Player,Opponent,Henge):-
 	surrounded(TmpState,X,UpY,Player,Opponent,Henge), !.
 	
 isSurroundedOpponent(Game,Point,Henge):-
+	write('PASSEI AQUI7'), nl,
 	getBoard(Game,Board),
 	getCurrentPlayer(Game,Player),
 	getNextPlayer(Player,Opponent),
 	getPoint2DXCoord(Point,X),
+	write('PASSEI AQUI8'), nl,
 	getPoint2DYCoord(Point,Y),
 	selectPos(Board,X,Y,Elem),
 	playerPiece(Opponent,OpponentPiece),
+	write('PASSEI AQUI9'), nl,
 	Elem == OpponentPiece,
+	write('PASSEI AQUI10'), nl,
 	surrounded(Board,X,Y,Opponent,Player,Henge).
 	
 isSurroundedPlayer(Game,Point,Henge):-

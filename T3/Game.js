@@ -273,15 +273,27 @@ Game.prototype.undoLastPlay = function() {
 	if(this.moves.length < 1)
 		return;
 
-	var move = [];
-	move.push(parseInt(this.moves[this.moves.length-1].pointF[0][2]),parseInt(this.moves[this.moves.length-1].pointF[0][4]));
-	var newmove = [];
-	newmove.push(move, this.moves[this.moves.length-1].pointF[0][7]);
-	console.log(newmove);
- 	let tmpMove = this.convertCoordsOffProlog(newmove);
- 	
+	console.log(this.moves[this.moves.length-1]);
+
+ 	let tmpMove = null;
+	
+	if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human')){
+		var move = [];
+		move.push(parseInt(this.moves[this.moves.length-1].pointF[0][2]),parseInt(this.moves[this.moves.length-1].pointF[0][4]));
+		var newmove = [];
+		newmove.push(move, this.moves[this.moves.length-1].pointF[0][7]);
+		tmpMove = this.convertCoordsOffProlog(newmove);
+		console.log(tmpMove);
+	}
+	else{
+		var move = [];
+		move.push(this.moves[this.moves.length-1].pointF,this.moves[this.moves.length-1].piece);
+		tmpMove = this.convertCoordsOffProlog(move);
+		console.log(tmpMove);
+	}
+		
 	let lastMove = [tmpMove[0][0], 0.3, tmpMove[0][1]];
- 	let pointI = this.moves[this.moves.length-1].pointI;
+	let pointI = this.moves[this.moves.length-1].pointI;
 
 	var i = 0, found = false;
 	while(i < this.scene.pieces.length && !found){

@@ -115,7 +115,7 @@ parse_input(getPlay(Game,Turn), Play) :- getPlay(Game,Play,Turn).
 parse_input(play(Game,Play), [GameRes,Points]) :- 
 	applyPlay(Game,Play,GameTmp),
 	write('PASSEI AQUI'), nl,
-	updateGameCycle(GameTmp, GameRes, Points).
+	updateGame(GameTmp, GameRes, Points).
 
 parse_input(endOfGame(Game), Winner) :- endOfGame(Game,Winner).
 
