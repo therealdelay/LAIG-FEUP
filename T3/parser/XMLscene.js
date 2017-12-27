@@ -101,26 +101,15 @@ XMLscene.prototype.animatePiece = function (newPos){
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
-    this.currentPiece.boardPosition = p4;   
+    //this.currentPiece.boardPosition = [newPos[0],0.3,newPos[1]];   
 }
 
-XMLscene.prototype.invertAnimatePiece = function (piece, lastMove){
+XMLscene.prototype.invertAnimatePiece = function (pointI){
 
-    this.currentPiece = piece;
-
-    console.log("pimmm " + lastMove);
-    console.log("pimmm " + this.currentPiece);
-    console.log("pimmm " + this.currentPiece.position);
-
-    var p1 = lastMove;
-    var p2 = [lastMove[0], 10, lastMove[2]];
-    var p3 = [this.currentPiece.position[0],10,this.currentPiece.position[1]];
-    var p4 = [this.currentPiece.position[0],0.3,this.currentPiece.position[1]];
-
-    console.log(p1);
-    console.log(p2);
-    console.log(p3);
-    console.log(p4);
+    var p1 = this.currentPiece.boardPosition;
+    var p2 = [this.currentPiece.boardPosition[0], 10, this.currentPiece.boardPosition[2]];
+    var p3 = [pointI[0],10,pointI[2]];
+    var p4 = [pointI[0],0.3,pointI[2]];
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = false;

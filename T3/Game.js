@@ -35,7 +35,8 @@ function Game(scene) {
 //getPlay(Game,Turn)
 Game.prototype.getPlay = function() {
 
-	if(!(((this.currPlayer == 'whitePlayer') && (this.whiteType =='human')) || ((this.currPlayer == 'blackPlayer') && (this.blackType =='human')))){ 
+	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || 
+		(this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
 		var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
 		console.log("sendMsg ::: " + sendMsg);
 		this.server.makeRequest(sendMsg);
@@ -46,7 +47,8 @@ Game.prototype.getPlay = function() {
 Game.prototype.play = function() {
 
 	//get last move on list of moves
-	var lastPlay = this.moves[this.moves.length-1].play;
+	var lastPlay = this.moves[this.moves.length-1].pointF;
+	console.log(lastPlay);
 	var sendMsg = "play(" + this.gameInFormat() + "," + lastPlay.toString() + ")";
 	console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
@@ -91,19 +93,30 @@ Game.prototype.getReply = function() {
 	}
 	else if(this.currState ==  "getPlay") {
 		let coords = [];
+
+		console.log("REPLAY " + Game.currReply[2]);
+		console.log("REPLAY " + Game.currReply[4]);
+		console.log("REPLAY " + Game.currReply[12]);
+		console.log("REPLAY " + Game.currReply[13]);
 		
-		if(Game.currReply[13] == ',')
-			coords.push('[[' + Game.currReply[2] + ',' + Game.currReply[4] + '],' + Game.currReply[14] + ']');
+		if(Game.currReply[12] == ',')
+			coords.push('[[' + Game.currReply[2] + ',' + Game.currReply[4] + '],' + Game.currReply[13] + ']');
 		else
-			coords.push('[[' + Game.currReply[2] + ',' + Game.currReply[4] + '],' + Game.currReply[13] + ']');	
-		this.moves.push({ play: coords, player:this.currPlayer});
+			coords.push('[[' + Game.currReplay[2] + ',' + Game.currReplay[4] + '],' + Game.currReplay[12] + ']');	
+		
 		this.currState = "applyPlay";
 		
-		let move = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
+		let move = this.convertCoordsOffProlog(coords);
 		// move = [[x,y],type]
 		//selecionar peça das peças disponiveis	
 		this.selectPiece(move[1]);
-		this.scene.animatePiece([move[0][0],move[0][1]]);	
+		this.scene.animatePiece([move[0][0],move[0][1]]);
+		this.scene.currentPiece.boardPosition = [move[0][0],0.3,move[0][1]];
+
+		this.moves.push({ pointI: this.scene.currentPiece.position, pointF: coords, player:this.currPlayer});
+		console.log("POINT I " + this.scene.currentPiece.position);
+		console.log("POINT F " + this.scene.currentPiece.boardPosition);
+	
 	}
 	else if(this.currState ==  "verifyStatus") {
 		
@@ -134,6 +147,8 @@ Game.prototype.selectPiece = function(type) {
 		}
 		i++;
 	}
+
+	return null;
 }
 
 Game.prototype.gameInFormat = function() {
@@ -160,16 +175,16 @@ Game.prototype.configBlackPlayer = function() {
 	this.blackType = this.scene.BlackPlayer;
 }
 
-Game.prototype.addHumanMoveToGame = function(point){
-	let pointX = point[0] / 2.55 + 3;
-	let pointY = point[2] / 2.55 + 3;
+Game.prototype.addHumanMoveToGame = function(pointF){
+	let pointX = pointF[0] / 2.55 + 3;
+	let pointY = pointF[2] / 2.55 + 3;
 	let type = this.scene.currentPiece.getType();
 	let newMove = [];
 
     newMove.push('[[' + pointX + ',' + pointY + '],' + type + ']');
 
-    this.moves.push({play: newMove, player:this.currPlayer});
- 
+    this.moves.push({pointI: this.scene.currentPiece.position, pointF: newMove, player:this.currPlayer});
+    this.scene.currentPiece.boardPosition = [pointF[0],0.3,pointF[2]];
 	this.currState = "applyPlay";
 }
 
@@ -225,30 +240,29 @@ Game.prototype.undoLastPlay = function() {
 
 	if(this.moves.length < 1)
 		return;
- 	let tmpMove = this.convertCoordsOffProlog(this.moves[this.moves.length-1].play);
+
+ 	let tmpMove = this.convertCoordsOffProlog(this.moves[this.moves.length-1].pointF);
+ 	let pointI = this.moves[this.moves.length-1].pointI;
 	let lastMove = [];
 	lastMove.push(tmpMove[0][0]);
 	lastMove.push(0.3);
 	lastMove.push(tmpMove[0][1]);
 
-	console.log("LAST MOVE " + lastMove);
-
 	var i = 0, found = false;
 	while(i < this.scene.pieces.length && !found){
-		if(this.scene.pieces[i].boardPosition != null)
-			console.log("piece pos " +this.scene.pieces[i].boardPosition);
-		if(this.scene.pieces[i].boardPosition != null && this.scene.pieces[i].boardPosition[0] == lastMove[0]
-			&& this.scene.pieces[i].boardPosition[1] == lastMove[1] 
-			&& this.scene.pieces[i].boardPosition[2] == lastMove[2]){
+		if(this.scene.pieces[i].boardPosition != null && this.scene.pieces[i].boardPosition.toString() == lastMove.toString()){
 			found = true;
+			this.scene.currentPiece = this.scene.pieces[i];
 		}
 		i++;
 	}
 
-	if(found){
-		console.log("FOUND");
-		this.scene.invertAnimatePiece(this.scene.pieces[i], lastMove);
+	if(!found){
+		console.warn("Error in undo move!!!");
+		return;
 	}
-	else
-		console.warn("error!!!");
+
+	this.scene.invertAnimatePiece(pointI);
+	this.scene.currentPiece = null;
+	this.moves.pop();
 }
