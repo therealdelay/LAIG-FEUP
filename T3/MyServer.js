@@ -39,7 +39,7 @@ MyServer.prototype.handleReply = function(data){
 	else if(data.target.response == "Syntax Error")
 		console.log("Syntax Error");
 	else {
-			console.log("RESPONSE:::: " + data.target.response); 
+		//	console.log("RESPONSE:::: " + data.target.response); 
         	Game.currReply = data.target.response;
 	}
 };

@@ -77,7 +77,7 @@ XMLscene.prototype.logPicking = function (){
                         if(this.pickResults[i][0] instanceof MyPickSpot){
                             var newPos = [this.pickResults[i][0].x,this.pickResults[i][0].z];
                             this.animatePiece(newPos);
-                            this.pickResults[i][0].isOption = false;
+                            //this.pickResults[i][0].isOption = false;
                         }
                     }
 				}
@@ -101,7 +101,7 @@ XMLscene.prototype.animatePiece = function (newPos){
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
-    //this.currentPiece.boardPosition = [newPos[0],0.3,newPos[1]];   
+    //this.currentPiece.boardPosition = [newPos[0],0.3,newPos[1]];
 }
 
 XMLscene.prototype.invertAnimatePiece = function (pointI){
@@ -486,17 +486,23 @@ XMLscene.prototype.update = function(currTime){
 };
 
 XMLscene.prototype.createPickableSquares = function(){
-  let x = -5.1;
-  let z = -5.1;
+  var x = -5.1;
+  var z = -5.1;
+  var row = 1;
+  var col = 1
   for(let i = 0; i < 25; i++){
-  	let square = new MyPickSpot(this, i, x,z);
-  	if(x >= 5){
-  		x = -5.1;
-  		z += 2.55;
-  	}
-  	else
-  		x += 2.55;
+    var square = new MyPickSpot(this, i,x,z,col,row);
     this.spots.push(square);
+    if(x >= 5){
+        x = -5.1;
+        z += 2.55;
+        row++;
+        col = 1;
+    }
+    else{
+        x += 2.55;
+        col++;
+    }
   }
 };
 

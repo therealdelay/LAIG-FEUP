@@ -1,4 +1,4 @@
-function MyPickSpot(scene,id,x,z) {
+function MyPickSpot(scene,id,x,z,row,col) {
  	CGFobject.call(this,scene);
 
     this.scene = scene;
@@ -6,6 +6,7 @@ function MyPickSpot(scene,id,x,z) {
  	this.x = x;
  	this.z = z;
 	this.id = id;
+	this.pPos = [row,col];
 	this.isOption = true;
 };
 
