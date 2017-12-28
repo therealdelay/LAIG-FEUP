@@ -48,7 +48,8 @@ Game.prototype.getPlay = function() {
 Game.prototype.play = function() {
 	var sendMsg = null;
 	var lastPlay = this.moves[this.moves.length-1].pointF;
-	//console.log(lastPlay);
+	console.log("lastPlay");
+	console.log(lastPlay);
 	var sendMsg = "play(" + this.gameInFormat() + ",[[" + lastPlay[0] + "]," + lastPlay[1] + "])";
 	//get last move on list of moves
 	//console.log("sendMsg ::: " + sendMsg);
@@ -65,11 +66,12 @@ Game.prototype.endOfGame = function() {
 };
 
 Game.prototype.removePiece = function(x,z){
-	var newX = (x - 3) * 2.55;
-	var newZ = (z - 3) * 2.55;
-	console.log(newX);
-	console.log(newZ);
+	var newX = (z - 3) * 2.55;
+	var newZ = (x - 3) * 2.55;
+	console.log(x);
+	console.log(z);
 	for(var i = 0; i < this.scene.pieces.length; i++){
+		console.log(this.scene.pieces[i]);
 		if((Math.abs(this.scene.pieces[i].position[0]-newX) <= 0.5) && (Math.abs(this.scene.pieces[i].position[2]-newZ) <= 0.5)){
 			if(this.scene.pieces[i].player == 'blackPlayer'){
 				this.scene.winBlackPiece(this.scene.pieces[i]);
@@ -124,6 +126,8 @@ Game.prototype.getReply = function() {
 		this.whitePieces = jsonData[1];
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
+
+		console.log(this.moves);
 
 		this.currState = "animationPlay";
 	}
