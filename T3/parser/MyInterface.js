@@ -156,12 +156,14 @@ MyInterface.prototype.update = function(){
 		this.noConfigs = true;
 	}
 
-	if((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='human') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='human')){ 
-		if((this.scene.Game.turn % 2) == 1)
-			this.scene.CameraView = 'white';
-		else
-			this.scene.CameraView = 'black';
+	if(((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='human')) && ((this.scene.Game.turn % 2) == 1)){
+		this.scene.CameraView = 'white';
+		return;
 	}
-	else
+	else if(((this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='human')) && ((this.scene.Game.turn % 2) == 0)){
+		this.scene.CameraView = 'black';
+		return;
+	}
+	else if((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='easyBot') || (this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='hardBot') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='easyBot') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='hardBot'))
 		this.scene.CameraView = 'ai';
 }

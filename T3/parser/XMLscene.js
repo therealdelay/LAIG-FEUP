@@ -101,7 +101,6 @@ XMLscene.prototype.logPicking = function (){
 };
 
 XMLscene.prototype.animatePiece = function (newPos){
-    console.log("animatePiece");
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [newPos[0],10,newPos[1]];
@@ -119,7 +118,6 @@ XMLscene.prototype.animatePiece = function (newPos){
 }
 
 XMLscene.prototype.invertAnimatePiece = function (pointI){
-    console.log("invertAnimatePiece");
     var p1 = this.currentPiece.boardPosition;
     var p2 = [this.currentPiece.boardPosition[0], 10, this.currentPiece.boardPosition[2]];
     var p3 = [pointI[0],10,pointI[2]];
@@ -484,24 +482,21 @@ XMLscene.prototype.displayPieces = function() {
 
 XMLscene.prototype.getCameraAngle = function() {
     var camPos = [this.camera.position[0],this.camera.position[1],this.camera.position[2]];
-    console.log(camPos);
-    console.log(this.finalPos);
 
     vec3.normalize(camPos, camPos);
     vec3.normalize(this.finalPos,this.finalPos);
     
     var angle = null;
 
-    let cosine = vec3.dot(camPos, this.finalPos);
-    if(cosine > 1.0) {
+    let cos = vec3.dot(camPos, this.finalPos);
+    if(cos > 1.0) {
         angle = 0;
     }
-    else if(cosine < -1.0) {
+    else if(cos < -1.0) {
         angle = Math.PI;
     } else {
-        angle = Math.acos(cosine);
+        angle = Math.acos(cos);
     }
-
     return angle;
 };
 
@@ -559,24 +554,24 @@ XMLscene.prototype.getCameraAngle = function() {
 };
 
 XMLscene.prototype.createPickableSquares = function(){
-  var x = -5.1;
-  var z = -5.1;
-  var row = 1;
-  var col = 1
-  for(let i = 0; i < 25; i++){
-    var square = new MyPickSpot(this, i,x,z,col,row);
-    this.spots.push(square);
-    if(x >= 5){
-        x = -5.1;
-        z += 2.55;
-        row++;
-        col = 1;
+    var x = -5.1;
+    var z = -5.1;
+    var row = 1;
+    var col = 1
+    for(let i = 0; i < 25; i++){
+        var square = new MyPickSpot(this, i,x,z,col,row);
+        this.spots.push(square);
+        if(x >= 5){
+            x = -5.1;
+            z += 2.55;
+            row++;
+            col = 1;
+        }
+        else{
+            x += 2.55;
+            col++;
+        }
     }
-    else{
-        x += 2.55;
-        col++;
-    }
-}
 };
 
 XMLscene.prototype.winBlackPiece = function (piece){
@@ -621,8 +616,6 @@ XMLscene.prototype.clearBoard = function(){
 };
 
 XMLscene.prototype.startGame = function(){
-    console.log(this.Game.whiteType);
-    console.log(this.Game.blackType);
     if((this.WhitePlayer != null) && (this.BlackPlayer != null)){
         this.clearBoard();
         this.Game.turn = 1;

@@ -37,8 +37,6 @@ function Game(scene) {
 
 //getPlay(Game,Turn)
 Game.prototype.getPlay = function() {
-    console.log("getPlay");
-
 	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
 		var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
 		//console.log("sendMsg ::: " + sendMsg);
@@ -48,7 +46,6 @@ Game.prototype.getPlay = function() {
 
 //play(Game,Play) -> newGameState
 Game.prototype.play = function() {
-	console.log("play");
 	var sendMsg = null;
 	var lastPlay = this.moves[this.moves.length-1].pointF;
 	//console.log(lastPlay);
@@ -60,7 +57,6 @@ Game.prototype.play = function() {
 
 //endOfGame(Game) -> winner 
 Game.prototype.endOfGame = function() {
-	console.log("endOfGame");
 	var sendMsg = "endOfGame(" + this.gameInFormat() + ")";
 	////console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
@@ -68,6 +64,34 @@ Game.prototype.endOfGame = function() {
 	// TODO after response -> verify Winner
 };
 
+Game.prototype.removePiece = function(x,z){
+	var newX = (x - 3) * 2.55;
+	var newZ = (z - 3) * 2.55;
+	console.log(newX);
+	console.log(newZ);
+	for(var i = 0; i < this.scene.pieces.length; i++){
+		if((Math.abs(this.scene.pieces[i].position[0]-newX) <= 0.5) && (Math.abs(this.scene.pieces[i].position[2]-newZ) <= 0.5)){
+			if(this.scene.pieces[i].player == 'blackPlayer'){
+				this.scene.winBlackPiece(this.scene.pieces[i]);
+				break;
+			}
+			else{
+				this.scene.winWhitePiece(this.scene.pieces[i]);
+				break;	
+			}
+		}
+	}
+}
+
+Game.prototype.checkBoardDiffs = function () {
+	for(var i = 0; i < this.board.length; i++){
+		for(var j = 0; j < this.board[i].length; j++){
+			if((this.lastBoard[i][j] != 0) && (this.board[i][j] == 0)){
+				this.removePiece(i+1,j+1);
+			}
+		}
+	}
+}
 
 // Get server reply's
 Game.prototype.getReply = function() {
@@ -75,8 +99,6 @@ Game.prototype.getReply = function() {
 		return;
 
 	if(this.currState == "applyPlay") {
-		console.log("getReply - applyPlay");
-
 		try{
 			var jsonData = JSON.parse(Game.currReply.replace(/([a-z])\w+/g, "\"$&\""));
 		}
@@ -96,8 +118,9 @@ Game.prototype.getReply = function() {
 		//console.log("Player:::  " + jsonData[3]);
 		this.lastBoard = this.board;
 		this.board = jsonData[0];
-		console.log(this.lastBoard);
-		console.log(this.board);
+		this.checkBoardDiffs();
+		//console.log(this.lastBoard);
+		//console.log(this.board);
 		this.whitePieces = jsonData[1];
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
@@ -105,7 +128,6 @@ Game.prototype.getReply = function() {
 		this.currState = "animationPlay";
 	}
 	else if(this.currState ==  "getPlay") {
-		console.log("getReply - getPlay");
 		let coords = [];
 		var reply = Game.currReply;
 		reply = reply.replace(/\|\_[0-9]*/g, '');
@@ -141,7 +163,6 @@ Game.prototype.getReply = function() {
 	
 	}
 	else if(this.currState ==  "verifyStatus") {
-	console.log("getReply - verifyStatus");
 		
 		if(Game.currReply == 'none'){
 			this.currState = "getPlay";
@@ -153,7 +174,6 @@ Game.prototype.getReply = function() {
 	}
 	else if(this.currState == "validPlays"){
 		////console.log("valid");
-	console.log("getReply - validPlays");
 
 		////console.log(Game.currReply);
 		if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))
@@ -165,7 +185,6 @@ Game.prototype.getReply = function() {
 };
 
 Game.prototype.selectPiece = function(type) {
-	console.log("selectPiece");
 	var i = 0;
 	var found = false;
 	while((i < this.scene.pieces.length) && !found) {
@@ -182,7 +201,6 @@ Game.prototype.selectPiece = function(type) {
 }
 
 Game.prototype.gameInFormat = function() {
-console.log("gameInFormat");
 	var gameJson = [], aux = [];
 
 	for(var i = 0; i < this.board.length; i++)
@@ -206,7 +224,6 @@ Game.prototype.configBlackPlayer = function() {
 }
 
 Game.prototype.addHumanMoveToGame = function(pointF){
-	console.log("addHumanMoveToGame");
 	let pointX = pointF[0] / 2.55 + 3;
 	let pointY = pointF[2] / 2.55 + 3;
 	let type = this.scene.currentPiece.getType();
