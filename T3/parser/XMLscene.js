@@ -43,11 +43,15 @@ var DEGREE_TO_RAD = Math.PI / 180;
     this.cameraViews = ['ai','black','white'];
     this.finalPos = [0,0,0];
     this.moveCam = false;
+    this.camSpeed = 100;
 
     this.blackSpotX = 10;
     this.blackSpotZ = 12;
     this.whiteSpotX = -2;
     this.whiteSpotZ = 12;
+
+    this.whiteScore = "zero";
+    this.blackScore = "zero";
 
     this.first = 0;
     this.lastStatus = "menu";
@@ -398,6 +402,7 @@ XMLscene.prototype.createPieces = function() {
             this.lastStatus = this.Game.currState;
         }
 
+
         this.Game.getReply();
 
         if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus()){
@@ -415,8 +420,7 @@ XMLscene.prototype.createPieces = function() {
             this.isConfiguredPlayerBlack = true;
         }
 
-        if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
-            this.Game.isConf = true;
+        if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (this.Game.isConf)){
             this.Game.currState = "getPlay";
         }
 };
@@ -520,13 +524,18 @@ XMLscene.prototype.getCameraAngle = function() {
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
             if((deltaTime <= 10000) && (!this.pause)){
                 if(this.camera.position[0] < this.finalPos[0])
-                    this.camera.orbit("y", deltaTime/20*this.getCameraAngle()*DEGREE_TO_RAD);
+                    this.camera.orbit("y", deltaTime/this.camSpeed*this.getCameraAngle()*DEGREE_TO_RAD);
                 else
-                    this.camera.orbit("y", -deltaTime/20*this.getCameraAngle()*DEGREE_TO_RAD);
+                    this.camera.orbit("y", -deltaTime/this.camSpeed*this.getCameraAngle()*DEGREE_TO_RAD);
+
+                if(this.camSpeed > 10)
+                    this.camSpeed-=10;
             }
         }
-        else
+        else{
             this.moveCam = false;
+            this.camSpeed = 100;
+        }
     }
 }
 
@@ -630,8 +639,9 @@ XMLscene.prototype.clearBoard = function(){
 
 XMLscene.prototype.startGame = function(){
     if((this.WhitePlayer != null) && (this.BlackPlayer != null)){
-        this.clearBoard();
+        //this.clearBoard();
         this.Game.turn = 1;
+        this.Game.isConf = true;
         this.lastStatus = "menu";
         this.interface.addGameGroup();
     }

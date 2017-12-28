@@ -1665,8 +1665,7 @@ MySceneGraph.prototype.nodesRecursive = function(node) {
     this.scene.material.setTexture(null);
   else
     this.scene.material.setTexture(tex_info[0]);
-  
-  this.scene.material.apply();
+    this.scene.material.apply();
 
 
 //SELECTABLE SHADERS
