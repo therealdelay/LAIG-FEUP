@@ -57,6 +57,8 @@ var DEGREE_TO_RAD = Math.PI / 180;
     this.lastStatus = "menu";
     this.pause = false;
     this.mode == "game";
+
+    this.startThisGame = false;
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -111,9 +113,10 @@ XMLscene.prototype.animatePiece = function (newPos){
     var p4 = [newPos[0],0.3,newPos[1]];
 
     //add to game board in prolog
-    if(((this.Game.currPlayer == 'whitePlayer') && (this.Game.whiteType =='human')) || ((this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human'))) {
+    if(this.mode != "reviewGame" && ((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') 
+        || (this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human'))) {
         //get human play
-        this.Game.addHumanMoveToGame(p4);
+    this.Game.addHumanMoveToGame(p4);
     }
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
@@ -212,9 +215,9 @@ XMLscene.prototype.createPieces = function() {
  * Updates the scale factor of the shader
  */
  XMLscene.prototype.updateScaleFactor = function () {
-   this.shader.setUniformsValues({normScale: this.tempScaleFactor});
-   this.shader.setUniformsValues({R: this.tempR});
-};
+     this.shader.setUniformsValues({normScale: this.tempScaleFactor});
+     this.shader.setUniformsValues({R: this.tempR});
+ };
 
 /**
  * Initializes the scene lights with the values read from the LSX file.
@@ -341,23 +344,25 @@ XMLscene.prototype.createPieces = function() {
     if(this.pause)
         return;
 
+    console.log(this.Game.currState);
+
     if(this.mode == "reviewGame"){ 
 
         console.log("pimm" + this.Game.currState);
         if(this.Game.currState != this.lastStatus){
             switch(this.Game.currState){
                 case "applyPlay": 
-                    console.log("applyPlay..."); 
-                    this.Game.playMovesOfArray();
-                    break;
+                console.log("applyPlay..."); 
+                this.Game.playMovesOfArray();
+                break;
                 case "animationPlay":
-                    console.log("Waiting animation..."); 
-                    break;
+                console.log("Waiting animation..."); 
+                break;
                 case "endGame":
-                    
-                    break;
+
+                break;
                 default: 
-                    console.warn("ERROR!!!");
+                console.warn("ERROR!!!");
             }
 
             this.lastStatus = this.Game.currState;
@@ -378,24 +383,24 @@ XMLscene.prototype.createPieces = function() {
             case "menu":
                 //this.displayMenuBoard();
                 break;
-            case "getPlay":
+                case "getPlay":
                 this.Game.getAllValidPlays();
                 this.Game.getPlay();
                 break;
-            case "applyPlay": 
+                case "applyPlay": 
                 this.Game.play();
                 break;
-            case "animationPlay":
+                case "animationPlay":
                 //console.log("Waiting animation..."); 
                 break;
-            case "verifyStatus":
+                case "verifyStatus":
                 this.Game.endOfGame();
                 break;
-            case "endGame":
+                case "endGame":
                 console.log(this.Game.winner);
                 this.endGame();
                 break;
-            default: 
+                default: 
                 console.warn("ERROR!!!");
             }
 
@@ -410,9 +415,10 @@ XMLscene.prototype.createPieces = function() {
             this.currentPiece = null;
         }
 
-        if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (this.Game.isConf)){
-            this.Game.currState = "getPlay";
-        }
+    if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (this.Game.isConf) && (this.startThisGame)){
+        this.Game.currState = "getPlay";
+        this.startThisGame = false;
+    }
 };
 
 XMLscene.prototype.endGame = function(){
@@ -454,7 +460,7 @@ XMLscene.prototype.displayPieces = function() {
         this.pieces[w].display();
         this.clearPickRegistration();
     }
-};
+}
 
 
 /**
@@ -534,7 +540,7 @@ XMLscene.prototype.getCameraAngle = function() {
  * @param currTime
  */
  XMLscene.prototype.update = function(currTime){
-   for(var index in this.graph.nodes){
+     for(var index in this.graph.nodes){
       this.graph.nodes[index].update(currTime);
   }
 
@@ -548,8 +554,10 @@ XMLscene.prototype.getCameraAngle = function() {
 
     for(var i = 0; i < this.pieces.length; i++){
         if (this.pieces[i].currAnimation != null){
+            
             if(!this.pause)
                 this.pieces[i].currAnimation.getMatrix(delta);
+            
             this.pieces[i].updateCoords([this.pieces[i].currAnimation.transformationMatrix[12],this.pieces[i].currAnimation.transformationMatrix[13],this.pieces[i].currAnimation.transformationMatrix[14]]);
         }
     }
@@ -609,19 +617,14 @@ XMLscene.prototype.winWhitePiece = function (piece){
 
 XMLscene.prototype.clearBoard = function(){
 
+    for(var i=0; i < this.Game.board.length; i++){
+        for(var j=0; j < this.Game.board[i].length; j++)
+            this.Game.board[i][j] = 0;
+    }
+
     for(var i=0; i < this.pieces.length; i++){
-        /*for(var j = 0; j < this.Game.moves.length; j++){
-            let tmpMove = this.Game.convertCoordsOffProlog((this.Game.moves[j]).pointF);
-            let move = [tmpMove[0][0], 0.3, tmpMove[0][1]];
-            if(this.pieces[i].boardPosition != null && this.pieces[i].boardPosition.toString() == move.toString()){
-            this.currentPiece = this.pieces[i];
-            this.invertAnimatePiece(this.currentPiece.initialPosition);
-            this.currentPiece.played = false;
-            this.currentPiece = null;
-            }
-        }*/
         this.currentPiece = this.pieces[i];
-        console.log(this.pieces[i].initialPosition);
+        this.currentPiece.isPlayed = false;
         this.invertAnimatePiece(this.pieces[i].initialPosition);
     }
     this.currentPiece = null;
@@ -636,6 +639,7 @@ XMLscene.prototype.startGame = function(){
         this.Game.turn = 1;
         this.Game.isConf = true;
         this.lastStatus = "menu";
+        this.startThisGame = true;
         this.interface.addGameGroup();
     }
 };
