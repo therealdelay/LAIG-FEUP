@@ -107,19 +107,9 @@ Game.prototype.getReply = function() {
 
 		if(jsonData == null)
 			return;
-
-		//console.log("Board:::  ");
-		for(var i = 0; i < jsonData[0].length; i++ ) {
-			//console.log(i + ": "+ (jsonData[0][i]).toString()) ;
-		}
-		//console.log("Pieces Human:::  " + jsonData[1]);
-		//console.log("Pieces Bot:::  " + jsonData[2]);
-		//console.log("Player:::  " + jsonData[3]);
 		this.lastBoard = this.board;
 		this.board = jsonData[0];
 		this.checkBoardDiffs();
-		//console.log(this.lastBoard);
-		//console.log(this.board);
 		this.whitePieces = jsonData[1];
 		this.blackPieces = jsonData[2];
 		this.currPlayer = jsonData[3];
@@ -134,21 +124,18 @@ Game.prototype.getReply = function() {
 		reply = reply.replace(/\|\_[0-9]*/g, '');
 		coords.push(parseInt(reply[2]),parseInt(reply[4]));
 		
-
 		var move = [];
 		move.push(coords);
 		move.push(reply[7].charAt(0));
 
-
-		//this.getAllValidPlays();
-		
 		var newMove = this.convertCoordsOffProlog(move);
 		// move = [[x,y],type]
 		//selecionar peça das peças disponiveis	
 		this.selectPiece(newMove[1]);
 		this.scene.animatePiece([newMove[0][0],newMove[0][1]]);
 		this.scene.currentPiece.boardPosition = [newMove[0][0],0.3,newMove[0][1]];
-		this.scene.currentPiece.position = [newMove[0][0],0.3,newMove[0][1]];
+		
+		//this.scene.currentPiece.position = [newMove[0][0],0.3,newMove[0][1]];
 
 		var pieceType = null;
 		if(this.scene.currentPiece instanceof RegularPiece)
@@ -156,11 +143,6 @@ Game.prototype.getReply = function() {
 		else
 			pieceType = "h";
 		this.moves.push({ pointI: this.scene.currentPiece.initialPosition, pointF: [coords,pieceType], player:this.currPlayer, piece: pieceType});
-
-		//console.log(this.whitePieces);
-		//console.log(this.blackPieces);
-		///*console.log("POINT I " + this.scene.currentPiece.position);
-		//console.log("POINT F " + this.scene.currentPiece.boardPosition);*/
 		this.currState = "applyPlay";
 	
 	}
@@ -178,10 +160,8 @@ Game.prototype.getReply = function() {
 		}
 	}
 	else if(this.currState == "validPlays"){
-		////console.log("valid");
-
-		////console.log(Game.currReply);
-		if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))
+		if((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || 
+			(this.currPlayer == 'blackPlayer' && this.blackType =='human'))
 			this.getAllValidSpots(Game.currReply);
 		this.currState = "getPlay";
 	}
@@ -233,8 +213,7 @@ Game.prototype.addHumanMoveToGame = function(pointF){
 	let pointY = pointF[2] / 2.55 + 3;
 	let type = this.scene.currentPiece.getType();
 	let newMove = [[pointX,pointY],type];
-
-    this.moves.push({pointI: this.scene.currentPiece.position, pointF: newMove, player:this.currPlayer});
+    this.moves.push({pointI: this.scene.currentPiece.initialPosition, pointF: newMove, player:this.currPlayer});
     this.scene.currentPiece.boardPosition = [pointF[0],0.3,pointF[2]];
 	this.currState = "applyPlay";
 }
@@ -250,7 +229,6 @@ Game.prototype.convertCoordsOffProlog = function(move) {
 	newMove.push(newCoords);
 	newMove.push(move[1]);
 
-	////console.log("newMove: " + newMove);
 	return newMove;
 }
 
@@ -259,7 +237,6 @@ Game.prototype.getAllValidPlays = function(){
  		return;
 
     var sendMsg = "getAllValidPlays(" + this.gameInFormat().toString() + "," + this.turn.toString()  + ")";
-    ////console.log("sendMsg ::: " + sendMsg);
     this.server.makeRequest(sendMsg);
     this.currState = "validPlays";
 };
@@ -302,16 +279,37 @@ Game.prototype.undoLastPlay = function() {
 		return;
 
  	let tmpMove = null;
-	
 	var move = this.moves[this.moves.length-1].pointF;
 	tmpMove = this.convertCoordsOffProlog(move);
 
+	//update board
+	this.board[move[0][1]-1][move[0][0]-1] = 0;
+
+	//update current player
+	this.currPlayer = this.moves[this.moves.length-1].player;
+
+	//update pieces
+	if(this.moves[this.moves.length-1].player == "whitePlayer"){
+		if(move[1] == 'h')
+			this.whitePieces[1] = this.whitePieces[1] + 1;
+		else
+			this.whitePieces[0] = this.whitePieces[0] + 1;
+	}
+	else{
+		if(move[1] =='h')
+			this.blackPieces[1] = this.blackPieces[1] + 1;
+		else
+			this.blackPieces[0] = this.blackPieces[0] + 1;
+	}
+
+	//invert animation
+	tmpMove = this.moves[this.moves.length-1].pointI;
 	let lastMove = [tmpMove[0][0], 0.3, tmpMove[0][1]];
 	let pointI = this.moves[this.moves.length-1].pointI;
 
 	var i = 0, found = false;
 	while(i < this.scene.pieces.length && !found){
-		if(this.scene.pieces[i].boardPosition != null && this.scene.pieces[i].boardPosition.toString() == lastMove.toString()){
+		if(	this.scene.pieces[i].initialPosition.toString() == pointI.toString()){
 			found = true;
 			this.scene.currentPiece = this.scene.pieces[i];
 		}
@@ -324,21 +322,25 @@ Game.prototype.undoLastPlay = function() {
 	}
 
 	this.scene.invertAnimatePiece(pointI);
+	this.scene.currentPiece.isPlayed = false;
 	this.scene.currentPiece = null;
 	this.moves.pop();
 	this.turn--;
+	this.currState = "getPlay";
 }
 
 Game.prototype.playMovesOfArray = function() {
-
-console.log("index " + this.index);
+	console.log("index " + this.index);
+	console.log("this.moves.length " + this.moves.length);
 	if(this.index < this.moves.length){
-
 		let finalPos = this.convertCoordsOffProlog(this.moves[this.index].pointF);
 		let finalMove = [finalPos[0][0], 0.3, finalPos[0][1]];
-		
 
-		this.findPiece(finalMove, finalPos[1]);
+		if(!this.findPiece(finalMove, finalPos[1])){
+			console.warn("Error in find a piece!!!");
+			return;
+		}
+
 		this.scene.animatePiece([finalPos[0][0],finalPos[0][1]]);
 		this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
 		this.index++;
@@ -351,31 +353,15 @@ console.log("index " + this.index);
 } 
 
 Game.prototype.findPiece = function(finalPos, type) {
-	console.log("findPiece");
 	let inicialPos = this.moves[this.index].pointI;
-	let player = this.moves[this.index].player;
-
 	var i = 0;
-	var found = false;
-	while((i < this.scene.pieces.length) && !found) {
-
-		if(this.scene.pieces[i].boardPosition != null){
-			console.log("player " + (player).indexOf(this.scene.pieces[i].player));
-			console.log("initialPos move " + inicialPos.toString());
-			console.log("postion piece " + this.scene.pieces[i].position.toString());
-			console.log("finalPos move " + finalPos.toString());
-			console.log("postion board piece " + this.scene.pieces[i].boardPosition.toString());
-		}
-
-		if(((player).indexOf(this.scene.pieces[i].player) != -1) &&
-			(this.scene.pieces[i].boardPosition != null) &&
-			(finalPos.toString() == this.scene.pieces[i].boardPosition.toString()) &&
-			!this.scene.pieces[i].isPlayed){
+	while((i < this.scene.pieces.length)) {
+		if(inicialPos.toString() == this.scene.pieces[i].initialPosition.toString()){
 			this.scene.currentPiece = this.scene.pieces[i];
-			found = true;
+			return true;
 		}
 		i++;
 	}
-
-	return null;
+	return false;
 }
+
