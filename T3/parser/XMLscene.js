@@ -121,7 +121,7 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     var p1 = this.currentPiece.boardPosition;
     var p2 = [this.currentPiece.boardPosition[0], 10, this.currentPiece.boardPosition[2]];
     var p3 = [pointI[0],10,pointI[2]];
-    var p4 = [pointI[0],0.3,pointI[2]];
+    var p4 = [pointI[0],pointI[1]+0.3,pointI[2]];
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = false;
