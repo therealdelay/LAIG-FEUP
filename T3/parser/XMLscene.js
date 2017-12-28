@@ -118,8 +118,8 @@ XMLscene.prototype.animatePiece = function (newPos){
 }
 
 XMLscene.prototype.invertAnimatePiece = function (pointI){
-    var p1 = this.currentPiece.boardPosition;
-    var p2 = [this.currentPiece.boardPosition[0], 10, this.currentPiece.boardPosition[2]];
+    var p1 = this.currentPiece.position;
+    var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [pointI[0],10,pointI[2]];
     var p4 = [pointI[0],pointI[1]+0.3,pointI[2]];
 
@@ -350,7 +350,7 @@ XMLscene.prototype.createPieces = function() {
                     console.log("Waiting animation..."); 
                     break;
                 case "endGame":
-                    //display ganhar
+                    
                     break;
                 default: 
                     console.warn("ERROR!!!");
@@ -388,7 +388,8 @@ XMLscene.prototype.createPieces = function() {
                 this.Game.endOfGame();
                 break;
             case "endGame":
-                //display ganhar
+                console.log(this.Game.winner);
+                this.endGame();
                 break;
             default: 
                 console.warn("ERROR!!!");
@@ -419,6 +420,15 @@ XMLscene.prototype.createPieces = function() {
             this.Game.currState = "getPlay";
         }
 };
+
+XMLscene.prototype.endGame = function(){
+    var winner = this.Game.winner;
+
+    this.resetGame();
+    console.log(this.Game);
+
+    console.log(winner);
+}
 
 XMLscene.prototype.displayPickableCircles = function() {
     this.pickableID = 0;
@@ -601,18 +611,21 @@ XMLscene.prototype.winWhitePiece = function (piece){
 XMLscene.prototype.clearBoard = function(){
 
     for(var i=0; i < this.pieces.length; i++){
-        for(var j = 0; j < this.Game.moves.length; j++){
+        /*for(var j = 0; j < this.Game.moves.length; j++){
             let tmpMove = this.Game.convertCoordsOffProlog((this.Game.moves[j]).pointF);
             let move = [tmpMove[0][0], 0.3, tmpMove[0][1]];
-            if(this.pieces[i].boardPosition != null &&
-                this.pieces[i].boardPosition.toString() == move.toString()){
-                this.currentPiece = this.pieces[i];
+            if(this.pieces[i].boardPosition != null && this.pieces[i].boardPosition.toString() == move.toString()){
+            this.currentPiece = this.pieces[i];
             this.invertAnimatePiece(this.currentPiece.initialPosition);
             this.currentPiece.played = false;
             this.currentPiece = null;
-        }
+            }
+        }*/
+        this.currentPiece = this.pieces[i];
+        console.log(this.pieces[i].initialPosition);
+        this.invertAnimatePiece(this.pieces[i].initialPosition);
     }
-}
+    this.currentPiece = null;
 };
 
 XMLscene.prototype.startGame = function(){
@@ -623,6 +636,16 @@ XMLscene.prototype.startGame = function(){
         this.interface.addGameGroup();
     }
 };
+
+XMLscene.prototype.resetGame = function () {
+    this.clearBoard();
+    this.WhitePlayer = null;
+    this.blackPlayer = null;
+    this.isConf = false;
+    this.isConfiguredPlayerBlack = false;
+    this.isConfiguredPlayerWhite = false;
+    this.Game.turn = 0;
+}
 
 XMLscene.prototype.undoPlay = function(){
     console.log("Undo Play");

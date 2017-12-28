@@ -59,10 +59,7 @@ Game.prototype.play = function() {
 //endOfGame(Game) -> winner 
 Game.prototype.endOfGame = function() {
 	var sendMsg = "endOfGame(" + this.gameInFormat() + ")";
-	////console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
-
-	// TODO after response -> verify Winner
 };
 
 Game.prototype.removePiece = function(x,z){
@@ -151,13 +148,14 @@ Game.prototype.getReply = function() {
 		this.selectPiece(newMove[1]);
 		this.scene.animatePiece([newMove[0][0],newMove[0][1]]);
 		this.scene.currentPiece.boardPosition = [newMove[0][0],0.3,newMove[0][1]];
+		this.scene.currentPiece.position = [newMove[0][0],0.3,newMove[0][1]];
 
 		var pieceType = null;
 		if(this.scene.currentPiece instanceof RegularPiece)
 			pieceType = "n";
 		else
 			pieceType = "h";
-		this.moves.push({ pointI: this.scene.currentPiece.position, pointF: [coords,pieceType], player:this.currPlayer, piece: pieceType});
+		this.moves.push({ pointI: this.scene.currentPiece.initialPosition, pointF: [coords,pieceType], player:this.currPlayer, piece: pieceType});
 
 		//console.log(this.whitePieces);
 		//console.log(this.blackPieces);
@@ -167,14 +165,17 @@ Game.prototype.getReply = function() {
 	
 	}
 	else if(this.currState ==  "verifyStatus") {
-		
+		console.log(Game.currReply);
 		if(Game.currReply == 'none'){
 			this.currState = "getPlay";
 			this.turn += 1;
 			this.scene.moveCam = false;
 		}
-		else
+		else{
 			this.currState = "endGame";
+			this.winner = Game.currReply;
+			console.log(this.winner);
+		}
 	}
 	else if(this.currState == "validPlays"){
 		////console.log("valid");
