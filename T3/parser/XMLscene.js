@@ -96,7 +96,7 @@ XMLscene.prototype.logPicking = function (){
                     if(this.currentPiece !== null){
                         if(this.pickResults[i][0] instanceof MyPickSpot){
                             var newPos = [this.pickResults[i][0].x,this.pickResults[i][0].z];
-                            this.animatePiece(newPos);
+                            this.animatePiece(newPos, true);
                         }
                     }
                 }
@@ -106,18 +106,15 @@ XMLscene.prototype.logPicking = function (){
     }
 };
 
-XMLscene.prototype.animatePiece = function (newPos){
+XMLscene.prototype.animatePiece = function (newPos, addHumanMove){
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [newPos[0],10,newPos[1]];
     var p4 = [newPos[0],0.3,newPos[1]];
 
     //add to game board in prolog
-    if(this.mode != "reviewGame" && ((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') 
-        || (this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human'))) {
-        //get human play
-    this.Game.addHumanMoveToGame(p4);
-    }
+    if(addHumanMove)
+     this.Game.addHumanMoveToGame(p4);
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
@@ -593,7 +590,7 @@ XMLscene.prototype.createPickableSquares = function(){
 
 XMLscene.prototype.winBlackPiece = function (piece){
     this.currentPiece = piece;
-    this.animatePiece([this.blackSpotX,this.blackSpotZ]);
+    this.animatePiece([this.blackSpotX,this.blackSpotZ], true);
 
     if(this.blackSpotZ > 12){
         this.blackSpotZ = 12;
@@ -605,7 +602,7 @@ XMLscene.prototype.winBlackPiece = function (piece){
 
 XMLscene.prototype.winWhitePiece = function (piece){
     this.currentPiece = piece;
-    this.animatePiece([this.whiteSpotX,this.whiteSpotZ]);
+    this.animatePiece([this.whiteSpotX,this.whiteSpotZ],true);
 
     if(this.whiteSpotZ > 12){
         this.whiteSpotZ = 12;

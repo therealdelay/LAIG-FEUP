@@ -132,7 +132,7 @@ Game.prototype.getReply = function() {
 		// move = [[x,y],type]
 		//selecionar peça das peças disponiveis	
 		this.selectPiece(newMove[1]);
-		this.scene.animatePiece([newMove[0][0],newMove[0][1]]);
+		this.scene.animatePiece([newMove[0][0],newMove[0][1]], false);
 		this.scene.currentPiece.boardPosition = [newMove[0][0],0.3,newMove[0][1]];
 		
 		//this.scene.currentPiece.position = [newMove[0][0],0.3,newMove[0][1]];
@@ -340,7 +340,7 @@ Game.prototype.playMovesOfArray = function() {
 			return;
 		}
 
-		this.scene.animatePiece([finalPos[0][0],finalPos[0][1]]);
+		this.scene.animatePiece([finalPos[0][0],finalPos[0][1]], false);
 		this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
 		this.index++;
 		this.currState = "animationPlay";
