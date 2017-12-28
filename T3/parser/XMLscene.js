@@ -409,16 +409,6 @@ XMLscene.prototype.createPieces = function() {
             this.Game.currState = "verifyStatus";
             this.currentPiece = null;
         }
-        
-        if((this.WhitePlayer != null)  && (!this.isConfiguredPlayerWhite)){
-            this.Game.configWhitePlayer();
-            this.isConfiguredPlayerWhite = true;
-        }
-
-        if((this.BlackPlayer != null)  && (!this.isConfiguredPlayerBlack)){
-            this.Game.configBlackPlayer();
-            this.isConfiguredPlayerBlack = true;
-        }
 
         if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (this.Game.isConf)){
             this.Game.currState = "getPlay";
@@ -454,12 +444,12 @@ XMLscene.prototype.displayPieces = function() {
     let w = 0;
     for(; w < this.pieces.length; w++){
         if(this.Game.turn != 0){
-            if((this.currentPiece == null) && (this.pieces[w].isPlayed == false))
+            if((this.currentPiece == null) && (this.pieces[w].isPlayed == false)){
                 if(this.Game.currPlayer == this.pieces[w].player)
                     this.registerForPick(1+w,this.pieces[w]);
-
+            }
             else if((this.currentPiece != null) && (this.pieces[w].selected))
-                    this.registerForPick(1+w,this.pieces[w]);
+                this.registerForPick(1+w,this.pieces[w]);
         }
         this.pieces[w].display();
         this.clearPickRegistration();
@@ -639,7 +629,10 @@ XMLscene.prototype.clearBoard = function(){
 
 XMLscene.prototype.startGame = function(){
     if((this.WhitePlayer != null) && (this.BlackPlayer != null)){
-        //this.clearBoard();
+        this.Game.configWhitePlayer();
+        this.isConfiguredPlayerWhite = true;
+        this.Game.configBlackPlayer();
+        this.isConfiguredPlayerBlack = true;
         this.Game.turn = 1;
         this.Game.isConf = true;
         this.lastStatus = "menu";
