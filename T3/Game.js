@@ -31,6 +31,8 @@ function Game(scene) {
 	this.currState = "menu";
 	this.endGame = false;
 	this.isConf = false;
+
+	this.index = 0;
 };
 
 //getPlay(Game,Turn)
@@ -167,7 +169,9 @@ Game.prototype.selectPiece = function(type) {
 	var i = 0;
 	var found = false;
 	while((i < this.scene.pieces.length) && !found) {
-		if((this.scene.pieces[i].getType() == type) && ((this.currPlayer).indexOf(this.scene.pieces[i].player) !== -1) && (!this.scene.pieces[i].isPlayed)){
+		if((this.scene.pieces[i].getType() == type) && 
+			((this.currPlayer).indexOf(this.scene.pieces[i].player) !== -1) && 
+			(!this.scene.pieces[i].isPlayed)){
 			this.scene.currentPiece = this.scene.pieces[i];
 			found = true;
 		}
@@ -275,13 +279,10 @@ Game.prototype.undoLastPlay = function() {
 	if(this.moves.length < 1)
 		return;
 
-	//console.log(this.moves[this.moves.length-1]);
-
  	let tmpMove = null;
 	
 	var move = this.moves[this.moves.length-1].pointF;
 	tmpMove = this.convertCoordsOffProlog(move);
-	//console.log(tmpMove);
 
 	let lastMove = [tmpMove[0][0], 0.3, tmpMove[0][1]];
 	let pointI = this.moves[this.moves.length-1].pointI;
@@ -304,4 +305,55 @@ Game.prototype.undoLastPlay = function() {
 	this.scene.currentPiece = null;
 	this.moves.pop();
 	this.turn--;
+}
+
+Game.prototype.playMovesOfArray = function() {
+
+console.log("index " + this.index);
+	if(this.index < this.moves.length){
+
+		let finalPos = this.convertCoordsOffProlog(this.moves[this.index].pointF);
+		let finalMove = [finalPos[0][0], 0.3, finalPos[0][1]];
+		
+
+		this.findPiece(finalMove, finalPos[1]);
+		this.scene.animatePiece([finalPos[0][0],finalPos[0][1]]);
+		this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
+		this.index++;
+		this.currState = "animationPlay";
+	}
+	else{
+		this.scene.mode = "game";
+		this.index = 0;
+	}
+} 
+
+Game.prototype.findPiece = function(finalPos, type) {
+	console.log("findPiece");
+	let inicialPos = this.moves[this.index].pointI;
+	let player = this.moves[this.index].player;
+
+	var i = 0;
+	var found = false;
+	while((i < this.scene.pieces.length) && !found) {
+
+		if(this.scene.pieces[i].boardPosition != null){
+			console.log("player " + (player).indexOf(this.scene.pieces[i].player));
+			console.log("initialPos move " + inicialPos.toString());
+			console.log("postion piece " + this.scene.pieces[i].position.toString());
+			console.log("finalPos move " + finalPos.toString());
+			console.log("postion board piece " + this.scene.pieces[i].boardPosition.toString());
+		}
+
+		if(((player).indexOf(this.scene.pieces[i].player) != -1) &&
+			(this.scene.pieces[i].boardPosition != null) &&
+			(finalPos.toString() == this.scene.pieces[i].boardPosition.toString()) &&
+			!this.scene.pieces[i].isPlayed){
+			this.scene.currentPiece = this.scene.pieces[i];
+			found = true;
+		}
+		i++;
+	}
+
+	return null;
 }

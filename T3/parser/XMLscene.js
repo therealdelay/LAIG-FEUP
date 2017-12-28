@@ -4,26 +4,26 @@ var DEGREE_TO_RAD = Math.PI / 180;
  * XMLscene class, representing the scene that is to be rendered.
  * @constructor
  */
-function XMLscene(interface) {
+ function XMLscene(interface) {
     CGFscene.call(this);
 
     this.interface = interface;
-	this.currentNode = null;
-	this.nodesToShade = [];
-	this.scaleFactor=50.0;
-	this.tempScaleFactor=50.0;
-	this.selectable=false;
-	this.sinTime = -Math.PI/2;
-	this.R = 1;
-	this.tempR = 1;
+    this.currentNode = null;
+    this.nodesToShade = [];
+    this.scaleFactor=50.0;
+    this.tempScaleFactor=50.0;
+    this.selectable=false;
+    this.sinTime = -Math.PI/2;
+    this.R = 1;
+    this.tempR = 1;
 
     this.d = new Date();
 
     this.initialTime = this.d.getTime();
 
     this.lightValues = {};
-	this.spots = [];
-	this.pieces = [];
+    this.spots = [];
+    this.pieces = [];
     this.pickableID = 0;
     this.currentPiece = null;
 
@@ -52,6 +52,7 @@ function XMLscene(interface) {
     this.first = 0;
     this.lastStatus = "menu";
     this.pause = false;
+    this.mode == "game";
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -65,7 +66,7 @@ XMLscene.prototype.logPicking = function (){
 				if (obj){
 					var customId = this.pickResults[i][1];	
 					////console.log("Picked object: " + obj + ", with pick id " + customId);
-                    
+
                     if(this.pickResults[i][0] instanceof RegularPiece){
                         this.currentPiece = this.pieces[customId-1];
                         if(this.currentPiece.selected){
@@ -130,7 +131,7 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
 /**
  * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
  */
-XMLscene.prototype.init = function(application) {
+ XMLscene.prototype.init = function(application) {
     CGFscene.prototype.init.call(this, application);
     
     this.camera = new CGFcamera(0.35,0.5,500,[0,15,15],[0,0,0]);
@@ -143,27 +144,27 @@ XMLscene.prototype.init = function(application) {
     this.gl.depthFunc(this.gl.LEQUAL);
     this.setUpdatePeriod(1000/60);
 
-	this.shader = new CGFshader(this.gl, "shaders/scaler.vert", "shaders/scaler.frag");
-	this.shader.setUniformsValues({R: this.tempR});
-	this.updateScaleFactor();
+    this.shader = new CGFshader(this.gl, "shaders/scaler.vert", "shaders/scaler.frag");
+    this.shader.setUniformsValues({R: this.tempR});
+    this.updateScaleFactor();
 
     this.axis = new CGFaxis(this);
 
     this.setPickEnabled(true);
     this.createPickableSquares();	
-	this.materialDefault = new CGFappearance(this);
+    this.materialDefault = new CGFappearance(this);
 
-	this.whiteMaterial = new CGFappearance(this);
-	this.whiteMaterial.setAmbient(0.2,0.2,0.2,1);
-	this.whiteMaterial.setDiffuse(0.5,0.5,0.5,1);
-	this.whiteMaterial.setSpecular(0.2,0.2,0.2,1);
-	this.whiteMaterial.setShininess(1);   
+    this.whiteMaterial = new CGFappearance(this);
+    this.whiteMaterial.setAmbient(0.2,0.2,0.2,1);
+    this.whiteMaterial.setDiffuse(0.5,0.5,0.5,1);
+    this.whiteMaterial.setSpecular(0.2,0.2,0.2,1);
+    this.whiteMaterial.setShininess(1);   
 
-	this.darkMaterial = new CGFappearance(this);
-	this.darkMaterial.setAmbient(0,0,0,1);
-	this.darkMaterial.setDiffuse(0,0,0,1);
-	this.darkMaterial.setSpecular(0,0,0,1);
-	this.darkMaterial.setShininess(0);
+    this.darkMaterial = new CGFappearance(this);
+    this.darkMaterial.setAmbient(0,0,0,1);
+    this.darkMaterial.setDiffuse(0,0,0,1);
+    this.darkMaterial.setSpecular(0,0,0,1);
+    this.darkMaterial.setShininess(0);
 
     this.redMaterial = new CGFappearance(this);
     this.redMaterial.setAmbient(0,0,0,1);
@@ -208,18 +209,18 @@ XMLscene.prototype.createPieces = function() {
 /**
  * Updates the scale factor of the shader
  */
-XMLscene.prototype.updateScaleFactor = function () {
-	this.shader.setUniformsValues({normScale: this.tempScaleFactor});
-    this.shader.setUniformsValues({R: this.tempR});
+ XMLscene.prototype.updateScaleFactor = function () {
+   this.shader.setUniformsValues({normScale: this.tempScaleFactor});
+   this.shader.setUniformsValues({R: this.tempR});
 };
 
 /**
  * Initializes the scene lights with the values read from the LSX file.
  */
-XMLscene.prototype.initLights = function() {
+ XMLscene.prototype.initLights = function() {
     var i = 0;
     // Lights index.
-   
+
     // Reads the lights from the scene graph.
     for (var key in this.graph.lights) {
         if (i >= 8)
@@ -249,14 +250,14 @@ XMLscene.prototype.initLights = function() {
 /* Handler called when the graph is finally loaded. 
  * As loading is asynchronous, this may be called already after the application has started the run loop
  */
-XMLscene.prototype.onGraphLoaded = function() {
-    
+ XMLscene.prototype.onGraphLoaded = function() {
+
     this.camera.near = this.graph.near;
     this.camera.far = this.graph.far;
     this.axis = new CGFaxis(this,this.graph.referenceLength);
     
     this.setGlobalAmbientLight(this.graph.ambientIllumination[0], this.graph.ambientIllumination[1], 
-    this.graph.ambientIllumination[2], this.graph.ambientIllumination[3]);
+        this.graph.ambientIllumination[2], this.graph.ambientIllumination[3]);
     
     this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
     
@@ -279,7 +280,7 @@ XMLscene.prototype.onGraphLoaded = function() {
 /**
  * Displays the scene.
  */
-XMLscene.prototype.display = function() {
+ XMLscene.prototype.display = function() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -297,7 +298,7 @@ XMLscene.prototype.display = function() {
     if (this.graph.loadedOk) 
     {        
     	this.logPicking();
-		this.clearPickRegistration();
+      this.clearPickRegistration();
         // Applies initial transformations.
         this.multMatrix(this.graph.initialTransforms);
 
@@ -321,7 +322,7 @@ XMLscene.prototype.display = function() {
         }
 
         // Displays the scene.
-		this.graph.displayScene();
+        this.graph.displayScene();
         this.displayPickableCircles();
         this.clearPickRegistration();
         this.displayPieces();
@@ -338,14 +339,43 @@ XMLscene.prototype.display = function() {
     if(this.pause)
         return;
 
-    if(this.Game.currState != this.lastStatus){
+    if(this.mode == "reviewGame"){ 
+
+        console.log("pimm" + this.Game.currState);
+        if(this.Game.currState != this.lastStatus){
+            switch(this.Game.currState){
+                case "applyPlay": 
+                    console.log("applyPlay..."); 
+                    this.Game.playMovesOfArray();
+                    break;
+                case "animationPlay":
+                    console.log("Waiting animation..."); 
+                    break;
+                case "endGame":
+                    //display ganhar
+                    break;
+                default: 
+                    console.warn("ERROR!!!");
+            }
+
+            this.lastStatus = this.Game.currState;
+        }
+
+        if((this.Game.currState == "animationPlay") && (this.currentPiece.getAnimation().getStatus())){
+            this.Game.currState = "applyPlay";
+            this.currentPiece = null;
+        }
+
+        return;
+    }   
+
+
+    if(this.Game.currState != this.lastStatus) {
 
         switch(this.Game.currState){
             case "menu":
                 //this.displayMenuBoard();
                 break;
-            /*case "validPlays":
-                break;*/
             case "getPlay":
                 this.Game.getAllValidPlays();
                 this.Game.getPlay();
@@ -364,33 +394,32 @@ XMLscene.prototype.display = function() {
                 break;
             default: 
                 console.warn("ERROR!!!");
+            }
+
+            this.lastStatus = this.Game.currState;
         }
 
-        this.lastStatus = this.Game.currState;
-    }
+        this.Game.getReply();
 
-    this.Game.getReply();
-
-    if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus()){
-        this.Game.currState = "verifyStatus";
-        this.currentPiece = null;
-    }
+        if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus()){
+            this.Game.currState = "verifyStatus";
+            this.currentPiece = null;
+        }
         
-   if((this.WhitePlayer != null)  && (!this.isConfiguredPlayerWhite)){
-        this.Game.configWhitePlayer();
-        this.isConfiguredPlayerWhite = true;
-    }
+        if((this.WhitePlayer != null)  && (!this.isConfiguredPlayerWhite)){
+            this.Game.configWhitePlayer();
+            this.isConfiguredPlayerWhite = true;
+        }
 
-    if((this.BlackPlayer != null)  && (!this.isConfiguredPlayerBlack)){
-        this.Game.configBlackPlayer();
-        this.isConfiguredPlayerBlack = true;
-    }
+        if((this.BlackPlayer != null)  && (!this.isConfiguredPlayerBlack)){
+            this.Game.configBlackPlayer();
+            this.isConfiguredPlayerBlack = true;
+        }
 
-    if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
-        this.Game.isConf = true;
-        this.Game.currState = "getPlay";
-        //this.Game.currState = "validPlays";
-    }
+        if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
+            this.Game.isConf = true;
+            this.Game.currState = "getPlay";
+        }
 };
 
 XMLscene.prototype.displayPickableCircles = function() {
@@ -429,24 +458,24 @@ XMLscene.prototype.displayPieces = function() {
  * Update the camera position to start the animation
  * @param view
  */
-XMLscene.prototype.updateCamera = function(view){
+ XMLscene.prototype.updateCamera = function(view){
     switch(this.CameraView){
         case 'ai':
-            this.finalPos = [0,15,15];
-            this.moveCam = true;
-            break;
+        this.finalPos = [0,15,15];
+        this.moveCam = true;
+        break;
         case 'black':
-            this.finalPos = [-15,15,0];
-            this.moveCam = true;
-            break;
+        this.finalPos = [-15,15,0];
+        this.moveCam = true;
+        break;
         case 'white':
-            this.finalPos = [15,15,0];
-            this.moveCam = true;
-            break;
+        this.finalPos = [15,15,0];
+        this.moveCam = true;
+        break;
         default:
-            this.finalPos = [0,15,15];
-            this.moveCam = true;
-            break;
+        this.finalPos = [0,15,15];
+        this.moveCam = true;
+        break;
     }
 };
 
@@ -454,7 +483,7 @@ XMLscene.prototype.updateCamera = function(view){
  * Updates the camera current position, in case the camera is moving
  * @param deltaTime
  */
-XMLscene.prototype.animateCamera = function(deltaTime){
+ XMLscene.prototype.animateCamera = function(deltaTime){
     this.updateCamera();
     if(this.moveCam){
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
@@ -474,12 +503,12 @@ XMLscene.prototype.animateCamera = function(deltaTime){
  * Update the scale factor and Red component from the given current time.
  * @param currTime
  */
-XMLscene.prototype.update = function(currTime){
-	for(var index in this.graph.nodes){
-		this.graph.nodes[index].update(currTime);
-	}
+ XMLscene.prototype.update = function(currTime){
+   for(var index in this.graph.nodes){
+      this.graph.nodes[index].update(currTime);
+  }
 
-    this.interface.update();
+  this.interface.update();
 
     //to seconds
     this.time = currTime/1000; 
@@ -521,7 +550,7 @@ XMLscene.prototype.createPickableSquares = function(){
         x += 2.55;
         col++;
     }
-  }
+}
 };
 
 XMLscene.prototype.winBlackPiece = function (piece){
@@ -556,32 +585,9 @@ XMLscene.prototype.clearBoard = function(){
             let move = [tmpMove[0][0], 0.3, tmpMove[0][1]];
             if(this.pieces[i].boardPosition != null &&
                 this.pieces[i].boardPosition.toString() == move.toString()){
-            this.currentPiece = this.pieces[i];
-            this.invertAnimatePiece(this.currentPiece.initialPosition);
-            this.currentPiece = null;
-        }
-    }
-}
-};
-
-XMLscene.prototype.showGame = function(){
-    console.log("showGame");
-
-    for(var j = 0; j < this.Game.moves.length; j++){
-        for(var i=0; i < this.pieces.length; i++){
-            //console.log("pimmmm");
-            let tmpMove = this.Game.convertCoordsOffProlog((this.Game.moves[j]).pointF);
-            let move = [tmpMove[0][0], 0.3, tmpMove[0][1]];
-
-            if(this.pieces[i].boardPosition != null){
-            //console.log(" this.pieces[i].boardPosition "+ this.pieces[i].boardPosition.toString());
-            //console.log("pointF "+ move.toString());
-            }
-            if(this.pieces[i].boardPosition != null &&
-                this.pieces[i].boardPosition.toString() == move.toString() ){
                 this.currentPiece = this.pieces[i];
-            //console.log("move "+ move);
-            this.invertAnimatePiece(move);
+            this.invertAnimatePiece(this.currentPiece.initialPosition);
+            this.currentPiece.played = false;
             this.currentPiece = null;
         }
     }
@@ -605,14 +611,16 @@ XMLscene.prototype.startGame = function(){
 };
 
 XMLscene.prototype.undoPlay = function(){
-    //console.log("Undo Play");
+    console.log("Undo Play");
     this.Game.undoLastPlay();
 };
 
 XMLscene.prototype.videoGame = function(){
-    //console.log("Video Game");
+    console.log("Video Game");
+
     this.clearBoard();
-   // this.showGame();
+    this.mode = "reviewGame";
+    this.Game.currState = "applyPlay";
 };
 
 XMLscene.prototype.pauseGame = function(){
