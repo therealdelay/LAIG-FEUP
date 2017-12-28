@@ -276,18 +276,12 @@ Game.prototype.changeColors = function(array){
 
 Game.prototype.undoLastPlay = function() {
 
-	console.log("INFO :::");
-	console.log("this.moves.length " + this.moves.length);
-	console.log("this.moves " + this.moves);
-
 	if(this.moves.length == 0)
 		return;
 
 	let tmpMove = null;
 	var move = this.moves[this.moves.length-1].pointF;
 	tmpMove = this.convertCoordsOffProlog(move);
-
-	console.log("tmpMove " + tmpMove);
 
 	//invert animation
 	let pointI = this.moves[this.moves.length-1].pointI;
@@ -307,7 +301,6 @@ Game.prototype.undoLastPlay = function() {
 		return;
 	}
 
-console.log("this.scene.currentPiece.eated " + this.scene.currentPiece.eated);
 	if(!this.scene.currentPiece.eated){
 		this.scene.invertAnimatePiece(pointI);
 		//update board
@@ -342,14 +335,10 @@ console.log("this.scene.currentPiece.eated " + this.scene.currentPiece.eated);
 		this.undoLastPlay();
 	}
 
-
-
 this.currState = "getPlay";
 }
 
 Game.prototype.playMovesOfArray = function() {
-	console.log("index " + this.index);
-	console.log("this.moves.length " + this.moves.length);
 	if(this.index < this.moves.length){
 		let finalPos = this.convertCoordsOffProlog(this.moves[this.index].pointF);
 		let finalMove = [finalPos[0][0], 0.3, finalPos[0][1]];
