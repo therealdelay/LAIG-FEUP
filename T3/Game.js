@@ -213,7 +213,8 @@ Game.prototype.addHumanMoveToGame = function(pointF){
 	let type = this.scene.currentPiece.getType();
 	let newMove = [[pointX,pointY],type];
     this.moves.push({pointI: this.scene.currentPiece.initialPosition, pointF: newMove, player:this.currPlayer});
-    this.scene.currentPiece.boardPosition = [pointF[0],0.3,pointF[2]];
+    if(!this.scene.currentPiece.eated)
+    	this.scene.currentPiece.boardPosition = [pointF[0],0.3,pointF[2]];
 	this.currState = "applyPlay";
 }
 
@@ -274,38 +275,24 @@ Game.prototype.changeColors = function(array){
 }
 
 Game.prototype.undoLastPlay = function() {
-	if(this.moves.length < 1)
+
+	console.log("INFO :::");
+	console.log("this.moves.length " + this.moves.length);
+	console.log("this.moves " + this.moves);
+
+	if(this.moves.length == 0)
 		return;
 
- 	let tmpMove = null;
+	let tmpMove = null;
 	var move = this.moves[this.moves.length-1].pointF;
 	tmpMove = this.convertCoordsOffProlog(move);
 
-	//update board
-	this.board[move[0][1]-1][move[0][0]-1] = 0;
-
-	//update current player
-	this.currPlayer = this.moves[this.moves.length-1].player;
-
-	//update pieces
-	if(this.moves[this.moves.length-1].player == "whitePlayer"){
-		if(move[1] == 'h')
-			this.whitePieces[1] = this.whitePieces[1] + 1;
-		else
-			this.whitePieces[0] = this.whitePieces[0] + 1;
-	}
-	else{
-		if(move[1] =='h')
-			this.blackPieces[1] = this.blackPieces[1] + 1;
-		else
-			this.blackPieces[0] = this.blackPieces[0] + 1;
-	}
+	console.log("tmpMove " + tmpMove);
 
 	//invert animation
-	tmpMove = this.moves[this.moves.length-1].pointI;
-	let lastMove = [tmpMove[0][0], 0.3, tmpMove[0][1]];
 	let pointI = this.moves[this.moves.length-1].pointI;
-
+	let lastMove = [pointI[0][0], 0.3, pointI[0][1]];
+	
 	var i = 0, found = false;
 	while(i < this.scene.pieces.length && !found){
 		if(	this.scene.pieces[i].initialPosition.toString() == pointI.toString()){
@@ -320,12 +307,44 @@ Game.prototype.undoLastPlay = function() {
 		return;
 	}
 
-	this.scene.invertAnimatePiece(pointI);
-	this.scene.currentPiece.isPlayed = false;
-	this.scene.currentPiece = null;
-	this.moves.pop();
-	this.turn--;
-	this.currState = "getPlay";
+console.log("this.scene.currentPiece.eated " + this.scene.currentPiece.eated);
+	if(!this.scene.currentPiece.eated){
+		this.scene.invertAnimatePiece(pointI);
+		//update board
+		this.board[move[0][1]-1][move[0][0]-1] = 0;
+
+		//update current player
+		this.currPlayer = this.moves[this.moves.length-1].player;
+
+		//update pieces
+		if(this.moves[this.moves.length-1].player == "whitePlayer"){
+			if(move[1] == 'h')
+				this.whitePieces[1] = this.whitePieces[1] + 1;
+			else
+				this.whitePieces[0] = this.whitePieces[0] + 1;
+		}
+		else{
+			if(move[1] =='h')
+				this.blackPieces[1] = this.blackPieces[1] + 1;
+			else
+				this.blackPieces[0] = this.blackPieces[0] + 1;
+		}
+		this.turn--;
+		this.scene.currentPiece.isPlayed = false;
+		this.scene.currentPiece = null;
+		this.moves.pop();
+	}
+	else{
+		this.scene.invertAnimatePiece(this.scene.currentPiece.boardPosition);
+		this.scene.currentPiece.eated = false;
+		this.moves.pop();
+		this.scene.currentPiece = null;
+		this.undoLastPlay();
+	}
+
+
+
+this.currState = "getPlay";
 }
 
 Game.prototype.playMovesOfArray = function() {

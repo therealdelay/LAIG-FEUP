@@ -19,6 +19,7 @@ function HengePiece(scene, player, position) {
     this.startTime = 0;
     this.currAnimation = null;
     this.type = 'h';
+    this.eated = false;
 };
 
 HengePiece.prototype = Object.create(CGFobject.prototype);

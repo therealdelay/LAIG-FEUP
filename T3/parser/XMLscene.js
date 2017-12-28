@@ -590,7 +590,9 @@ XMLscene.prototype.createPickableSquares = function(){
 
 XMLscene.prototype.winBlackPiece = function (piece){
     this.currentPiece = piece;
+    this.currentPiece.eated = true;
     this.animatePiece([this.blackSpotX,this.blackSpotZ], true);
+    
 
     if(this.blackSpotZ > 12){
         this.blackSpotZ = 12;
@@ -602,7 +604,9 @@ XMLscene.prototype.winBlackPiece = function (piece){
 
 XMLscene.prototype.winWhitePiece = function (piece){
     this.currentPiece = piece;
+    this.currentPiece.eated = true;
     this.animatePiece([this.whiteSpotX,this.whiteSpotZ],true);
+    
 
     if(this.whiteSpotZ > 12){
         this.whiteSpotZ = 12;

@@ -26,6 +26,7 @@ function RegularPiece(scene, player, position) {
 	this.startTime = 0;
 	this.currAnimation = null;
     this.type = 'n';
+    this.eated = false;
 };
 
 RegularPiece.prototype = Object.create(CGFobject.prototype);
