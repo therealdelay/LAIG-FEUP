@@ -53,29 +53,14 @@ HengePiece.prototype.display = function (position) {
 };
 
 HengePiece.prototype.updateCoords = function (position) {
-   /*var p1 = [this.position[0],0,this.position[1]];
-    var p2 = [this.position[0],15,this.position[1]];
-    var p3 = [position[0],15,position[1]];
-    var p4 = [position[0],0,position[1]];
-    var cp = [p1,p2,p3,p4];
-    this.currAnimation = new BezierAnimation(this.scene, 1, 1, cp);*/
     this.position = position;
 };
 
 HengePiece.prototype.update = function(currTime){
-    // First time
     if(this.startTime == 0){
         this.startTime = currTime;
         return;
     }
-
-/*    let deltaTime = currTime - this.startTime;
-    if(this.currAnimation != null){
-        this.animationMatrix = this.currAnimation.getMatrix(deltaTime);
-        if(this.currAnimation.finish)
-            this.currAnimation = null;
-    }
-*/
     this.startTime = currTime;
 };
 

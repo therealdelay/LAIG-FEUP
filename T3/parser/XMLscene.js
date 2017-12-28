@@ -113,7 +113,7 @@ XMLscene.prototype.animatePiece = function (newPos){
         this.Game.addHumanMoveToGame(p4);
     }
 
-    this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
+    this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
     //this.currentPiece.boardPosition = [newPos[0],0.3,newPos[1]];
 }
@@ -125,7 +125,7 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     var p3 = [pointI[0],10,pointI[2]];
     var p4 = [pointI[0],0.3,pointI[2]];
 
-    this.currentPiece.currAnimation = new BezierAnimation(this, 0, 3, [p1,p2,p3,p4]);
+    this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = false;
 }
 /**
@@ -183,8 +183,8 @@ XMLscene.prototype.createPieces = function() {
     var x = -15;
     var z = -5;
     for(var i = 0; i < 10; i++){
-        this.pieces.push(new RegularPiece(this,'black',[x,0,z]));
-        this.pieces.push(new RegularPiece(this,'white',[x+28,0,z]));
+        this.pieces.push(new RegularPiece(this,'blackPlayer',[x,0,z]));
+        this.pieces.push(new RegularPiece(this,'whitePlayer',[x+28,0,z]));
         if(x > -15){
             x = -15;
             z += 2;
@@ -194,8 +194,8 @@ XMLscene.prototype.createPieces = function() {
     }
 
     for(var j = 0; j < 2; j++){
-        this.pieces.push(new HengePiece(this,'black',[x,0,z]));
-        this.pieces.push(new HengePiece(this,'white',[x+28,0,z]));
+        this.pieces.push(new HengePiece(this,'blackPlayer',[x,0,z]));
+        this.pieces.push(new HengePiece(this,'whitePlayer',[x+28,0,z]));
         if(x > -15){
             x = -15;
             z += 2;
@@ -203,7 +203,7 @@ XMLscene.prototype.createPieces = function() {
         else
             x += 2;
     }
-    this.pieces.push(new HengePiece(this,'white',[x+30,0,z]));
+    this.pieces.push(new HengePiece(this,'whitePlayer',[x+30,0,z]));
 };
 
 /**
@@ -443,10 +443,11 @@ XMLscene.prototype.displayPieces = function() {
     for(; w < this.pieces.length; w++){
         if(this.Game.turn != 0){
             if((this.currentPiece == null) && (this.pieces[w].isPlayed == false))
-                this.registerForPick(1+w,this.pieces[w]);
+                if(this.Game.currPlayer == this.pieces[w].player)
+                    this.registerForPick(1+w,this.pieces[w]);
 
             else if((this.currentPiece != null) && (this.pieces[w].selected))
-                this.registerForPick(1+w,this.pieces[w]);            
+                    this.registerForPick(1+w,this.pieces[w]);
         }
         this.pieces[w].display();
         this.clearPickRegistration();
@@ -479,6 +480,31 @@ XMLscene.prototype.displayPieces = function() {
     }
 };
 
+
+
+XMLscene.prototype.getCameraAngle = function() {
+    var camPos = [this.camera.position[0],this.camera.position[1],this.camera.position[2]];
+    console.log(camPos);
+    console.log(this.finalPos);
+
+    vec3.normalize(camPos, camPos);
+    vec3.normalize(this.finalPos,this.finalPos);
+    
+    var angle = null;
+
+    let cosine = vec3.dot(camPos, this.finalPos);
+    if(cosine > 1.0) {
+        angle = 0;
+    }
+    else if(cosine < -1.0) {
+        angle = Math.PI;
+    } else {
+        angle = Math.acos(cosine);
+    }
+
+    return angle;
+};
+
 /**
  * Updates the camera current position, in case the camera is moving
  * @param deltaTime
@@ -489,9 +515,9 @@ XMLscene.prototype.displayPieces = function() {
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
             if((deltaTime <= 10000) && (!this.pause)){
                 if(this.camera.position[0] < this.finalPos[0])
-                    this.camera.orbit("y", deltaTime/1000*50*DEGREE_TO_RAD);
+                    this.camera.orbit("y", deltaTime/20*this.getCameraAngle()*DEGREE_TO_RAD);
                 else
-                    this.camera.orbit("y", -deltaTime/1000*50*DEGREE_TO_RAD);
+                    this.camera.orbit("y", -deltaTime/20*this.getCameraAngle()*DEGREE_TO_RAD);
             }
         }
         else
@@ -599,13 +625,8 @@ XMLscene.prototype.startGame = function(){
     console.log(this.Game.blackType);
     if((this.WhitePlayer != null) && (this.BlackPlayer != null)){
         this.clearBoard();
-        //this.Game = new Game(this);
         this.Game.turn = 1;
         this.lastStatus = "menu";
-        //this.WhitePlayer = null;
-        //this.BlackPlayer = null;
-        //this.isConfiguredPlayerWhite = false;
-        //this.isConfiguredPlayerBlack = false;
         this.interface.addGameGroup();
     }
 };

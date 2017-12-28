@@ -13,10 +13,10 @@ function RegularPiece(scene, player, position) {
 	this.cover = new MySphere(this.scene, 1, 20, 20);
 
 	switch(player){
-		case 'black':
+		case 'blackPlayer':
 			this.material = this.scene.blackMaterial;
 			break;
-		case 'white':
+		case 'whitePlayer':
 			this.material = this.scene.whiteMaterial;
 			break;
 		default:
@@ -36,14 +36,12 @@ RegularPiece.prototype.display = function (position) {
     this.scene.pushMatrix();
     	this.material.apply();
     	this.scene.translate(this.position[0],this.position[1],this.position[2]);
-        //this.scene.translate(position[0],0,position[1]);
     	this.scene.rotate(-90*DEGREE_TO_RAD, 1,0,0);
     	this.body.display();
     this.scene.popMatrix();
 
     this.scene.pushMatrix();
         this.scene.translate(this.position[0],this.position[1]+0.4,this.position[2]);
-        //this.scene.translate(position[0],0.4,position[1]);
     	this.scene.scale(0.9,0.2,0.9);
     	this.cover.display();
     this.scene.popMatrix();
@@ -59,13 +57,6 @@ RegularPiece.prototype.update = function(currTime){
         this.startTime = currTime;
         return;
     }
-
-   /* console.log(this.position);
-    let deltaTime = currTime - this.startTime;
-    if(this.currAnimation != null){
-        this.animationMatrix = this.currAnimation.getMatrix(deltaTime);
-    }
-*/
     this.startTime = currTime;
 };
 
