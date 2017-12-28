@@ -6,8 +6,7 @@
 function MyInterface() {
     //call CGFinterface constructor 
     CGFinterface.call(this);
-}
-;
+};
 
 MyInterface.prototype = Object.create(CGFinterface.prototype);
 MyInterface.prototype.constructor = MyInterface;
@@ -27,6 +26,7 @@ MyInterface.prototype.init = function(application) {
     this.gui = new dat.GUI();
 
     this.noViews = true;
+    this.noConfigs = true;
 
     return true;
 };
@@ -145,7 +145,15 @@ MyInterface.prototype.update = function(){
 
 	if(this.scene.Game.turn == 0){
 		this.scene.CameraView = 'ai';
+		if(this.noConfigs){
+			this.addConfigGroup();
+			this.noConfigs = false;
+		}
 		return;
+	}
+	else{
+		this.removeFolder("Configurations");
+		this.noConfigs = true;
 	}
 
 	if((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='human') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='human')){ 

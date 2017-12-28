@@ -269,7 +269,7 @@ XMLscene.prototype.onGraphLoaded = function() {
     //this.interface.addShadersGroup();
 
     // Adds game group
-    this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
+    //this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
     //this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
     
     this.createPieces();
@@ -412,12 +412,13 @@ XMLscene.prototype.displayPickableCircles = function() {
 XMLscene.prototype.displayPieces = function() {
     let w = 0;
     for(; w < this.pieces.length; w++){
-        if((this.currentPiece == null) && (this.pieces[w].isPlayed == false))
-            this.registerForPick(1+w,this.pieces[w]);
+        if(this.Game.turn != 0){
+            if((this.currentPiece == null) && (this.pieces[w].isPlayed == false))
+                this.registerForPick(1+w,this.pieces[w]);
 
-        else if((this.currentPiece != null) && (this.pieces[w].selected))
-            this.registerForPick(1+w,this.pieces[w]);            
-        
+            else if((this.currentPiece != null) && (this.pieces[w].selected))
+                this.registerForPick(1+w,this.pieces[w]);            
+        }
         this.pieces[w].display();
         this.clearPickRegistration();
     }
@@ -588,19 +589,19 @@ XMLscene.prototype.showGame = function(){
 };
 
 XMLscene.prototype.startGame = function(){
-    console.log("startGame");
-
-    //console.log("New Game");
-    this.clearBoard();
-    this.Game = new Game(this);
-    this.Game.turn = 1;
-    this.lastStatus = "menu";
-    this.WhitePlayer = null;
-    this.BlackPlayer = null;
-    this.isConfiguredPlayerWhite = false;
-    this.isConfiguredPlayerBlack = false;
-    this.interface.addGameGroup();
-    //TODO reset pick's
+    console.log(this.Game.whiteType);
+    console.log(this.Game.blackType);
+    if((this.WhitePlayer != null) && (this.BlackPlayer != null)){
+        this.clearBoard();
+        //this.Game = new Game(this);
+        this.Game.turn = 1;
+        this.lastStatus = "menu";
+        //this.WhitePlayer = null;
+        //this.BlackPlayer = null;
+        //this.isConfiguredPlayerWhite = false;
+        //this.isConfiguredPlayerBlack = false;
+        this.interface.addGameGroup();
+    }
 };
 
 XMLscene.prototype.undoPlay = function(){
