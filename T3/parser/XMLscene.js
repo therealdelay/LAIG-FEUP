@@ -8,6 +8,8 @@ var DEGREE_TO_RAD = Math.PI / 180;
     CGFscene.call(this);
 
     this.interface = interface;
+    this.menuValue = true;
+
     this.currentNode = null;
     this.nodesToShade = [];
     this.scaleFactor=50.0;
@@ -359,19 +361,15 @@ XMLscene.prototype.createPieces = function() {
     console.log(this.Game.currState);
 
     if(this.mode == "reviewGame"){ 
-
-        console.log("pimm" + this.Game.currState);
         if(this.Game.currState != this.lastStatus){
             switch(this.Game.currState){
                 case "applyPlay": 
-                console.log("applyPlay..."); 
                 this.Game.playMovesOfArray();
                 break;
                 case "animationPlay":
-                console.log("Waiting animation..."); 
                 break;
                 case "endGame":
-
+                    this.menuValue = true;
                 break;
                 default: 
                 console.warn("ERROR!!!");
@@ -656,7 +654,9 @@ XMLscene.prototype.startGame = function(){
         this.Game.isConf = true;
         this.lastStatus = "menu";
         this.startThisGame = true;
-        this.interface.addGameGroup();
+        this.menuValue = false;
+        //this.interface.switchVisibility(true);
+        this.createPieces();
     }
 };
 
@@ -690,4 +690,9 @@ XMLscene.prototype.pauseGame = function(){
         this.pause = false;
     else 
         this.pause = true;
+};
+
+XMLscene.prototype.newGame = function(){
+    this.menuValue = true;
+    this.resetGame();
 };
