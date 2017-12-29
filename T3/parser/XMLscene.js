@@ -69,8 +69,10 @@ XMLscene.prototype.constructor = XMLscene;
 XMLscene.prototype.switchScene = function() {
     if (this.scene == "gorogo.xml") 
       this.scene = "scene1.xml";
-    else
-      this.scene = "gorogo.xml";
+    else if(this.scene == "scene1.xml")
+      this.scene = "scene2.xml";
+    else 
+    this.scene = "gorogo.xml"
     new MySceneGraph(this.scene, this);
 };
 

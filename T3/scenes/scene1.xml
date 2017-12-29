@@ -313,22 +313,6 @@
     <controlpoint xx="13.5" yy="0.3" zz="18" />
   </ANIMATION>
 
-
-  <ANIMATION id="linear3" speed="2" type="linear">
-    <controlpoint xx="12" yy="0.3" zz="6" />
-    <controlpoint xx="12" yy="12" zz="6" />
-  </ANIMATION>
-
-  <ANIMATION id="linear4" speed="2" type="linear">
-    <controlpoint xx="12" yy="12" zz="6" />
-    <controlpoint xx="12" yy="0.3" zz="6" />
-  </ANIMATION>
-
-  <ANIMATION id="circular1" speed="2" type="circular" centerx="12" centery="12" centerz="14" radius="8" startang="90" rotang="450"/>
-
-  <ANIMATION id="circular2" speed="3" type="circular" centerx="0" centery="0" centerz="0" radius="0.1" startang="0" rotang="65000"/>
-
-
   <ANIMATION id="bezier1" speed="1" type="bezier">
     <controlpoint xx="6.25" yy="0.3" zz="7" />
     <controlpoint xx="-8" yy="0.3" zz="0" />
@@ -348,13 +332,6 @@
     <SPANREF id="bezier1"/>
     <SPANREF id="linear2"/>
     <SPANREF id="bezier2"/>
-  </ANIMATION>
-
-  <ANIMATION id="combo2" type="combo">
-    <SPANREF id="linear3"/>
-    <SPANREF id="circular1"/>
-    <SPANREF id="linear4"/>
-    
   </ANIMATION>
 </ANIMATIONS>
 
@@ -415,7 +392,6 @@
   <NODEREF id="pillows" />
   <NODEREF id="curtains" />
   <NODEREF id="roomba" />
-  <NODEREF id="drone" />
 </DESCENDANTS>
 </NODE>
 
@@ -1166,171 +1142,7 @@
 </NODE>
 
 
-<!-- The Drone -->
-<NODE id="drone" selectable="true">
- <MATERIAL id="blackMaterial" />    
- <TEXTURE id="null" />   
 
- <ANIMATIONREFS>
-  <ANIMATIONREF id="combo2" />
-</ANIMATIONREFS>
-
-<DESCENDANTS>
-
-  <NODEREF id="droneLeg1" />          
-  <NODEREF id="droneLeg2" />   
-  <NODEREF id="droneBody" />                  
-</DESCENDANTS>
-</NODE>
-
-
-<NODE id="droneBody" selectable="true">
- <MATERIAL id="null" />    
- <TEXTURE id="null" />   
-
- <SCALE sx="0.5" sy="0.3" sz="0.5" />
-
- <DESCENDANTS>
-  <LEAF id="sphere1" type="sphere" args="1 20 20" />           
-</DESCENDANTS>
-</NODE>
-
-
-<NODE id="droneLeg1">
- <MATERIAL id="null" />    
- <TEXTURE id="null" />   
-
- <DESCENDANTS>
-  <NODEREF id="droneLeg"/>                                                                   
-</DESCENDANTS>
-</NODE>
-
-<NODE id="droneLeg2">
- <MATERIAL id="null" />    
- <TEXTURE id="null" />   
-
- <ROTATION axis="y" angle="90" /> 
-
- <DESCENDANTS>
-  <NODEREF id="droneLeg"/>                                                               
-</DESCENDANTS>
-</NODE>
-
-<NODE id="droneLeg">
- <MATERIAL id="null" />    
- <TEXTURE id="null" />  
-
- <DESCENDANTS>
-  <NODEREF id="legD" />
-  <NODEREF id="helices" />     
-
-</DESCENDANTS>
-</NODE>
-
-<NODE id="legD">
- <MATERIAL id="null" />    
- <TEXTURE id="null" />  
-
- <TRANSLATION x="0" y="0" z="-1.5" /> 
- <SCALE sx="0.15" sy="0.1" sz="3" /> 
-
- <DESCENDANTS>
-  <NODEREF id="cilindro" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="helices">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <DESCENDANTS>
-  <NODEREF id="helices1" />
-  <NODEREF id="helices2" />
-</DESCENDANTS>
-</NODE>
-
-
-<NODE id="helices1">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <TRANSLATION x="0" y="0" z="1.2" /> 
-
- <DESCENDANTS>
-  <NODEREF id="helicesAnim" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="helices2">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <TRANSLATION x="0" y="0" z="-1.2" /> 
-
- <DESCENDANTS>
-  <NODEREF id="helicesAnim" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="helicesAnim">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <ANIMATIONREFS>
-  <ANIMATIONREF id="circular2" />
-</ANIMATIONREFS>
-
-<DESCENDANTS>
-  <NODEREF id="helice1" />
-  <NODEREF id="helice2" />
-  <NODEREF id="screw" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="helice1">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <DESCENDANTS>
-  <NODEREF id="helice" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="helice2">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <TRANSLATION x="0" y="0" z="-0.6" />  
-
- <DESCENDANTS>
-  <NODEREF id="helice" />
-</DESCENDANTS>
-</NODE>
-
-
-<NODE id="helice">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <TRANSLATION x="0" y="0.1" z="0" />  
- <SCALE sx="0.08" sy="0.025" sz="0.6" /> 
-
- <DESCENDANTS>
-  <NODEREF id="cilindro" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="screw">
- <MATERIAL id="null" />    
- <TEXTURE id="null" /> 
-
- <TRANSLATION x="0" y="0.1" z="0" /> 
- <SCALE sx="0.1" sy="0.08" sz="0.1" /> 
-
- <DESCENDANTS>
-  <LEAF id="sphere1" type="sphere" args="1 20 20" />    
-</DESCENDANTS>
-</NODE>
 
 
 
