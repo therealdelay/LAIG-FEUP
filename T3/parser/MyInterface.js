@@ -28,6 +28,8 @@ MyInterface.prototype.init = function(application) {
     this.noViews = true;
     this.noConfigs = true;
 
+    this.gui.add(this.scene,'switchScene').name("Switch Scene");
+
     return true;
 };
 
@@ -106,7 +108,6 @@ MyInterface.prototype.addGameGroup = function(){
 	group.add(this.scene, 'undoPlay').name("Undo Play");
 	group.add(this.scene, 'videoGame').name("Review Game");
 	group.add(this.scene, 'CameraAutomatic').name("Automatic Camera");
-
 }
 
 MyInterface.prototype.processKeyDown = function(event) {

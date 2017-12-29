@@ -19,6 +19,8 @@ var DEGREE_TO_RAD = Math.PI / 180;
 
     this.d = new Date();
 
+    this.scene = "gorogo.xml";
+
     this.initialTime = this.d.getTime();
 
     this.lightValues = {};
@@ -63,6 +65,14 @@ var DEGREE_TO_RAD = Math.PI / 180;
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
+
+XMLscene.prototype.switchScene = function() {
+    if (this.scene == "gorogo.xml") 
+      this.scene = "scene1.xml";
+    else
+      this.scene = "gorogo.xml";
+    new MySceneGraph(this.scene, this);
+};
 
 XMLscene.prototype.logPicking = function (){
 	if (this.pickMode == false) {
