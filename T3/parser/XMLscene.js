@@ -631,10 +631,7 @@ XMLscene.prototype.winWhitePiece = function (piece){
 
 XMLscene.prototype.clearBoard = function(){
 
-    for(var i=0; i < this.Game.board.length; i++){
-        for(var j=0; j < this.Game.board[i].length; j++)
-            this.Game.board[i][j] = 0;
-    }
+    this.Game.reset();
 
     for(var i=0; i < this.pieces.length; i++){
         this.currentPiece = this.pieces[i];
@@ -655,7 +652,7 @@ XMLscene.prototype.startGame = function(){
         this.lastStatus = "menu";
         this.startThisGame = true;
         this.menuValue = false;
-        //this.interface.switchVisibility(true);
+        this.Game.currState = "getPlay";
         this.createPieces();
     }
 };
@@ -668,6 +665,10 @@ XMLscene.prototype.resetGame = function () {
     this.isConfiguredPlayerBlack = false;
     this.isConfiguredPlayerWhite = false;
     this.Game.turn = 0;
+    this.blackSpotX = 10;
+    this.blackSpotZ = 12;
+    this.whiteSpotX = -2;
+    this.whiteSpotZ = 12;
 }
 
 XMLscene.prototype.undoPlay = function(){

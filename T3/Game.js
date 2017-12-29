@@ -373,3 +373,22 @@ Game.prototype.findPiece = function(finalPos, type) {
 	return false;
 }
 
+Game.prototype.reset = function() {
+	for(var i=0; i < this.board.length; i++){
+		for(var j=0; j < this.board[i].length; j++)
+			this.board[i][j] = 0;
+	}
+
+	this.blackPieces[0] = 10;
+	this.blackPieces[1] = 2;
+	this.blackPieces[2] = 0;
+
+	this.whitePieces[0] = 10;
+	this.whitePieces[1] = 3;
+	this.whitePieces[2] = 0;
+	
+	this.currPlayer = "whitePlayer";
+	this.turn = 0;
+}
+
+
