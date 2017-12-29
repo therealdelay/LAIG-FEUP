@@ -367,9 +367,6 @@
     <NODEREF id="blackBoard" />
     <NODEREF id="blackWonBoard" />
     <NODEREF id="scoreTable" />
-    <NODEREF id="blackPiece" />
-    <NODEREF id="whitePiece" />
-    <NODEREF id="hengePiece" />
   </DESCENDANTS>
 </NODE>
 
@@ -393,113 +390,6 @@
   <NODEREF id="curtains" />
   <NODEREF id="roomba" />
 </DESCENDANTS>
-</NODE>
-
-<NODE id="pecaPreta" >
- <MATERIAL id="null" />
- <TEXTURE id="null" />
-
- <DESCENDANTS>
-  <LEAF type="peca" args="black" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="pecaBranca" >
- <MATERIAL id="whiteMaterial" />
- <TEXTURE id="null" />
-
- <DESCENDANTS>
-  <LEAF type="peca" args="white" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="pecaHengePreta" >
- <MATERIAL id="whiteMaterial" />
- <TEXTURE id="null" />
-
- <DESCENDANTS>
-  <LEAF type="henge" args="black" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="pecaHengeBranca" >
- <MATERIAL id="whiteMaterial" />
- <TEXTURE id="null" />
-
- <DESCENDANTS>
-  <LEAF type="henge" args="white" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="blackPiece">
- <MATERIAL id="blackMaterial" />    
- <TEXTURE id="null" />  
-
- <TRANSLATION x="5" y="0.3" z="5"/>
- <DESCENDANTS>
-  <NODEREF id="pieceBody" />   
-  <NODEREF id="pieceCover" />          
-</DESCENDANTS>
-</NODE>
-
-<NODE id="whitePiece">
- <MATERIAL id="whiteMaterial" />    
- <TEXTURE id="null" />  
-
- <TRANSLATION x="2.5" y="0.3" z="2.5"/>
- <DESCENDANTS>
-  <NODEREF id="pieceBody" />   
-  <NODEREF id="pieceCover" />          
-</DESCENDANTS>
-</NODE>
-
-<NODE id="hengePiece">
- <MATERIAL id="whiteMaterial" />    
- <TEXTURE id="null" />  
-
- <TRANSLATION x="-2.5" y="0.3" z="5"/>
- <DESCENDANTS>
-  <NODEREF id="pieceBody" />   
-  <NODEREF id="blackCover" />
-  <NODEREF id="pieceCover" />
-</DESCENDANTS>
-</NODE>
-
-<NODE id="pieceBody">
- <MATERIAL id="null" />    
- <TEXTURE id="null" />  
-
- <SCALE sx="0.9" sy="0.4" sz="0.9" />
- <ROTATION axis="x" angle="90" /> 
-
- <DESCENDANTS>
-  <NODEREF id="cilindro" />          
-</DESCENDANTS>
-</NODE>
-
-<NODE id="pieceCover">
- <MATERIAL id="null" />    
- <TEXTURE id="null" />  
-
- <SCALE sx="0.9" sy="0.2" sz="0.9" />
- <ROTATION axis="z" angle="-90" /> 
-
- <DESCENDANTS>
-   <LEAF id="sphere1" type="sphere" args="1 20 20" />     
- </DESCENDANTS>
-</NODE>
-
-<NODE id="blackCover">
- <MATERIAL id="blackMaterial" />    
- <TEXTURE id="null" />  
-
- 
- <SCALE sx="0.6" sy="0.25" sz="0.6" />
- <ROTATION axis="z" angle="-90" /> 
-
- <DESCENDANTS>
-   <LEAF id="sphere1" type="sphere" args="1 20 20" />     
- </DESCENDANTS>
 </NODE>
 
 <NODE id="whiteBoard" >      

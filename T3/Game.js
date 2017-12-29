@@ -356,6 +356,7 @@ Game.prototype.playMovesOfArray = function() {
 	else{
 		this.scene.mode = "game";
 		this.index = 0;
+		this.currState = "menu";
 	}
 } 
 

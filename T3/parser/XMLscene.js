@@ -259,6 +259,7 @@ XMLscene.prototype.createPieces = function() {
             i++;
         }
     }
+
 };
 
 /* Handler called when the graph is finally loaded. 
@@ -285,9 +286,11 @@ XMLscene.prototype.createPieces = function() {
 
     // Adds game group
     //this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
-    //this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
     
-    this.createPieces();
+
+     //so precisa de aparecer depois de iniciar o jogo
+    
+    //this.createPieces();
 };
 
 
