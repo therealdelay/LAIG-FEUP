@@ -112,7 +112,7 @@ var palette = {
   color4: { h: 350, s: 0.9, v: 0.3 } // Hue, saturation, value
 };
 this.gui.addColor(palette, 'Background Color');*/
-	this.timeout = 30;
+	this.timeout = 5;
 	this.timeCounter = 0;
     this.menu.open();
     this.menu.add(this, 'timeout');
@@ -131,6 +131,12 @@ MyInterface.prototype.triggerTimeout = function(){
 	this.stopTime = true;
 	this.scene.Game.winner = (this.scene.Game.currPlayer == 'blackPlayer') ? 'whitePlayer' : 'blackPlayer';
 	this.scene.Game.endGameNow();
+}
+
+MyInterface.prototype.addWinner = function (){
+	var folder = this.gui.addFolder("WINNER");
+	folder.open();
+	folder.add(this.scene.Game, 'winner').name("");
 }
 
 MyInterface.prototype.switchVisibility = function(value){
@@ -193,6 +199,7 @@ MyInterface.prototype.update = function(deltaTime){
 		this.scene.CameraView = 'ai';
 		if(this.noConfigs){
 			this.switchVisibility(false);
+			this.removeFolder("WINNER");
 			//this.addConfigGroup();
 			this.noConfigs = false;
 		}

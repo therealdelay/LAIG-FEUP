@@ -493,7 +493,7 @@ Game.prototype.update = function (delta) {
 Game.prototype.endGameNow = function(){
     var winner = this.winner;
     this.scene.interface.stopTime = true;
-    this.scene.interface.menu.add(this, 'winner').name("WINNER");
+    this.scene.interface.addWinner();
     this.scene.resetGame();
     console.log(this);
 
