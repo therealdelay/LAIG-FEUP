@@ -126,7 +126,6 @@ XMLscene.prototype.logPicking = function (){
 				if (obj){
 					var customId = this.pickResults[i][1];	
 					////console.log("Picked object: " + obj + ", with pick id " + customId);
-                    console.log(this.pickResults[i][0]);
                     if(this.pickResults[i][0] instanceof RegularPiece){
                         if(this.pickResults[i][0].player == 'whitePlayer')
                             this.currentPiece = this.Game.whitePiecesArray[customId-1];
@@ -416,9 +415,6 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
 
     this.Game.getReply();
 
-    console.log(this.WhitePlayer);
-    console.log(this.BlackPlayer);
-
     if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (this.Game.isConf) && (this.startThisGame)){
         this.Game.currState = "getPlay";
         this.startThisGame = false;
@@ -515,12 +511,12 @@ XMLscene.prototype.getCameraAngle = function() {
       this.graph.nodes[index].update(currTime);
   }
 
-  this.interface.update();
 
     //to seconds
     this.time = currTime/1000; 
     var delta = currTime - this.initialTime;
     
+    this.interface.update(delta);
     this.animateCamera(delta);
 
     this.Game.update(delta);
@@ -594,6 +590,7 @@ XMLscene.prototype.startGame = function(){
         this.menuValue = false;
         this.Game.currState = "getPlay";
         this.Game.createPieces();
+        this.interface.stopTime = false;
     }
 };
 

@@ -33,6 +33,7 @@ MyInterface.prototype.init = function(application) {
   
     this.noViews = true;
     this.noConfigs = true;
+    this.stopTime = true;
 
 
     return true;
@@ -112,6 +113,7 @@ var palette = {
 };
 this.gui.addColor(palette, 'Background Color');*/
 	this.timeout = 30;
+	this.timeCounter = 0;
     this.menu.open();
     this.menu.add(this, 'timeout');
     this.menu.add(this.scene, 'newGame').name("New Game");
@@ -125,9 +127,11 @@ MyInterface.prototype.resetTimeout = function(){
 	this.timeout = 30;
 };
 
-/*MyInterface.prototype.triggerTimeout = function(){
-	this.scene.Game.
-}*/
+MyInterface.prototype.triggerTimeout = function(){
+	this.stopTime = true;
+	this.scene.Game.winner = (this.scene.Game.currPlayer == 'blackPlayer') ? 'whitePlayer' : 'blackPlayer';
+	this.scene.Game.endGameNow();
+}
 
 MyInterface.prototype.switchVisibility = function(value){
 	if(!value){
@@ -165,11 +169,16 @@ MyInterface.prototype.processKeyDown = function(event) {
 };
 
 MyInterface.prototype.update = function(deltaTime){
-
-	if((deltaTime % 60) == 0)
-		this.timeout--;
-	if(this.timeout == 0)
-		this.triggerTimeout();
+	if(!this.stopTime){
+		if(!isNaN(deltaTime))
+			this.timeCounter = this.timeCounter + deltaTime/15;
+		if(this.timeCounter > 60){
+			this.timeCounter = 0;
+			this.timeout--;
+		}
+		if(this.timeout == 0)
+			this.triggerTimeout();
+	}
 
 	if(this.scene.CameraAutomatic){
 		this.removeFolder("Camera");
