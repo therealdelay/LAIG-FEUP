@@ -133,3 +133,10 @@ LinearAnimation.prototype.getVZ = function(p1, p2, dist){
 	var senA = (p2[2]-p1[2]) / dist;
 	return this.speed * senA;
 }
+
+/**
+ * Returns true if the animation is over, false if not
+ */
+LinearAnimation.prototype.getStatus = function() {
+	return this.finish;
+};

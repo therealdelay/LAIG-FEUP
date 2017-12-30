@@ -36,7 +36,7 @@ function MySceneGraph(filename, scene) {
 
   this.textures = [];
   this.animations = [];
-  this.whitePieces = [];
+
   // File reading
   this.reader = new CGFXMLreader();
 
@@ -1313,14 +1313,9 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       // Checks if ID is valid.
       if (this.nodes[nodeID] != null )
         return "node ID must be unique (conflict: ID = " + nodeID + ")";
-  
 
-      if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-        this.scene.piecesGraph.pieceNodes[nodeID] = new MyGraphNode(this.scene.piecesGraph, nodeID);
-      }
-      else{
-        this.nodes[nodeID] = new MyGraphNode(this,nodeID);
-      }
+      // Creates node.
+      this.nodes[nodeID] = new MyGraphNode(this,nodeID);
 
       //SHADERS
       if(this.reader.hasAttribute(children[i], 'selectable')){
@@ -1352,13 +1347,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       if (materialID != "null" && this.materials[materialID] == null )
         return "ID does not correspond to a valid material (node ID = " + nodeID + ")";
 
-
-      if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-        this.scene.piecesGraph.pieceNodes[nodeID].materialID = materialID;
-      }
-      else{
-        this.nodes[nodeID].materialID = materialID;
-      }
+      this.nodes[nodeID].materialID = materialID;
 
       // Retrieves texture ID.
       var textureIndex = specsNames.indexOf("TEXTURE");
@@ -1370,12 +1359,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       if (textureID != "null" && textureID != "clear" && this.textures[textureID] == null )
         return "ID does not correspond to a valid texture (node ID = " + nodeID + ")";
 
-      if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-        this.scene.piecesGraph.pieceNodes[nodeID].textureID = textureID;
-      }
-      else{
-        this.nodes[nodeID].textureID = textureID;
-      }
+      this.nodes[nodeID].textureID = textureID;
 
       // Retrieves possible transformations.
       for (var j = 0; j < nodeSpecs.length; j++) {
@@ -1407,12 +1391,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
           else if (isNaN(z))
             return "non-numeric value for z-coordinate of translation (node ID = " + nodeID + ")";
 
-          if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-            mat4.translate(this.scene.piecesGraph.pieceNodes[nodeID].transformMatrix, this.scene.piecesGraph.pieceNodes[nodeID].transformMatrix, [x, y, z]);
-          }
-          else{
-            mat4.translate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix, [x, y, z]);
-          }
+          mat4.translate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix, [x, y, z]);
           break;
           case "ROTATION":
           // Retrieves rotation parameters.
@@ -1429,12 +1408,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
           else if (isNaN(angle))
             return "non-numeric value for rotation angle (node ID = " + nodeID + ")";
 
-          if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-            mat4.rotate(this.scene.piecesGraph.pieceNodes[nodeID].transformMatrix, this.scene.piecesGraph.pieceNodes[nodeID].transformMatrix, angle * DEGREE_TO_RAD, this.axisCoords[axis]);
-          }
-          else{
-            mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix, angle * DEGREE_TO_RAD, this.axisCoords[axis]);
-          }
+          mat4.rotate(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix, angle * DEGREE_TO_RAD, this.axisCoords[axis]);
           break;
           case "SCALE":
           // Retrieves scale parameters.
@@ -1462,12 +1436,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
           else if (isNaN(sz))
             return "non-numeric value for z component of scaling (node ID = " + nodeID + ")";
 
-          if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-            mat4.scale(this.scene.piecesGraph.pieceNodes[nodeID].transformMatrix, this.scene.piecesGraph.pieceNodes[nodeID].transformMatrix, [sx, sy, sz]);
-          }
-          else{
-            mat4.scale(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix, [sx, sy, sz]);
-          }
+          mat4.scale(this.nodes[nodeID].transformMatrix, this.nodes[nodeID].transformMatrix, [sx, sy, sz]);
           break;
           default:
           break;
@@ -1482,7 +1451,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
         var animationId = this.reader.getString(anim[0], 'id');
 
-        //this.log("   ANIMATIONREFS parse: " + animationId);
+        this.log("   ANIMATIONREFS parse: " + animationId);
 
         if (animationId == null )
           this.onXMLMinorError("unable to parse animation id");
@@ -1510,22 +1479,15 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
           var curId = this.reader.getString(descendants[j], 'id');
 
-          //this.log("   Descendant: "+curId);
+          this.log("   Descendant: "+curId);
 
           if (curId == null )
             this.onXMLMinorError("unable to parse descendant id");
           else if (curId == nodeID)
             return "a node may not be a child of its own";
           else {
-            if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-              this.scene.piecesGraph.pieceNodes[nodeID].addChild(curId);
-            }
-            else if(curId != 'blackPiece' && curId != 'whitePiece' && curId != 'hengePiece' & curId != 'pieceBody' && curId != 'pieceCover' && curId != 'blackCover'){
-              this.nodes[nodeID].addChild(curId);
-
-            }
-              sizeChildren++;
-
+            this.nodes[nodeID].addChild(curId);
+            sizeChildren++;
           }
         }
         else
@@ -1539,13 +1501,8 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
               this.warn("Error in leaf");
 
           //parse leaf
-          if(nodeID == 'blackPiece' || nodeID == 'whitePiece' || nodeID == 'hengePiece' || nodeID == 'pieceBody' || nodeID == 'pieceCover' || nodeID == 'blackCover'){
-            this.scene.piecesGraph.pieceNodes[nodeID].addLeaf(new MyGraphLeaf(this, descendants[j]));
-          }
-          else{
-            this.nodes[nodeID].addLeaf(new MyGraphLeaf(this,descendants[j]));
-          }
-            sizeChildren++;
+          this.nodes[nodeID].addLeaf(new MyGraphLeaf(this,descendants[j]));
+          sizeChildren++;
         }
         else
           this.onXMLMinorError("unknown tag <" + descendants[j].nodeName + ">");
@@ -1553,24 +1510,14 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
       }
       if (sizeChildren == 0)
         return "at least one descendant must be defined for each intermediate node";
-
-      /*if(nodeID == 'blackPiece')
-        this.generateBlackPieces(this.nodes[nodeID]);*/
-
     }
     else
       this.onXMLMinorError("unknown tag name <" + nodeName);
   }
-  //console.log("Parsed nodes");
+
+  console.log("Parsed nodes");
   return null ;
 };
-
-/*MySceneGraph.prototype.generateBlackPieces(node){
-  for(var i = 0; i < 10; i++){
-    //array de peças pretas para guardar
-    //criar classes de peças e criar funções para as outras 2 peças
-  }
-};*/
 
 /*
 * Callback to be executed on any read error
@@ -1631,7 +1578,7 @@ MySceneGraph.prototype.displayScene = function() {
 
   this.nodesRecursive(this.nodes.root);
 
-  //this.log("Graph should be rendered here...");
+  this.log("Graph should be rendered here...");
 };
 
 /**
@@ -1683,13 +1630,11 @@ if(node.currAnimation != null)
 
 this.scene.multMatrix(node.transformMatrix);
 
-for (i = 0; i < node.leaves.length; i++){
-    node.leaves[i].display();
-}
+for (i = 0; i < node.leaves.length; i++)
+  node.leaves[i].display();
 
-for (var i = 0; i < node.children.length; i++){
+for (var i = 0; i < node.children.length; i++) 
   this.nodesRecursive(this.nodes[node.children[i]]);
-}
 
 this.scene.popMatrix();
 
@@ -1734,4 +1679,4 @@ MySceneGraph.prototype.getAnimation = function(animationID){
         }
     }
     return null;
-};
+}

@@ -55,7 +55,6 @@ CircularAnimation.prototype.update = function(deltaTime) {
 		mat4.translate(this.translationMatrix, this.translationMatrix,this.centre);		//T(cx,cy)
 		mat4.rotate(this.translationMatrix, this.translationMatrix,this.currAngle, [0, 1, 0]);//R(DELTAALFA)
 		mat4.translate(this.translationMatrix, this.translationMatrix,[this.radius, 0, 0]);		//T(R,0)
-		//mat4.rotate(this.translationMatrix, this.translationMatrix,90*DEGREE_TO_RAD, [1, 0, 0]); //R(90)
 	}
 	else this.finish = true;
 };
@@ -68,6 +67,9 @@ CircularAnimation.prototype.getMatrix = function(currTime){
 	return this.translationMatrix;
 };
 
+/**
+ * Returns true if the animation is over, false if not
+ */
 CircularAnimation.prototype.getStatus = function() {
 	return this.finish;
 };

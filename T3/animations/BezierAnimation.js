@@ -71,6 +71,9 @@ BezierAnimation.prototype.qfunction = function(time){
 	return vec3.fromValues(qx, qy, qz);
 }
 
+/**
+ * Returns true if the animation is over, false if not
+ */
 BezierAnimation.prototype.getStatus = function() {
 	return this.finish;
 };

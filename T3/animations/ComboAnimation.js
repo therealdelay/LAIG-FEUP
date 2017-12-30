@@ -41,6 +41,9 @@ ComboAnimation.prototype.getMatrix = function(deltaTime){
 		return this.transformationMatrix;		
 };
 
+/**
+ * Returns true if the animation is over, false if not
+ */
 ComboAnimation.prototype.getStatus = function() {
 	return this.finish;
 };

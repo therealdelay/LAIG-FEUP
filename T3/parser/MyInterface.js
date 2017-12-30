@@ -58,6 +58,10 @@ MyInterface.prototype.addLightsGroup = function(lights) {
     }
 };
 
+/**
+ * Removes a folder and its' content from the GUI
+ * @param name
+ */
 MyInterface.prototype.removeFolder = function(name){
 	var folder = this.gui.__folders[name];
 	if (!folder) {
@@ -68,10 +72,11 @@ MyInterface.prototype.removeFolder = function(name){
 	delete this.gui.__folders[name];
 }
 
+/**
+ * Adds a group for the camera views, so that the user can change it
+ */
 MyInterface.prototype.addCameraViews = function(){
-	
 	var group = this.gui.addFolder("Camera");
-
 	group.open();
 	group.add(this.scene, 'CameraView', this.scene.cameraViews);
 	this.noViews = false;
@@ -81,37 +86,26 @@ MyInterface.prototype.addCameraViews = function(){
  * Adds a group for shaders and add nodes selectable
  */
 MyInterface.prototype.addShadersGroup = function(){
-
 	var group = this.gui.addFolder("Shaders");
-
     group.open();
-
 	this.gui.add(this.scene, 'currentNode', this.scene.nodesToShade);
-
 	this.gui.add(this.scene, 'selectable');	
 };
 
 /**
- * Adds a group for shaders and add nodes selectable
+ * Adds the configuration items to the GUI
  */
 MyInterface.prototype.addConfigGroup = function(){
-
     this.config.open();
 	this.config.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions).name("White Player");
 	this.config.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions).name("Black Player");
 	this.config.add(this.scene, 'startGame').name("Start Game");
 };
 
+/**
+ * Adds the menu items to the GUI
+ */
 MyInterface.prototype.addGameGroup = function(){
-
-/*
-var palette = {
-  color1: '#FF0000', // CSS string
-  color2: [ 0, 128, 255 ], // RGB array
-  color3: [ 0, 128, 255, 0.3 ], // RGB with alpha
-  color4: { h: 350, s: 0.9, v: 0.3 } // Hue, saturation, value
-};
-this.gui.addColor(palette, 'Background Color');*/
 	this.timeout = 30;
 	this.timeCounter = 0;
     this.menu.open();
@@ -123,22 +117,35 @@ this.gui.addColor(palette, 'Background Color');*/
 	this.menu.add(this.scene, 'CameraAutomatic').name("Automatic Camera");
 };
 
+/**
+ * Sets the timeout variable to 30
+ */
 MyInterface.prototype.resetTimeout = function(){
 	this.timeout = 30;
 };
 
+/**
+ * When timeout occurs, ends the game
+ */
 MyInterface.prototype.triggerTimeout = function(){
 	this.stopTime = true;
 	this.scene.Game.winner = (this.scene.Game.currPlayer == 'blackPlayer') ? 'whitePlayer' : 'blackPlayer';
 	this.scene.Game.endGameNow();
 }
 
+/**
+ * Adds a folder to the GUI with the winner
+ */
 MyInterface.prototype.addWinner = function (){
 	var folder = this.gui.addFolder("WINNER");
 	folder.open();
 	folder.add(this.scene.Game, 'winner').name("");
 }
 
+/**
+ * Opens or closes the menu and configurations folders, according to value
+ * @param value
+ */
 MyInterface.prototype.switchVisibility = function(value){
 	if(!value){
 		this.menu.close();
@@ -150,30 +157,10 @@ MyInterface.prototype.switchVisibility = function(value){
     }
 }
 
-MyInterface.prototype.processKeyDown = function(event) {
-	CGFinterface.prototype.processKeyDown.call(this,event);
-	if(!this.scene.CameraAutomatic)
-		return;
-	switch (event.keyCode)
-	{
-		case (66):
-		case (98):	//b
-			this.scene.CameraView = 'black';
-			break;
-
-		case (87):
-		case (119):	//w
-			this.scene.CameraView = 'white';
-			break;
-
-		case (68):
-		case (100):	//d
-			this.scene.CameraView = 'ai';
-			break;
-	}
-
-};
-
+/**
+ * Updates the state of the GUI, adding or removing folders, if needed
+ * @param deltaTime
+ */
 MyInterface.prototype.update = function(deltaTime){
 	if(!this.stopTime){
 		if(!isNaN(deltaTime))
@@ -200,25 +187,25 @@ MyInterface.prototype.update = function(deltaTime){
 		if(this.noConfigs){
 			this.switchVisibility(false);
 			this.removeFolder("WINNER");
-			//this.addConfigGroup();
 			this.noConfigs = false;
 		}
 		return;
 	}
 	else{
-		//this.removeFolder("Configurations");
 		this.switchVisibility(true);
 		this.noConfigs = true;
 	}
 
-	if(((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='human')) && ((this.scene.Game.turn % 2) == 1)){
-		this.scene.CameraView = 'white';
-		return;
+	if(!this.noViews){
+		if(((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='human')) && ((this.scene.Game.turn % 2) == 1)){
+			this.scene.CameraView = 'white';
+			return;
+		}
+		else if(((this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='human')) && ((this.scene.Game.turn % 2) == 0)){
+			this.scene.CameraView = 'black';
+			return;
+		}
+		else if((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='easyBot') || (this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='hardBot') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='easyBot') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='hardBot'))
+			this.scene.CameraView = 'ai';
 	}
-	else if(((this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='human')) && ((this.scene.Game.turn % 2) == 0)){
-		this.scene.CameraView = 'black';
-		return;
-	}
-	else if((this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='easyBot') || (this.scene.Game.currPlayer == 'whitePlayer' && this.scene.Game.whiteType =='hardBot') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='easyBot') || (this.scene.Game.currPlayer == 'blackPlayer' && this.scene.Game.blackType =='hardBot'))
-		this.scene.CameraView = 'ai';
 }

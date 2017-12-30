@@ -27,7 +27,6 @@ var DEGREE_TO_RAD = Math.PI / 180;
     this.pieces = [];
     this.currentPiece = null;
 
-    this.piecesGraph = new PiecesGraph(this);
     this.blackPieces = [];
 
     this.Game = new Game(this);

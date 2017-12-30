@@ -1,3 +1,9 @@
+/**
+ * RegularPiece class
+ * @param scene
+ * @param player
+ * @param position
+ */
 function RegularPiece(scene, player, position) {
 	CGFobject.call(this,scene);
 	this.scene = scene;
@@ -33,6 +39,9 @@ function RegularPiece(scene, player, position) {
 RegularPiece.prototype = Object.create(CGFobject.prototype);
 RegularPiece.prototype.constructor=RegularPiece;
 
+/**
+ * Displays the piece
+ */
 RegularPiece.prototype.display = function (position) {
     
     this.scene.pushMatrix();
@@ -49,10 +58,16 @@ RegularPiece.prototype.display = function (position) {
     this.scene.popMatrix();
 };
 
+/**
+ * Updates the piece's position
+ */
 RegularPiece.prototype.updateCoords = function (position) {
 	this.position = position;
 };
 
+/**
+ * Updates the piece's startTime
+ */
 RegularPiece.prototype.update = function(currTime){
     // First time
     if(this.startTime == 0){
@@ -62,14 +77,23 @@ RegularPiece.prototype.update = function(currTime){
     this.startTime = currTime;
 };
 
+/**
+ * Returns the piece's type
+ */
 RegularPiece.prototype.getType = function() {
     return this.type;
 };
 
+/**
+ * Returns the piece's animation
+ */
 RegularPiece.prototype.getAnimation = function() {
     return this.currAnimation;
 };
 
+/**
+ * Returns the piece's position on the board
+ */
 RegularPiece.prototype.getBoardPosition = function() {
     return this.boardPosition;
 };

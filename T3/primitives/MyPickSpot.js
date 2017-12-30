@@ -1,3 +1,12 @@
+/**
+ * MyPickSpot class
+ * @param scene
+ * @param id
+ * @param x
+ * @param z
+ * @param row
+ * @param col
+ */
 function MyPickSpot(scene,id,x,z,row,col) {
  	CGFobject.call(this,scene);
 
@@ -13,6 +22,9 @@ function MyPickSpot(scene,id,x,z,row,col) {
 MyPickSpot.prototype = Object.create(CGFobject.prototype);
 MyPickSpot.prototype.constructor=MyPickSpot;
 
+/**
+ * Displays the pickable spot
+ */
 MyPickSpot.prototype.display = function(){
     this.scene.pushMatrix();
  	  this.scene.translate(this.x, 0.01, this.z);

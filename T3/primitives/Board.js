@@ -1,3 +1,7 @@
+/**
+ * Board class
+ * @param scene
+ */
 function Board(scene) {
 	CGFobject.call(this,scene);
 	this.scene = scene;
@@ -10,6 +14,9 @@ function Board(scene) {
 Board.prototype = Object.create(CGFobject.prototype);
 Board.prototype.constructor=Board;
 
+/**
+ * Initializes the game board, creating the pickable spots on the board
+ */
 Board.prototype.init = function (){
     var x = -5.1;
     var z = -5.1;
@@ -31,6 +38,9 @@ Board.prototype.init = function (){
     }
 };
 
+/**
+ * Displays the pickable spots on the board
+ */
 Board.prototype.display = function (position) {
     for(var j = 0; j < this.tiles.length; j++){
         if((this.scene.currentPiece !== null) && (this.tiles[j].isOption)){

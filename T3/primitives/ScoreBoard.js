@@ -1,3 +1,7 @@
+/**
+ * ScoreBoard class
+ * @param scene
+ */
 function ScoreBoard(scene) {
 	CGFobject.call(this,scene);
 	this.scene = scene;
@@ -8,11 +12,17 @@ function ScoreBoard(scene) {
 ScoreBoard.prototype = Object.create(CGFobject.prototype);
 ScoreBoard.prototype.constructor=ScoreBoard;
 
+/**
+ * Initializes the scoreboard, creating the rectangle to display the scores
+ */
 ScoreBoard.prototype.init = function (){
     this.scene.getTextures();
     this.rectangle = new MyRectangle(this.scene, 0,1,1,0);
 };
 
+/**
+ * Displays the scoreboard
+ */
 ScoreBoard.prototype.display = function (position) {
     var tex = this.getWhiteScoreTex();
     this.scene.pushMatrix();
@@ -35,6 +45,9 @@ ScoreBoard.prototype.display = function (position) {
     this.scene.popMatrix();
 };
 
+/**
+ * Returns the texture related to the white player's score
+ */
 ScoreBoard.prototype.getWhiteScoreTex = function() {
     switch(this.scene.Game.whiteScore){
         case 0: return this.scene.t0;
@@ -51,6 +64,9 @@ ScoreBoard.prototype.getWhiteScoreTex = function() {
     }
 };
 
+/**
+ * Returns the texture related to the black player's score
+ */
 ScoreBoard.prototype.getBlackScoreTex = function() {
     switch(this.scene.Game.blackScore){
         case 0: return this.scene.t0;
