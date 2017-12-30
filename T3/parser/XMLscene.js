@@ -24,13 +24,13 @@ var DEGREE_TO_RAD = Math.PI / 180;
     this.lightValues = {};
     this.spots = [];
     this.pieces = [];
-    this.pickableID = 0;
     this.currentPiece = null;
 
     this.piecesGraph = new PiecesGraph(this);
     this.blackPieces = [];
 
     this.Game = new Game(this);
+
     this.WhitePlayer = null;
     this.BlackPlayer = null;
     this.isConfiguredPlayerWhite = false;
@@ -58,6 +58,52 @@ var DEGREE_TO_RAD = Math.PI / 180;
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
 
+XMLscene.prototype.getTextures = function (){
+    this.t0 = new CGFappearance(this);
+    this.t0.loadTexture("./textures/0.png");
+    this.t0.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t1 = new CGFappearance(this);
+    this.t1.loadTexture("./textures/1.png");
+    this.t1.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t2 = new CGFappearance(this);
+    this.t2.loadTexture("./textures/2.png");
+    this.t2.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t3 = new CGFappearance(this);
+    this.t3.loadTexture("./textures/3.png");
+    this.t3.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t4 = new CGFappearance(this);
+    this.t4.loadTexture("./textures/4.png");
+    this.t4.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t5 = new CGFappearance(this);
+    this.t5.loadTexture("./textures/5.png");
+    this.t5.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t6 = new CGFappearance(this);
+    this.t6.loadTexture("./textures/6.png");
+    this.t6.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t7 = new CGFappearance(this);
+    this.t7.loadTexture("./textures/7.png");
+    this.t7.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t8 = new CGFappearance(this);
+    this.t8.loadTexture("./textures/8.png");
+    this.t8.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t9 = new CGFappearance(this);
+    this.t9.loadTexture("./textures/9.png");
+    this.t9.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.t10 = new CGFappearance(this);
+    this.t10.loadTexture("./textures/10.png");
+    this.t10.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+};
+
 XMLscene.prototype.logPicking = function (){
 	if (this.pickMode == false) {
 		if ((this.pickResults != null) && (this.pickResults.length > 0)) {
@@ -66,9 +112,13 @@ XMLscene.prototype.logPicking = function (){
 				if (obj){
 					var customId = this.pickResults[i][1];	
 					////console.log("Picked object: " + obj + ", with pick id " + customId);
-
+                    console.log(this.pickResults[i][0]);
                     if(this.pickResults[i][0] instanceof RegularPiece){
-                        this.currentPiece = this.pieces[customId-1];
+                        if(this.pickResults[i][0].player == 'whitePlayer')
+                            this.currentPiece = this.Game.whitePiecesArray[customId-1];
+                        else if(this.pickResults[i][0].player == 'blackPlayer')
+                            this.currentPiece = this.Game.blackPiecesArray[customId-1];
+                        
                         if(this.currentPiece.selected){
                             this.currentPiece.selected = false;
                             this.currentPiece = null;
@@ -78,7 +128,11 @@ XMLscene.prototype.logPicking = function (){
                         break;
                     }
                     else if(this.pickResults[i][0] instanceof HengePiece){
-                        this.currentPiece = this.pieces[customId-1];
+                        if(this.pickResults[i][0].player == 'whitePlayer')
+                            this.currentPiece = this.Game.whitePiecesArray[customId-1];
+                        else if(this.pickResults[i][0].player == 'blackPlayer')
+                            this.currentPiece = this.Game.blackPiecesArray[customId-1];
+
                         if(this.currentPiece.selected){
                             this.currentPiece.selected = false;
                             this.currentPiece = null;
@@ -101,21 +155,19 @@ XMLscene.prototype.logPicking = function (){
 };
 
 XMLscene.prototype.animatePiece = function (newPos){
+    this.currentPiece.previousPosition = this.currentPiece.position;
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [newPos[0],10,newPos[1]];
     var p4 = [newPos[0],0.3,newPos[1]];
 
     //add to game board in prolog
-    if(this.mode != "reviewGame" && ((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') 
-        || (this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human'))) {
-        //get human play
-    this.Game.addHumanMoveToGame(p4);
-}
+    if((this.mode != "reviewGame") && (!this.currentPiece.removed) && ((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') || (this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human')))
+        this.Game.addHumanMoveToGame(p4);
 
-this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
-this.currentPiece.isPlayed = true;
-    //this.currentPiece.boardPosition = [newPos[0],0.3,newPos[1]];
+    this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
+    this.currentPiece.isPlayed = true;
+    this.currentPiece.boardPosition = [newPos[0],0.3,newPos[1]];
 }
 
 XMLscene.prototype.invertAnimatePiece = function (pointI){
@@ -134,6 +186,8 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     CGFscene.prototype.init.call(this, application);
     
     this.camera = new CGFcamera(0.35,0.5,500,[0,15,15],[0,0,0]);
+        this.board = new Board(this);
+
 
     this.enableTextures(true);
     
@@ -150,7 +204,6 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.axis = new CGFaxis(this);
 
     this.setPickEnabled(true);
-    this.createPickableSquares();	
     this.materialDefault = new CGFappearance(this);
 
     this.whiteMaterial = new CGFappearance(this);
@@ -176,33 +229,10 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.blackMaterial.setDiffuse(0,0,0,1);
     this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
     this.blackMaterial.setShininess(0.3);   
-};
 
-XMLscene.prototype.createPieces = function() {
-    var x = -15;
-    var z = -5;
-    for(var i = 0; i < 10; i++){
-        this.pieces.push(new RegularPiece(this,'blackPlayer',[x,0,z]));
-        this.pieces.push(new RegularPiece(this,'whitePlayer',[x+28,0,z]));
-        if(x > -15){
-            x = -15;
-            z += 2;
-        }
-        else
-            x += 2;
-    }
+    //this.getTextures();
+    this.scoreBoard = new ScoreBoard(this);
 
-    for(var j = 0; j < 2; j++){
-        this.pieces.push(new HengePiece(this,'blackPlayer',[x,0,z]));
-        this.pieces.push(new HengePiece(this,'whitePlayer',[x+28,0,z]));
-        if(x > -15){
-            x = -15;
-            z += 2;
-        }
-        else
-            x += 2;
-    }
-    this.pieces.push(new HengePiece(this,'whitePlayer',[x+30,0,z]));
 };
 
 /**
@@ -272,7 +302,7 @@ XMLscene.prototype.createPieces = function() {
     //this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
     //this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
     
-    this.createPieces();
+    this.Game.createPieces();
 };
 
 
@@ -322,9 +352,10 @@ XMLscene.prototype.createPieces = function() {
 
         // Displays the scene.
         this.graph.displayScene();
-        this.displayPickableCircles();
+        this.scoreBoard.display();
+        this.board.display();
         this.clearPickRegistration();
-        this.displayPieces();
+        this.Game.displayPieces();
         this.clearPickRegistration();
     }
     else
@@ -360,18 +391,18 @@ XMLscene.prototype.createPieces = function() {
             this.lastStatus = this.Game.currState;
         }
 
-        if((this.Game.currState == "animationPlay") && (this.currentPiece.getAnimation().getStatus())){
+        /*if((this.Game.currState == "animationPlay") && (this.currentPiece.getAnimation().getStatus())){
             this.Game.currState = "applyPlay";
             this.currentPiece = null;
-        }
+        }*/
 
         return;
     }   
 
-
+/*
     if(this.Game.currState != this.lastStatus) {
 
-        switch(this.Game.currState){
+       /* switch(this.Game.currState){
             case "menu":
                 //this.displayMenuBoard();
                 break;
@@ -394,33 +425,34 @@ XMLscene.prototype.createPieces = function() {
                 break;
                 default: 
                 console.warn("ERROR!!!");
-            }
+            }*/
+  /*      this.lastStatus = this.Game.currState;
+    }*/
+    
+    this.Game.display();
 
-            this.lastStatus = this.Game.currState;
-        }
+    this.Game.getReply();
 
-        this.Game.getReply();
+    /*if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus()){
+        this.Game.currState = "verifyStatus";
+        this.currentPiece = null;
+    }*/
+    
+    if((this.WhitePlayer != null)  && (!this.isConfiguredPlayerWhite)){
+        this.Game.configWhitePlayer();
+        this.isConfiguredPlayerWhite = true;
+    }
 
-        if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus()){
-            this.Game.currState = "verifyStatus";
-            this.currentPiece = null;
-        }
-        
-        if((this.WhitePlayer != null)  && (!this.isConfiguredPlayerWhite)){
-            this.Game.configWhitePlayer();
-            this.isConfiguredPlayerWhite = true;
-        }
+    if((this.BlackPlayer != null)  && (!this.isConfiguredPlayerBlack)){
+        this.Game.configBlackPlayer();
+        this.isConfiguredPlayerBlack = true;
+    }
 
-        if((this.BlackPlayer != null)  && (!this.isConfiguredPlayerBlack)){
-            this.Game.configBlackPlayer();
-            this.isConfiguredPlayerBlack = true;
-        }
-
-        if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
-            this.Game.isConf = true;
-            this.Game.currState = "getPlay";
-        }
-    };
+    if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
+        this.Game.isConf = true;
+        this.Game.currState = "getPlay";
+    }
+};
 
     XMLscene.prototype.endGame = function(){
         var winner = this.Game.winner;
@@ -430,39 +462,6 @@ XMLscene.prototype.createPieces = function() {
 
         console.log(winner);
     }
-
-    XMLscene.prototype.displayPickableCircles = function() {
-        this.pickableID = 0;
-        let j = 0;
-        for(; j < this.spots.length; j++){
-            if((this.currentPiece !== null) && (this.spots[j].isOption)){
-                this.registerForPick(j+1,this.spots[j]);
-                this.graph.materials['redMaterial'].apply();
-            }
-            else
-                this.graph.materials['darkMaterial'].apply();
-            this.spots[j].display();
-            this.clearPickRegistration();
-        }    
-        this.pickableID += j+1;
-    };
-
-    XMLscene.prototype.displayPieces = function() {
-        let w = 0;
-        for(; w < this.pieces.length; w++){
-            if(this.Game.turn != 0){
-                if((this.currentPiece == null) && (this.pieces[w].isPlayed == false))
-                    if(this.Game.currPlayer == this.pieces[w].player)
-                        this.registerForPick(1+w,this.pieces[w]);
-
-                    else if((this.currentPiece != null) && (this.pieces[w].selected))
-                        this.registerForPick(1+w,this.pieces[w]);
-                }
-                this.pieces[w].display();
-                this.clearPickRegistration();
-            }
-        };
-
 
 /**
  * Update the camera position to start the animation
@@ -548,13 +547,7 @@ XMLscene.prototype.getCameraAngle = function() {
     
     this.animateCamera(delta);
 
-    for(var i = 0; i < this.pieces.length; i++){
-        if (this.pieces[i].currAnimation != null){
-            if(!this.pause)
-                this.pieces[i].currAnimation.getMatrix(delta);
-            this.pieces[i].updateCoords([this.pieces[i].currAnimation.transformationMatrix[12],this.pieces[i].currAnimation.transformationMatrix[13],this.pieces[i].currAnimation.transformationMatrix[14]]);
-        }
-    }
+    this.Game.update(delta);
 
     this.initialTime = currTime;
 
@@ -564,29 +557,11 @@ XMLscene.prototype.getCameraAngle = function() {
     this.updateScaleFactor();
 };
 
-XMLscene.prototype.createPickableSquares = function(){
-    var x = -5.1;
-    var z = -5.1;
-    var row = 1;
-    var col = 1
-    for(let i = 0; i < 25; i++){
-        var square = new MyPickSpot(this, i,x,z,col,row);
-        this.spots.push(square);
-        if(x >= 5){
-            x = -5.1;
-            z += 2.55;
-            row++;
-            col = 1;
-        }
-        else{
-            x += 2.55;
-            col++;
-        }
-    }
-};
-
 XMLscene.prototype.winBlackPiece = function (piece){
     this.currentPiece = piece;
+    this.currentPiece.removed = true;
+    this.currentPiece.previousPosition = this.currentPiece.boardPosition;
+    this.Game.moves.push({piece: this.currentPiece, turn: this.Game.turn});
     this.animatePiece([this.blackSpotX,this.blackSpotZ]);
 
     if(this.blackSpotZ > 12){
@@ -595,10 +570,13 @@ XMLscene.prototype.winBlackPiece = function (piece){
     }
     else
         this.blackSpotZ += 2;
+
+    this.Game.whiteScore++;
 };
 
 XMLscene.prototype.winWhitePiece = function (piece){
     this.currentPiece = piece;
+    this.currentPiece.removed = true;
     this.animatePiece([this.whiteSpotX,this.whiteSpotZ]);
 
     if(this.whiteSpotZ > 12){
@@ -607,6 +585,9 @@ XMLscene.prototype.winWhitePiece = function (piece){
     }
     else
         this.whiteSpotZ += 2;
+
+
+    this.Game.blackScore++;
 };
 
 XMLscene.prototype.clearBoard = function(){

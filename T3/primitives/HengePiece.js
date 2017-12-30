@@ -5,9 +5,11 @@ function HengePiece(scene, player, position) {
     this.initialPosition = position;
 	this.position = position;
     this.boardPosition = null;
+    this.previousPosition = null;
 
     this.isPlayed = false;
     this.selected = false;
+    this.removed = false;
 
 	this.material1 = this.scene.whiteMaterial;
 	this.material2 = this.scene.blackMaterial;

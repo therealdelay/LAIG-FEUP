@@ -5,9 +5,11 @@ function RegularPiece(scene, player, position) {
     this.initialPosition = position;
 	this.position = position;
     this.boardPosition = null;
+    this.previousPosition = null;
 
     this.isPlayed = false;
     this.selected = false;
+    this.removed = false;
 
 	this.body = new MyCylinder(this.scene, 0.4, 0.9, 0.9, 20, 20, 1, 1); //scene, height, botRad, topRad, stacks, slices, top, bottom)
 	this.cover = new MySphere(this.scene, 1, 20, 20);
