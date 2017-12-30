@@ -234,12 +234,24 @@ Game.prototype.changeColors = function(array){
 
 Game.prototype.undoLastPlay = function() {
 	this.scene.interface.resetTimeout();
+
 	if(this.moves.length < 1)
 		return;
 
+	console.log(" ");
+	console.log(" UNDO ");
+	console.log("this.moves.length  " + this.moves.length);
+
 	var lastPlay = this.moves[this.moves.length-1].piece.boardPosition;
+	console.log("boardPosition " + lastPlay);
 	var prevPos = this.moves[this.moves.length-1].piece.previousPosition;
+	console.log("previousPosition " + prevPos);
+
 	var initPos = this.moves[this.moves.length-1].piece.initialPosition;
+	console.log("initialPosition " + initPos);
+
+
+
 	var type = this.moves[this.moves.length-1].piece.type;
 	var player = this.moves[this.moves.length-1].piece.player;
 	var row = lastPlay[2] / 2.55 + 3;
@@ -251,10 +263,15 @@ Game.prototype.undoLastPlay = function() {
 
 	// se o último move foi uma peça a ser jogada, volta ao sítio onde estava e a função termina
 	if(!this.moves[this.moves.length-1].piece.removed){
+
+		console.log("::: a que foi antes comida / a que comeu / outra ::: ");
+
 		this.scene.currentPiece = this.moves[this.moves.length-1].piece;
 		this.scene.invertAnimatePiece(initPos);
+
+		console.log("vai limpar pos :::: " + (row-1) + "-" + (col-1) );
 		//update board
-		this.board[col-1][row-1] = 0;
+		this.board[row-1][col-1] = 0;
 
 		//update pieces
 		if(player == "whitePlayer"){
@@ -278,6 +295,7 @@ Game.prototype.undoLastPlay = function() {
 	//se o último move foi uma peça a ser comida, volta onde estava e chama esta função novamente
 	else{
 
+		console.log("::: comida ::: ");
 		if(player == 'blackPlayer')
 			this.scene.blackScore--;
 		else
@@ -297,23 +315,27 @@ Game.prototype.undoLastPlay = function() {
 
 	this.scene.currentPiece = null;
 	this.currState = "getPlay";
-	//this.scene.lastStatus = "undo";
 }
 
 Game.prototype.playMovesOfArray = function() {
-	console.log("index " + this.index);
-	console.log("this.moves.length " + this.moves.length);
+
 	if(this.index < this.moves.length){
-		let finalPos = this.convertCoordsOffProlog(this.moves[this.index].pointF);
-		let finalMove = [finalPos[0][0], 0.3, finalPos[0][1]];
+
+		this.scene.currentPiece = this.moves[this.index].piece;
+
+		var lastPlay = this.scene.currentPiece.boardPosition;
+		var prevPos = this.scene.currentPiece.previousPosition;
+		var initPos = this.scene.currentPiece.initialPosition;
+		var row = lastPlay[2] / 2.55 + 3;
+		var col = lastPlay[0] / 2.55 + 3;
 
 		if(!this.findPiece(finalMove, finalPos[1])){
 			console.warn("Error in find a piece!!!");
 			return;
 		}
 
-		this.scene.animatePiece([finalPos[0][0],finalPos[0][1]]);
-		this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
+		this.scene.animatePiece(lastPlay);
+		//this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
 		this.index++;
 		this.currState = "animationPlay";
 	}

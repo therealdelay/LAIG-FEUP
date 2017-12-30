@@ -176,7 +176,7 @@ XMLscene.prototype.animatePiece = function (newPos){
 
     //add to game board in prolog
     if((this.mode != "reviewGame") && (!this.currentPiece.removed) && ((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') || (this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human')))
-        this.Game.addHumanMoveToGame(p4);
+        this.Game.addHumanMoveToGame(p4);     
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
@@ -549,6 +549,8 @@ XMLscene.prototype.winBlackPiece = function (piece){
 XMLscene.prototype.winWhitePiece = function (piece){
     this.currentPiece = piece;
     this.currentPiece.removed = true;
+    this.currentPiece.previousPosition = this.currentPiece.boardPosition;
+    this.Game.moves.push({piece: this.currentPiece, turn: this.Game.turn});
     this.animatePiece([this.whiteSpotX,this.whiteSpotZ]);
 
     if(this.whiteSpotZ > 12){
