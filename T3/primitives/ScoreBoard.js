@@ -20,7 +20,7 @@ ScoreBoard.prototype.display = function (position) {
         this.scene.scale(6,4,4);
         this.scene.rotate(-25*DEGREE_TO_RAD,1,0,0);
         this.scene.graph.materials['defaultMaterial'].apply();
-        //tex.apply();
+        tex.apply();
         this.rectangle.display();
     this.scene.popMatrix();
 
@@ -30,7 +30,7 @@ ScoreBoard.prototype.display = function (position) {
         this.scene.translate(-6,1,-12.1);
         this.scene.scale(6,4,4);
         this.scene.rotate(-25*DEGREE_TO_RAD,1,0,0);
-        //tex.apply();
+        tex.apply();
         this.rectangle.display();
     this.scene.popMatrix();
 };

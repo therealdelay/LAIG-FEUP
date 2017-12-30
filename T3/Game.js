@@ -310,9 +310,9 @@ Game.prototype.undoLastPlay = function() {
 		}
 
 		if(player == 'blackPlayer')
-			this.scene.blackScore--;
+			this.whiteScore--;
 		else
-			this.scene.whiteScore--;
+			this.blackScore--;
 		
 		this.moves[this.moves.length-1].piece.removed = false;
 		var tmpPiece = this.moves[this.moves.length-1].piece;
