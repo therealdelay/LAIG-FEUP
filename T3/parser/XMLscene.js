@@ -401,10 +401,10 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
             this.lastStatus = this.Game.currState;
         }
 
-        /*if((this.Game.currState == "animationPlay") && (this.currentPiece.getAnimation().getStatus())){
+        if((this.Game.currState == "animationPlay") && this.Game.allAnimsDone()){
             this.Game.currState = "applyPlay";
             this.currentPiece = null;
-        }*/
+        }
 
         return;
     }   
@@ -573,13 +573,13 @@ XMLscene.prototype.clearBoard = function(){
     for(var i=0; i < this.Game.whitePiecesArray.length; i++){
         this.currentPiece = this.Game.whitePiecesArray[i];
         this.currentPiece.isPlayed = false;
-        this.invertAnimatePiece(this.Game.whitePiecesArray[i].initialPosition);
+        this.invertAnimatePiece(this.currentPiece.initialPosition);
     }
     this.currentPiece = null;
     for(var i=0; i < this.Game.blackPiecesArray.length; i++){
         this.currentPiece = this.Game.blackPiecesArray[i];
         this.currentPiece.isPlayed = false;
-        this.invertAnimatePiece(this.Game.blackPiecesArray[i].initialPosition);
+        this.invertAnimatePiece(this.currentPiece.initialPosition);
     }
     this.currentPiece = null;
 };

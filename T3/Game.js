@@ -330,6 +330,9 @@ Game.prototype.undoLastPlay = function() {
 
 Game.prototype.playMovesOfArray = function() {
 
+console.log("index "+ this.index);
+console.log("this.moves.length " + this.moves.length);
+
 	if(this.index < this.moves.length){
 
 		this.scene.currentPiece = this.moves[this.index].piece;
@@ -337,8 +340,11 @@ Game.prototype.playMovesOfArray = function() {
 		var lastPlay = this.scene.currentPiece.boardPosition;
 		var prevPos = this.scene.currentPiece.previousPosition;
 		var initPos = this.scene.currentPiece.initialPosition;
-		var row = lastPlay[2] / 2.55 + 3;
-		var col = lastPlay[0] / 2.55 + 3;
+
+		console.log("initPos " + lastPlay);
+		console.log("prevPos " + prevPos);
+		console.log("lastPlay " + initPos);
+
 
 		this.scene.animatePiece(lastPlay);
 		//this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
