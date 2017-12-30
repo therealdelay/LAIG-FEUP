@@ -233,6 +233,9 @@ Game.prototype.changeColors = function(array){
 }
 
 Game.prototype.undoLastPlay = function() {
+	if((this.whiteType !='human') && (this.blackType !='human'))
+		return;
+
 	this.scene.interface.resetTimeout();
 
 	if(this.moves.length < 1)
@@ -334,22 +337,24 @@ console.log("index "+ this.index);
 console.log("this.moves.length " + this.moves.length);
 
 	if(this.index < this.moves.length){
-
+		this.currState = "animationPlay";
+		this.scene.currentPiece = null;
 		this.scene.currentPiece = this.moves[this.index].piece;
 
 		var lastPlay = this.scene.currentPiece.boardPosition;
 		var prevPos = this.scene.currentPiece.previousPosition;
 		var initPos = this.scene.currentPiece.initialPosition;
 
-		console.log("initPos " + lastPlay);
+		console.log("initPos " + initPos);
 		console.log("prevPos " + prevPos);
-		console.log("lastPlay " + initPos);
+		console.log("lastPlay " + lastPlay);
 
-
-		this.scene.animatePiece(lastPlay);
+		this.scene.animatePiece([lastPlay[0],lastPlay[2]]);
+		console.log("initPos " + initPos);
+		console.log("prevPos " + prevPos);
+		console.log("lastPlay " + lastPlay);
 		//this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
 		this.index++;
-		this.currState = "animationPlay";
 	}
 	else{
 		this.scene.mode = "game";

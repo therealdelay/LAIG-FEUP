@@ -107,6 +107,8 @@ MyInterface.prototype.addConfigGroup = function(){
  */
 MyInterface.prototype.addGameGroup = function(){
 	this.timeout = 30;
+	this.gameSec = 0;
+	this.gameMin = 0;
 	this.timeCounter = 0;
     this.menu.open();
     this.menu.add(this, 'timeout');
@@ -163,14 +165,20 @@ MyInterface.prototype.switchVisibility = function(value){
  */
 MyInterface.prototype.update = function(deltaTime){
 	if(!this.stopTime){
-		if(!isNaN(deltaTime))
-			this.timeCounter = this.timeCounter + deltaTime/15;
-		if(this.timeCounter > 60){
+		if(!isNaN(deltaTime) && (this.scene.pause == false))
+			this.timeCounter = this.timeCounter + deltaTime/17;
+		if(this.timeCounter >= 60){
 			this.timeCounter = 0;
+			this.gameSec++;
 			this.timeout--;
 		}
 		if(this.timeout == 0)
 			this.triggerTimeout();
+
+		if(this.gameSec >= 60){
+			this.gameSec = 0;
+			this.gameMin++;
+		}
 	}
 
 	if(this.scene.CameraAutomatic){

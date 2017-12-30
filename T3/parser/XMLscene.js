@@ -56,6 +56,8 @@ var DEGREE_TO_RAD = Math.PI / 180;
     this.mode == "game";
 
     this.startThisGame = false;
+
+    this.firstAnimation = true;
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -115,6 +117,14 @@ XMLscene.prototype.getTextures = function (){
     this.t10 = new CGFappearance(this);
     this.t10.loadTexture("./textures/10.png");
     this.t10.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.timeoutTex = new CGFappearance(this);
+    this.timeoutTex.loadTexture("./textures/timeout.png");
+    this.timeoutTex.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
+
+    this.gametimeTex = new CGFappearance(this);
+    this.gametimeTex.loadTexture("./textures/gametime.png");
+    this.gametimeTex.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
 };
 
 XMLscene.prototype.logPicking = function (){
@@ -197,8 +207,8 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
  XMLscene.prototype.init = function(application) {
     CGFscene.prototype.init.call(this, application);
     
-    this.camera = new CGFcamera(0.35,0.5,500,[0,15,15],[0,0,0]);
-        this.board = new Board(this);
+    this.camera = new CGFcamera(1,0.5,500,[15,15,0],[0,0,0]);
+    this.board = new Board(this);
 
 
     this.enableTextures(true);
@@ -481,6 +491,8 @@ XMLscene.prototype.getCameraAngle = function() {
  * @param deltaTime
  */
  XMLscene.prototype.animateCamera = function(deltaTime){
+    if(this.firstAnimation && (this.camera.fov > 0.35))
+        this.camera.fov -= 0.01;
     this.updateCamera();
     if(this.moveCam){
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
@@ -603,8 +615,12 @@ XMLscene.prototype.startGame = function(){
 
 XMLscene.prototype.resetGame = function () {
     this.clearBoard();
+    this.Game.whitePiecesArray = [];
+    this.Game.blackPiecesArray = [];
     this.WhitePlayer = null;
-    this.blackPlayer = null;
+    this.BlackPlayer = null;
+    this.Game.whiteScore = 0;
+    this.Game.blackScore = 0;
     this.isConf = false;
     this.isConfiguredPlayerBlack = false;
     this.isConfiguredPlayerWhite = false;

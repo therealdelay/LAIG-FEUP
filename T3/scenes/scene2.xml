@@ -369,6 +369,7 @@
     <NODEREF id="blackBoard" />
     <NODEREF id="blackWonBoard" />
     <NODEREF id="scoreTable" />
+    <NODEREF id="timeTable" />
   </DESCENDANTS>
 </NODE>
 
@@ -512,13 +513,25 @@
  </DESCENDANTS>
 </NODE>
 
+<NODE id="timeTable">
+  <MATERIAL id="null" />
+  <TEXTURE id="wood" />
+  
+  <TRANSLATION x="5" y="0" z="-12" />
+  <SCALE sx="0.5" sy="1" sz="1" />
+  <DESCENDANTS>
+    <NODEREF id="face1" />
+    <NODEREF id="face2" />
+    <NODEREF id="face3" />
+  </DESCENDANTS>
+</NODE>
 
 
 <NODE id="scoreTable">
   <MATERIAL id="null" />
   <TEXTURE id="wood" />
   
-  <TRANSLATION x="-7.5" y="0" z="-12" />
+  <TRANSLATION x="-11" y="0" z="-12" />
   <DESCENDANTS>
     <NODEREF id="face1" />
     <NODEREF id="face2" />
@@ -539,7 +552,7 @@
 
   <DESCENDANTS>
     <NODEREF id="cube" />
-    <NODEREF id="folhaPreta10" />
+    <!--NODEREF id="folhaPreta10" />
     <NODEREF id="folhaBranca10" />
     <NODEREF id="folhaPreta9" />
     <NODEREF id="folhaBranca9" />
@@ -560,7 +573,7 @@
     <NODEREF id="folhaPreta1" />
     <NODEREF id="folhaBranca1" />
     <NODEREF id="folhaPreta0" />
-    <NODEREF id="folhaBranca0" />
+    <NODEREF id="folhaBranca0" /-->
   </DESCENDANTS>
 </NODE>
 
