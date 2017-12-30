@@ -112,7 +112,7 @@ var palette = {
   color4: { h: 350, s: 0.9, v: 0.3 } // Hue, saturation, value
 };
 this.gui.addColor(palette, 'Background Color');*/
-	this.timeout = 5;
+	this.timeout = 30;
 	this.timeCounter = 0;
     this.menu.open();
     this.menu.add(this, 'timeout');

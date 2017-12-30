@@ -94,6 +94,7 @@ Game.prototype.getReply = function() {
 		this.currState = "animationPlay";
 	}
 	else if(this.currState ==  "getPlay") {
+		this.scene.interface.resetTimeout();
 		console.log(Game.currReply);
 		let coords = [];
 		var reply = Game.currReply;
@@ -162,6 +163,7 @@ Game.prototype.configBlackPlayer = function() {
 }
 
 Game.prototype.addHumanMoveToGame = function(pointF){
+	this.scene.interface.resetTimeout();
 	console.log("addHumanMoveToGame" + pointF);
 	let pointX = pointF[0] / 2.55 + 3;
 	let pointY = pointF[2] / 2.55 + 3;
@@ -230,6 +232,7 @@ Game.prototype.changeColors = function(array){
 }
 
 Game.prototype.undoLastPlay = function() {
+	this.scene.interface.resetTimeout();
 	if(this.moves.length < 1)
 		return;
 
@@ -266,6 +269,10 @@ Game.prototype.undoLastPlay = function() {
 	this.scene.currentPiece = null;
 	this.moves.pop();
 	this.turn--;*/
+	
+
+
+	// se o último move foi uma peça a ser jogada, volta ao sítio onde estava e a função termina
 	if(!this.moves[this.moves.length-1].piece.removed){
 		this.scene.currentPiece = this.moves[this.moves.length-1].piece;
 		this.scene.invertAnimatePiece(newPos);
@@ -285,12 +292,14 @@ Game.prototype.undoLastPlay = function() {
 			else
 				this.blackPieces[0] = this.blackPieces[0] + 1;
 		}
-		this.turn--;
+
+		this.turn--; //repoe o turno
 		this.scene.currentPiece.boardPosition = null;
 		this.scene.currentPiece.isPlayed = false;
 		this.scene.currentPiece = null;
 		this.moves.pop();
 	}
+	//se o último move foi uma peça a ser comida, volta onde estava e chama esta função novamente
 	else{
 
 		if(player == 'blackPlayer')

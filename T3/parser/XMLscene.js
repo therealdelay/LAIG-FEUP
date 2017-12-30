@@ -184,6 +184,7 @@ XMLscene.prototype.animatePiece = function (newPos){
 }
 
 XMLscene.prototype.invertAnimatePiece = function (pointI){
+    this.currentPiece.previousPosition = this.currentPiece.position;
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [pointI[0],10,pointI[2]];
