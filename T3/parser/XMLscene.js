@@ -571,10 +571,16 @@ XMLscene.prototype.clearBoard = function(){
             this.Game.board[i][j] = 0;
     }
 
-    for(var i=0; i < this.pieces.length; i++){
-        this.currentPiece = this.pieces[i];
+    for(var i=0; i < this.Game.whitePiecesArray.length; i++){
+        this.currentPiece = this.Game.whitePiecesArray[i];
         this.currentPiece.isPlayed = false;
-        this.invertAnimatePiece(this.pieces[i].initialPosition);
+        this.invertAnimatePiece(this.Game.whitePiecesArray[i].initialPosition);
+    }
+    this.currentPiece = null;
+    for(var i=0; i < this.Game.blackPiecesArray.length; i++){
+        this.currentPiece = this.Game.blackPiecesArray[i];
+        this.currentPiece.isPlayed = false;
+        this.invertAnimatePiece(this.Game.blackPiecesArray[i].initialPosition);
     }
     this.currentPiece = null;
 };

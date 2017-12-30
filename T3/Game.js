@@ -354,12 +354,21 @@ Game.prototype.playMovesOfArray = function() {
 Game.prototype.findPiece = function(finalPos, type) {
 	let inicialPos = this.moves[this.index].pointI;
 	var i = 0;
-	while((i < this.scene.pieces.length)) {
-		if(inicialPos.toString() == this.scene.pieces[i].initialPosition.toString()){
-			this.scene.currentPiece = this.scene.pieces[i];
+
+	for(; i < this.whitePiecesArray.length; i++){
+		if(inicialPos.toString() == this.whitePiecesArray[i].initialPosition.toString()){
+			this.scene.currentPiece = this.whitePiecesArray[i];
 			return true;
 		}
-		i++;
+	}
+	if(i < 12)
+		return;
+
+	for(; i < this.blackPiecesArray.length; i++){
+		if(inicialPos.toString() == this.blackPiecesArray[i].initialPosition.toString()){
+			this.scene.currentPiece = this.blackPiecesArray[i];
+			return true;
+		}
 	}
 	return false;
 };
