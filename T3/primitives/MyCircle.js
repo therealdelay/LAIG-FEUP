@@ -1,3 +1,8 @@
+/**
+ * MyCircle class
+ * @param scene
+ * @param slices
+ */
 function MyCircle(scene, slices) {
 	CGFobject.call(this,scene);
 	  this.slices = slices;
@@ -7,6 +12,9 @@ function MyCircle(scene, slices) {
 MyCircle.prototype = Object.create(CGFobject.prototype);
 MyCircle.prototype.constructor=MyCircle;
 
+/**
+ * Creates the circle
+ */
 MyCircle.prototype.initBuffers = function () {
     this.vertices = [];
     this.indices = [];
