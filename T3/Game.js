@@ -271,7 +271,10 @@ Game.prototype.undoLastPlay = function() {
 
 		console.log("vai limpar pos :::: " + (row-1) + "-" + (col-1) );
 		//update board
+		console.log("ANTES " + this.board);
+		console.log("ANTES col-row " + (row-1) + (col-1));
 		this.board[row-1][col-1] = 0;
+		console.log("Depois " + this.board);
 
 		//update pieces
 		if(player == "whitePlayer"){
@@ -296,6 +299,16 @@ Game.prototype.undoLastPlay = function() {
 	else{
 
 		console.log("::: comida ::: ");
+
+		if(this.moves[this.moves.length-1].piece.type == 'h')
+			this.board[row-1][col-1]  = 3;
+		else{
+			if(this.moves[this.moves.length-1].piece.player == "blackPlayer")
+				this.board[row-1][col-1] = 1;
+			else
+				this.board[row-1][col-1]  = 2;
+		}
+
 		if(player == 'blackPlayer')
 			this.scene.blackScore--;
 		else
@@ -309,8 +322,6 @@ Game.prototype.undoLastPlay = function() {
 
 		this.scene.currentPiece = tmpPiece;
 		this.scene.invertAnimatePiece(prevPos);
-		
-
 	}
 
 	this.scene.currentPiece = null;
@@ -328,11 +339,6 @@ Game.prototype.playMovesOfArray = function() {
 		var initPos = this.scene.currentPiece.initialPosition;
 		var row = lastPlay[2] / 2.55 + 3;
 		var col = lastPlay[0] / 2.55 + 3;
-
-		if(!this.findPiece(finalMove, finalPos[1])){
-			console.warn("Error in find a piece!!!");
-			return;
-		}
 
 		this.scene.animatePiece(lastPlay);
 		//this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
@@ -537,7 +543,7 @@ Game.prototype.display = function(){
 		}
 
         this.scene.lastStatus = this.currState;
-        this.getReply();
+		this.getReply();
 	}
 
 	if((this.currState == "animationPlay") && this.allAnimsDone()){
