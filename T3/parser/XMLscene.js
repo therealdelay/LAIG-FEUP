@@ -8,6 +8,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
     CGFscene.call(this);
 
     this.interface = interface;
+    this.menuValue = true;
     this.currentNode = null;
     this.nodesToShade = [];
     this.scaleFactor=50.0;
@@ -43,6 +44,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
     this.cameraViews = ['ai','black','white'];
     this.finalPos = [0,0,0];
     this.moveCam = false;
+    this.camSpeed = 100;
 
     this.blackSpotX = 10;
     this.blackSpotZ = 12;
@@ -53,10 +55,22 @@ var DEGREE_TO_RAD = Math.PI / 180;
     this.lastStatus = "menu";
     this.pause = false;
     this.mode == "game";
+
+    this.startThisGame = false;
 };
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
+
+XMLscene.prototype.switchScene = function() {
+    if (this.scene == "gorogo.xml") 
+      this.scene = "scene1.xml";
+    else if(this.scene == "scene1.xml")
+      this.scene = "scene2.xml";
+    else 
+    this.scene = "gorogo.xml"
+    new MySceneGraph(this.scene, this);
+};
 
 XMLscene.prototype.getTextures = function (){
     this.t0 = new CGFappearance(this);
@@ -230,9 +244,7 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
     this.blackMaterial.setShininess(0.3);   
 
-    //this.getTextures();
     this.scoreBoard = new ScoreBoard(this);
-
 };
 
 /**
@@ -302,7 +314,7 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     //this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
     //this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
     
-    this.Game.createPieces();
+    //this.Game.createPieces();
 };
 
 
@@ -399,69 +411,28 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
         return;
     }   
 
-/*
-    if(this.Game.currState != this.lastStatus) {
 
-       /* switch(this.Game.currState){
-            case "menu":
-                //this.displayMenuBoard();
-                break;
-                case "getPlay":
-                this.Game.getAllValidPlays();
-                this.Game.getPlay();
-                break;
-                case "applyPlay": 
-                this.Game.play();
-                break;
-                case "animationPlay":
-                //console.log("Waiting animation..."); 
-                break;
-                case "verifyStatus":
-                this.Game.endOfGame();
-                break;
-                case "endGame":
-                console.log(this.Game.winner);
-                this.endGame();
-                break;
-                default: 
-                console.warn("ERROR!!!");
-            }*/
-  /*      this.lastStatus = this.Game.currState;
-    }*/
-    
     this.Game.display();
 
     this.Game.getReply();
 
-    /*if((this.Game.currState == "animationPlay") && this.currentPiece.getAnimation().getStatus()){
-        this.Game.currState = "verifyStatus";
-        this.currentPiece = null;
-    }*/
-    
-    if((this.WhitePlayer != null)  && (!this.isConfiguredPlayerWhite)){
-        this.Game.configWhitePlayer();
-        this.isConfiguredPlayerWhite = true;
-    }
+    console.log(this.WhitePlayer);
+    console.log(this.BlackPlayer);
 
-    if((this.BlackPlayer != null)  && (!this.isConfiguredPlayerBlack)){
-        this.Game.configBlackPlayer();
-        this.isConfiguredPlayerBlack = true;
-    }
-
-    if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (!this.Game.isConf)){
-        this.Game.isConf = true;
+    if((this.isConfiguredPlayerBlack) && (this.isConfiguredPlayerWhite) && (this.Game.isConf) && (this.startThisGame)){
         this.Game.currState = "getPlay";
+        this.startThisGame = false;
     }
 };
 
-    XMLscene.prototype.endGame = function(){
-        var winner = this.Game.winner;
+XMLscene.prototype.endGame = function(){
+    var winner = this.Game.winner;
 
-        this.resetGame();
-        console.log(this.Game);
+    this.resetGame();
+    console.log(this.Game);
 
-        console.log(winner);
-    }
+    console.log(winner);
+}
 
 /**
  * Update the camera position to start the animation
@@ -520,13 +491,18 @@ XMLscene.prototype.getCameraAngle = function() {
         if(Math.abs(this.camera.position[0] - this.finalPos[0]) > 0.001 || Math.abs(this.camera.position[1] - this.finalPos[1]) > 0.001 || Math.abs(this.camera.position[2] - this.finalPos[2]) >=1){
             if((deltaTime <= 10000) && (!this.pause)){
                 if(this.camera.position[0] < this.finalPos[0])
-                    this.camera.orbit("y", deltaTime/20*this.getCameraAngle()*DEGREE_TO_RAD);
+                    this.camera.orbit("y", deltaTime/this.camSpeed*this.getCameraAngle()*DEGREE_TO_RAD);
                 else
-                    this.camera.orbit("y", -deltaTime/20*this.getCameraAngle()*DEGREE_TO_RAD);
+                    this.camera.orbit("y", -deltaTime/this.camSpeed*this.getCameraAngle()*DEGREE_TO_RAD);
+
+                if(this.camSpeed > 10)
+                    this.camSpeed-=10;
             }
         }
-        else
+        else{
             this.moveCam = false;
+            this.camSpeed = 100;
+        }
     }
 }
 
@@ -607,10 +583,17 @@ XMLscene.prototype.clearBoard = function(){
 
 XMLscene.prototype.startGame = function(){
     if((this.WhitePlayer != null) && (this.BlackPlayer != null)){
-        this.clearBoard();
+        this.Game.configWhitePlayer();
+        this.isConfiguredPlayerWhite = true;
+        this.Game.configBlackPlayer();
+        this.isConfiguredPlayerBlack = true;
         this.Game.turn = 1;
+        this.Game.isConf = true;
         this.lastStatus = "menu";
-        this.interface.addGameGroup();
+        this.startThisGame = true;
+        this.menuValue = false;
+        this.Game.currState = "getPlay";
+        this.Game.createPieces();
     }
 };
 
@@ -644,4 +627,9 @@ XMLscene.prototype.pauseGame = function(){
         this.pause = false;
     else 
         this.pause = true;
+};
+
+XMLscene.prototype.newGame = function(){
+    this.menuValue = true;
+    this.resetGame();
 };

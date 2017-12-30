@@ -25,8 +25,15 @@ MyInterface.prototype.init = function(application) {
     
     this.gui = new dat.GUI();
 
+    this.gui.add(this.scene,'switchScene').name("Switch Scene");
+  	this.config = this.gui.addFolder('Configurations');
+  	this.addConfigGroup(); 
+    this.menu = this.gui.addFolder('Menu');
+    this.addGameGroup(); 
+  
     this.noViews = true;
     this.noConfigs = true;
+
 
     return true;
 };
@@ -88,25 +95,49 @@ MyInterface.prototype.addShadersGroup = function(){
  */
 MyInterface.prototype.addConfigGroup = function(){
 
-	var group = this.gui.addFolder("Configurations");
-    group.open();
-
-
-	group.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions).name("White Player");
-	group.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions).name("Black Player");
-
-	group.add(this.scene, 'startGame').name("Start Game");
+    this.config.open();
+	this.config.add(this.scene, 'WhitePlayer', this.scene.gamePlayerOptions).name("White Player");
+	this.config.add(this.scene, 'BlackPlayer', this.scene.gamePlayerOptions).name("Black Player");
+	this.config.add(this.scene, 'startGame').name("Start Game");
 };
 
 MyInterface.prototype.addGameGroup = function(){
-	var group = this.gui.addFolder("Menu");
-    group.open();
 
-	group.add(this.scene, 'pauseGame').name("Pause Game");
-	group.add(this.scene, 'undoPlay').name("Undo Play");
-	group.add(this.scene, 'videoGame').name("Review Game");
-	group.add(this.scene, 'CameraAutomatic').name("Automatic Camera");
+/*
+var palette = {
+  color1: '#FF0000', // CSS string
+  color2: [ 0, 128, 255 ], // RGB array
+  color3: [ 0, 128, 255, 0.3 ], // RGB with alpha
+  color4: { h: 350, s: 0.9, v: 0.3 } // Hue, saturation, value
+};
+this.gui.addColor(palette, 'Background Color');*/
+	this.timeout = 30;
+    this.menu.open();
+    this.menu.add(this, 'timeout');
+    this.menu.add(this.scene, 'newGame').name("New Game");
+	this.menu.add(this.scene, 'pauseGame').name("Pause Game");
+	this.menu.add(this.scene, 'undoPlay').name("Undo Play");
+	this.menu.add(this.scene, 'videoGame').name("Review Game");
+	this.menu.add(this.scene, 'CameraAutomatic').name("Automatic Camera");
+};
 
+MyInterface.prototype.resetTimeout = function(){
+	this.timeout = 30;
+};
+
+/*MyInterface.prototype.triggerTimeout = function(){
+	this.scene.Game.
+}*/
+
+MyInterface.prototype.switchVisibility = function(value){
+	if(!value){
+		this.menu.close();
+		this.config.open();
+	}
+    else {
+        this.menu.open();
+        this.config.close();
+    }
 }
 
 MyInterface.prototype.processKeyDown = function(event) {
@@ -133,7 +164,13 @@ MyInterface.prototype.processKeyDown = function(event) {
 
 };
 
-MyInterface.prototype.update = function(){
+MyInterface.prototype.update = function(deltaTime){
+
+	if((deltaTime % 60) == 0)
+		this.timeout--;
+	if(this.timeout == 0)
+		this.triggerTimeout();
+
 	if(this.scene.CameraAutomatic){
 		this.removeFolder("Camera");
 		this.noViews = false;
@@ -143,16 +180,18 @@ MyInterface.prototype.update = function(){
 		this.noViews = true;
 	}
 
-	if(this.scene.Game.turn == 0){
+	if(this.scene.menuValue){
 		this.scene.CameraView = 'ai';
 		if(this.noConfigs){
-			this.addConfigGroup();
+			this.switchVisibility(false);
+			//this.addConfigGroup();
 			this.noConfigs = false;
 		}
 		return;
 	}
 	else{
-		this.removeFolder("Configurations");
+		//this.removeFolder("Configurations");
+		this.switchVisibility(true);
 		this.noConfigs = true;
 	}
 
