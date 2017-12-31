@@ -8,6 +8,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
     CGFscene.call(this);
 
     this.interface = interface;
+    this.scene = "scene1.xml";
     this.menuValue = true;
     this.currentNode = null;
     this.nodesToShade = [];
@@ -63,16 +64,23 @@ var DEGREE_TO_RAD = Math.PI / 180;
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
 
+
+/**
+ * switch scene
+ */
 XMLscene.prototype.switchScene = function() {
-    if (this.scene == "gorogo.xml") 
+    if (this.scene == "gorogo.xml")
       this.scene = "scene1.xml";
     else if(this.scene == "scene1.xml")
       this.scene = "scene2.xml";
-    else 
+    else
     this.scene = "gorogo.xml"
     new MySceneGraph(this.scene, this);
 };
 
+/**
+ * Get textures for game information
+ */
 XMLscene.prototype.getTextures = function (){
     this.t0 = new CGFappearance(this);
     this.t0.loadTexture("./textures/0.png");
@@ -127,20 +135,23 @@ XMLscene.prototype.getTextures = function (){
     this.gametimeTex.setTextureWrap('CLAMP_TO_BORDER','CLAMP_TO_BORDER');
 };
 
+/**
+ * Set areas as selectable
+ */
 XMLscene.prototype.logPicking = function (){
 	if (this.pickMode == false) {
 		if ((this.pickResults != null) && (this.pickResults.length > 0)) {
 			for (var i=0; i< this.pickResults.length; i++) {
 				var obj = this.pickResults[i][0];
 				if (obj){
-					var customId = this.pickResults[i][1];	
+					var customId = this.pickResults[i][1];
 					////console.log("Picked object: " + obj + ", with pick id " + customId);
                     if(this.pickResults[i][0] instanceof RegularPiece){
                         if(this.pickResults[i][0].player == 'whitePlayer')
                             this.currentPiece = this.Game.whitePiecesArray[customId-1];
                         else if(this.pickResults[i][0].player == 'blackPlayer')
                             this.currentPiece = this.Game.blackPiecesArray[customId-1];
-                        
+
                         if(this.currentPiece.selected){
                             this.currentPiece.selected = false;
                             this.currentPiece = null;
@@ -172,25 +183,31 @@ XMLscene.prototype.logPicking = function (){
                 }
             }
             this.pickResults.splice(0,this.pickResults.length);
-        }       
+        }
     }
 };
 
+/**
+ * Funtion to animate piece
+ */
 XMLscene.prototype.animatePiece = function (newPos){
     this.currentPiece.previousPosition = this.currentPiece.position;
     var p1 = this.currentPiece.position;
     var p2 = [this.currentPiece.position[0], 10, this.currentPiece.position[2]];
     var p3 = [newPos[0],10,newPos[1]];
-    var p4 = [newPos[0],0.3,newPos[1]];
+    var p4 = [newPos[0],0.75,newPos[1]];
 
     //add to game board in prolog
     if((this.mode != "reviewGame") && (!this.currentPiece.removed) && ((this.Game.currPlayer == 'whitePlayer' && this.Game.whiteType =='human') || (this.Game.currPlayer == 'blackPlayer') && (this.Game.blackType =='human')))
-        this.Game.addHumanMoveToGame(p4);     
+        this.Game.addHumanMoveToGame(p4);
 
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = true;
 }
 
+/**
+ * Funtion to invert piece animation
+ */
 XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.currentPiece.previousPosition = this.currentPiece.position;
     var p1 = this.currentPiece.position;
@@ -201,18 +218,19 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.currentPiece.currAnimation = new BezierAnimation(this, 0, 5, [p1,p2,p3,p4]);
     this.currentPiece.isPlayed = false;
 }
+
 /**
  * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
  */
  XMLscene.prototype.init = function(application) {
     CGFscene.prototype.init.call(this, application);
-    
+
     this.camera = new CGFcamera(1,0.5,500,[15,15,0],[0,0,0]);
     this.board = new Board(this);
 
 
     this.enableTextures(true);
-    
+
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
@@ -232,7 +250,7 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.whiteMaterial.setAmbient(0.2,0.2,0.2,1);
     this.whiteMaterial.setDiffuse(0.5,0.5,0.5,1);
     this.whiteMaterial.setSpecular(0.2,0.2,0.2,1);
-    this.whiteMaterial.setShininess(1);   
+    this.whiteMaterial.setShininess(1);
 
     this.darkMaterial = new CGFappearance(this);
     this.darkMaterial.setAmbient(0,0,0,1);
@@ -244,13 +262,13 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.redMaterial.setAmbient(0,0,0,1);
     this.redMaterial.setDiffuse(0.5,0,0,1);
     this.redMaterial.setSpecular(0.8,0,0,0.5);
-    this.redMaterial.setShininess(0.3);   
+    this.redMaterial.setShininess(0.3);
 
     this.blackMaterial = new CGFappearance(this);
     this.blackMaterial.setAmbient(0,0,0,1);
     this.blackMaterial.setDiffuse(0,0,0,1);
     this.blackMaterial.setSpecular(0.1,0.1,0.1,0.5);
-    this.blackMaterial.setShininess(0.3);   
+    this.blackMaterial.setShininess(0.3);
 
     this.scoreBoard = new ScoreBoard(this);
 };
@@ -277,26 +295,26 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
 
         if (this.graph.lights.hasOwnProperty(key)) {
             var light = this.graph.lights[key];
-            
+
             this.lights[i].setPosition(light[1][0], light[1][1], light[1][2], light[1][3]);
             this.lights[i].setAmbient(light[2][0], light[2][1], light[2][2], light[2][3]);
             this.lights[i].setDiffuse(light[3][0], light[3][1], light[3][2], light[3][3]);
             this.lights[i].setSpecular(light[4][0], light[4][1], light[4][2], light[4][3]);
-            
+
             this.lights[i].setVisible(false);
             if (light[0])
                 this.lights[i].enable();
             else
                 this.lights[i].disable();
-            
+
             this.lights[i].update();
-            
+
             i++;
         }
     }
 };
 
-/* Handler called when the graph is finally loaded. 
+/* Handler called when the graph is finally loaded.
  * As loading is asynchronous, this may be called already after the application has started the run loop
  */
  XMLscene.prototype.onGraphLoaded = function() {
@@ -304,30 +322,18 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     this.camera.near = this.graph.near;
     this.camera.far = this.graph.far;
     this.axis = new CGFaxis(this,this.graph.referenceLength);
-    
-    this.setGlobalAmbientLight(this.graph.ambientIllumination[0], this.graph.ambientIllumination[1], 
+
+    this.setGlobalAmbientLight(this.graph.ambientIllumination[0], this.graph.ambientIllumination[1],
         this.graph.ambientIllumination[2], this.graph.ambientIllumination[3]);
-    
+
     this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
-    
+
     this.initLights();
-
-    // Adds lights group
-    //this.interface.addLightsGroup(this.graph.lights);
-
-    // Adds shaders group
-    //this.interface.addShadersGroup();
-
-    // Adds game group
-    //this.interface.addConfigGroup(); //so precisa de aparecer antes de iniciar o jogo
-    //this.interface.addGameGroup(); //so precisa de aparecer depois de iniciar o jogo
-    
-    //this.Game.createPieces();
 };
 
 
 /**
- * Displays the scene.
+ * Displays the scene
  */
  XMLscene.prototype.display = function() {
     // ---- BEGIN Background, camera and axis setup
@@ -343,16 +349,13 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
     this.pushMatrix();
-    
-    if (this.graph.loadedOk) 
-    {        
+
+    if (this.graph.loadedOk)
+    {
     	this.logPicking();
       this.clearPickRegistration();
         // Applies initial transformations.
         this.multMatrix(this.graph.initialTransforms);
-
-		// Draw axis
-		//this.axis.display();
 
         var i = 0;
         for (var key in this.lightValues) {
@@ -378,33 +381,25 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
         this.Game.displayPieces();
         this.clearPickRegistration();
     }
-    else
-    {
-        // Draw axis
-        //this.axis.display();
-    }
-    
 
     this.popMatrix();
     if(this.pause)
         return;
 
-    if(this.mode == "reviewGame"){ 
-
-        console.log("pimm" + this.Game.currState);
+    if(this.mode == "reviewGame"){
         if(this.Game.currState != this.lastStatus){
             switch(this.Game.currState){
-                case "applyPlay": 
-                console.log("applyPlay..."); 
+                case "applyPlay":
+                console.log("applyPlay...");
                 this.Game.playMovesOfArray();
                 break;
                 case "animationPlay":
-                console.log("Waiting animation..."); 
+                console.log("Waiting animation...");
                 break;
                 case "endGame":
 
                 break;
-                default: 
+                default:
                 console.warn("ERROR!!!");
             }
 
@@ -417,7 +412,7 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
         }
 
         return;
-    }   
+    }
 
 
     this.Game.display();
@@ -430,14 +425,6 @@ XMLscene.prototype.invertAnimatePiece = function (pointI){
     }
 };
 
-XMLscene.prototype.endGame = function(){
-    var winner = this.Game.winner;
-
-    this.resetGame();
-    console.log(this.Game);
-
-    console.log(winner);
-}
 
 /**
  * Update the camera position to start the animation
@@ -465,13 +452,15 @@ XMLscene.prototype.endGame = function(){
 };
 
 
-
+/**
+ * Get the Camera angle
+ */
 XMLscene.prototype.getCameraAngle = function() {
     var camPos = [this.camera.position[0],this.camera.position[1],this.camera.position[2]];
 
     vec3.normalize(camPos, camPos);
     vec3.normalize(this.finalPos,this.finalPos);
-    
+
     var angle = null;
 
     let cos = vec3.dot(camPos, this.finalPos);
@@ -522,11 +511,10 @@ XMLscene.prototype.getCameraAngle = function() {
       this.graph.nodes[index].update(currTime);
   }
 
-
     //to seconds
-    this.time = currTime/1000; 
+    this.time = currTime/1000;
     var delta = currTime - this.initialTime;
-    
+
     this.interface.update(delta);
     this.animateCamera(delta);
 
@@ -534,15 +522,20 @@ XMLscene.prototype.getCameraAngle = function() {
 
     this.initialTime = currTime;
 
-
     this.tempR = 0.5*(Math.sin(4*this.time));
     this.tempScaleFactor = this.tempR;
     this.updateScaleFactor();
 };
 
+
+/**
+ * Function called when a Black Piece is eaten: choose a spot and animate piece there.
+ * @param piece
+ */
 XMLscene.prototype.winBlackPiece = function (piece){
     this.currentPiece = piece;
     this.currentPiece.removed = true;
+    this.currentPiece.auxPosition = [this.blackSpotX,this.blackSpotZ];
     this.currentPiece.previousPosition = this.currentPiece.boardPosition;
     this.Game.moves.push({piece: this.currentPiece, turn: this.Game.turn});
     this.animatePiece([this.blackSpotX,this.blackSpotZ]);
@@ -557,9 +550,15 @@ XMLscene.prototype.winBlackPiece = function (piece){
     this.Game.whiteScore++;
 };
 
+
+/**
+ * Function called when a White Piece is eaten: choose a spot and animate piece there.
+ * @param piece
+ */
 XMLscene.prototype.winWhitePiece = function (piece){
     this.currentPiece = piece;
     this.currentPiece.removed = true;
+    this.currentPiece.auxPosition = [this.whiteSpotX,this.whiteSpotZ];
     this.currentPiece.previousPosition = this.currentPiece.boardPosition;
     this.Game.moves.push({piece: this.currentPiece, turn: this.Game.turn});
     this.animatePiece([this.whiteSpotX,this.whiteSpotZ]);
@@ -571,10 +570,13 @@ XMLscene.prototype.winWhitePiece = function (piece){
     else
         this.whiteSpotZ += 2;
 
-
     this.Game.blackScore++;
 };
 
+
+/**
+ * Clear board of game
+ */
 XMLscene.prototype.clearBoard = function(){
 
     for(var i=0; i < this.Game.board.length; i++){
@@ -596,6 +598,9 @@ XMLscene.prototype.clearBoard = function(){
     this.currentPiece = null;
 };
 
+/**
+ * Start game
+ */
 XMLscene.prototype.startGame = function(){
     if((this.WhitePlayer != null) && (this.BlackPlayer != null)){
         this.Game.configWhitePlayer();
@@ -613,12 +618,14 @@ XMLscene.prototype.startGame = function(){
     }
 };
 
+/**
+ * Reset game configurations
+ */
 XMLscene.prototype.resetGame = function () {
     this.clearBoard();
     this.interface.resetGameTime();
     this.interface.resetTimeout();
     this.interface.stopTime = true;
-    console.log(this.interface.stopTime);
     this.Game.whitePiecesArray = [];
     this.Game.blackPiecesArray = [];
     this.WhitePlayer = null;
@@ -629,13 +636,20 @@ XMLscene.prototype.resetGame = function () {
     this.isConfiguredPlayerBlack = false;
     this.isConfiguredPlayerWhite = false;
     this.Game.turn = 0;
+    this.Game.currState = "menu";
 }
 
+/**
+ * Undo laste play
+ */
 XMLscene.prototype.undoPlay = function(){
     console.log("Undo Play");
     this.Game.undoLastPlay();
 };
 
+/**
+ * View video of last game
+ */
 XMLscene.prototype.videoGame = function(){
     console.log("Video Game");
 
@@ -644,15 +658,21 @@ XMLscene.prototype.videoGame = function(){
     this.Game.currState = "applyPlay";
 };
 
+/**
+ * Pause game
+ */
 XMLscene.prototype.pauseGame = function(){
-    //console.log("Pause Game");
+    console.log("Pause Game");
 
     if(this.pause)
         this.pause = false;
-    else 
+    else
         this.pause = true;
 };
 
+/**
+ * New game
+ */
 XMLscene.prototype.newGame = function(){
     this.menuValue = true;
     this.resetGame();

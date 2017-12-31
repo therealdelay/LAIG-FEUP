@@ -1,5 +1,9 @@
 Game.prototype.constructor = Game;
 
+/**
+ * Game class, keeps track of the game state.
+ * @constructor
+ */
 function Game(scene) {
 	this.scene = scene;
 
@@ -26,8 +30,8 @@ function Game(scene) {
 
 	this.currPlayer = "whitePlayer";
 
-	// TODO increments it after each turn 
-	this.turn = 0; 
+	// TODO increments it after each turn
+	this.turn = 0;
 
 	// TODO history of moves - add after reply of play
 	this.moves = [];
@@ -40,16 +44,20 @@ function Game(scene) {
 	this.index = 0;
 };
 
-//getPlay(Game,Turn)
+/**
+ * Query turn move to server
+ */
 Game.prototype.getPlay = function() {
-	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){ 
+	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human'))){
 		var sendMsg = "getPlay(" + this.gameInFormat().toString() + "," + this.turn.toString() + ")";
-		//console.log("sendMsg ::: " + sendMsg);
 		this.server.makeRequest(sendMsg);
 	}
 };
 
-//play(Game,Play) -> newGameState
+
+/**
+ * Apply move and query new game state after
+ */
 Game.prototype.play = function() {
 	var sendMsg = null;
 	var lastPlay = this.moves[this.moves.length-1].piece.boardPosition;
@@ -57,12 +65,13 @@ Game.prototype.play = function() {
 	var row = lastPlay[2] / 2.55 + 3;
 	var col = lastPlay[0] / 2.55 + 3;
 	var sendMsg = "play(" + this.gameInFormat() + ",[[" + col + "," + row + "]," + type + "])";
-	//get last move on list of moves
-	//console.log("sendMsg ::: " + sendMsg);
 	this.server.makeRequest(sendMsg);
 };
 
-//endOfGame(Game) -> winner 
+
+/**
+ * Query if the game has ended
+ */
 Game.prototype.endOfGame = function() {
 	var sendMsg = "endOfGame(" + this.gameInFormat() + ")";
 	this.server.makeRequest(sendMsg);
@@ -70,7 +79,9 @@ Game.prototype.endOfGame = function() {
 
 
 
-// Get server reply's
+/**
+ * Function to get all server reply's
+ */
 Game.prototype.getReply = function() {
 	if(Game.currReply == "")
 		return;
@@ -95,31 +106,29 @@ Game.prototype.getReply = function() {
 	}
 	else if(this.currState ==  "getPlay") {
 		this.scene.interface.resetTimeout();
-		console.log(Game.currReply);
 		let coords = [];
 		var reply = Game.currReply;
 		reply = reply.replace(/\|\_[0-9]*/g, '');
 		coords.push(parseInt(reply[2]),parseInt(reply[4]));
-		
+
 		var move = [];
 		move.push(coords);
 		move.push(reply[7].charAt(0));
 
 		var newMove = this.convertCoordsOffProlog(move);
 		// move = [[x,y],type]
-		//selecionar peça das peças disponiveis	
+		//selecionar peça das peças disponiveis
 		this.selectPiece(newMove[1]);
 		this.scene.animatePiece([newMove[0][0],newMove[0][1]]);
 
 		this.scene.currentPiece.boardPosition = [newMove[0][0],0.3,newMove[0][1]];
-				
+
 		this.moves.push({piece: this.scene.currentPiece, turn: this.turn});
 		this.currState = "applyPlay";
-	
+
 	}
 	else if(this.currState ==  "verifyStatus") {
 		if(Game.currReply == 'none'){
-			console.log("ENTREI AQUI");
 			this.turn += 1;
 			this.scene.moveCam = false;
 			this.currState = "getPlay";
@@ -139,7 +148,9 @@ Game.prototype.getReply = function() {
 };
 
 
-
+/**
+ * Transform game state to be sent to prolog (SERVER)
+ */
 Game.prototype.gameInFormat = function() {
 	var gameJson = [], aux = [];
 
@@ -148,21 +159,32 @@ Game.prototype.gameInFormat = function() {
 
 	gameJson.push("[" + aux.toString() + "]" );
 	gameJson.push("[" + this.whitePieces.toString() + "]," + "[" + this.blackPieces.toString() + "]");
-	gameJson.push(this.currPlayer); 
+	gameJson.push(this.currPlayer);
 
 	return "[" + gameJson + "]";
 }
 
+
+
+/**
+ * Config White Player type
+ */
 Game.prototype.configWhitePlayer = function() {
 	this.whitePieces[this.whitePieces.length-1] = this.scene.WhitePlayer;
 	this.whiteType = this.scene.WhitePlayer;
 }
 
+/**
+ * Config Black Player type
+ */
 Game.prototype.configBlackPlayer = function() {
 	this.blackPieces[this.blackPieces.length-1] = this.scene.BlackPlayer;
 	this.blackType = this.scene.BlackPlayer;
 }
 
+/**
+ * Add human move to game
+ */
 Game.prototype.addHumanMoveToGame = function(pointF){
 	this.scene.interface.resetTimeout();
 
@@ -176,8 +198,11 @@ Game.prototype.addHumanMoveToGame = function(pointF){
 	this.currState = "applyPlay";
 }
 
+/**
+ * Convert coordinates from Prolog (SERVER) to Java Script format (CLIENT)
+ */
 Game.prototype.convertCoordsOffProlog = function(move) {
-	////console.log(move);
+
 	var newX = (move[0][0] - 3) * 2.55;
 	var newY = (move[0][1] - 3) * 2.55;
 
@@ -190,6 +215,10 @@ Game.prototype.convertCoordsOffProlog = function(move) {
 	return newMove;
 }
 
+
+/**
+ * Query all valid plays to server
+ */
 Game.prototype.getAllValidPlays = function(){
  	if(!((this.currPlayer == 'whitePlayer' && this.whiteType =='human') || (this.currPlayer == 'blackPlayer' && this.blackType =='human')))
  		return;
@@ -199,6 +228,10 @@ Game.prototype.getAllValidPlays = function(){
     this.currState = "validPlays";
 };
 
+
+/**
+ * Get all valid spots to play
+ */
 Game.prototype.getAllValidSpots = function(array){
 	array = array.replace(/\|\_[0-9]*/g, '');
 	array = array.replace(/\[\[\[/g, "[[");
@@ -211,10 +244,16 @@ Game.prototype.getAllValidSpots = function(array){
 		var type = array[i+7];
 		var move = [coords,type];
 		moves.push(move);
-	}	
+	}
 	this.changeColors(moves);
 };
 
+
+
+
+/**
+ * Change color of picking if it is valid spot
+ */
 Game.prototype.changeColors = function(array){
 	for(var a = 0; a < this.scene.board.tiles.length; a++){
 		this.scene.board.tiles[a].isOption = false;
@@ -232,34 +271,30 @@ Game.prototype.changeColors = function(array){
 	}
 }
 
+
+
+/**
+ * Undo last play
+ */
 Game.prototype.undoLastPlay = function() {
-	if((this.whiteType !='human') && (this.blackType !='human'))
+	if((this.whiteType !='human') || (this.blackType !='human')){
+		console.log("Undo move not available for game with bot's!");
 		return;
+	}
 
 	this.scene.interface.resetTimeout();
 
 	if(this.moves.length < 1)
 		return;
 
-	console.log(" ");
-	console.log(" UNDO ");
-	console.log("this.moves.length  " + this.moves.length);
-
 	var lastPlay = this.moves[this.moves.length-1].piece.boardPosition;
-	console.log("boardPosition " + lastPlay);
 	var prevPos = this.moves[this.moves.length-1].piece.previousPosition;
-	console.log("previousPosition " + prevPos);
-
 	var initPos = this.moves[this.moves.length-1].piece.initialPosition;
-	console.log("initialPosition " + initPos);
-
-
 
 	var type = this.moves[this.moves.length-1].piece.type;
 	var player = this.moves[this.moves.length-1].piece.player;
 	var row = lastPlay[2] / 2.55 + 3;
 	var col = lastPlay[0] / 2.55 + 3;
-
 
 	//update current player
 	this.currPlayer = player;
@@ -267,17 +302,11 @@ Game.prototype.undoLastPlay = function() {
 	// se o último move foi uma peça a ser jogada, volta ao sítio onde estava e a função termina
 	if(!this.moves[this.moves.length-1].piece.removed){
 
-		console.log("::: a que foi antes comida / a que comeu / outra ::: ");
-
 		this.scene.currentPiece = this.moves[this.moves.length-1].piece;
 		this.scene.invertAnimatePiece(initPos);
 
-		console.log("vai limpar pos :::: " + (row-1) + "-" + (col-1) );
 		//update board
-		console.log("ANTES " + this.board);
-		console.log("ANTES col-row " + (row-1) + (col-1));
 		this.board[row-1][col-1] = 0;
-		console.log("Depois " + this.board);
 
 		//update pieces
 		if(player == "whitePlayer"){
@@ -301,8 +330,6 @@ Game.prototype.undoLastPlay = function() {
 	//se o último move foi uma peça a ser comida, volta onde estava e chama esta função novamente
 	else{
 
-		console.log("::: comida ::: ");
-
 		if(this.moves[this.moves.length-1].piece.type == 'h')
 			this.board[row-1][col-1]  = 3;
 		else{
@@ -316,7 +343,7 @@ Game.prototype.undoLastPlay = function() {
 			this.whiteScore--;
 		else
 			this.blackScore--;
-		
+
 		this.moves[this.moves.length-1].piece.removed = false;
 		var tmpPiece = this.moves[this.moves.length-1].piece;
 		this.moves.pop();
@@ -331,13 +358,13 @@ Game.prototype.undoLastPlay = function() {
 	this.currState = "getPlay";
 }
 
+
+/**
+ * Review the last game
+ */
 Game.prototype.playMovesOfArray = function() {
-
-console.log("index "+ this.index);
-console.log("this.moves.length " + this.moves.length);
-
 	if(this.index < this.moves.length){
-		this.currState = "animationPlay";
+		//this.currState = "animationPlay";
 		this.scene.currentPiece = null;
 		this.scene.currentPiece = this.moves[this.index].piece;
 
@@ -345,47 +372,31 @@ console.log("this.moves.length " + this.moves.length);
 		var prevPos = this.scene.currentPiece.previousPosition;
 		var initPos = this.scene.currentPiece.initialPosition;
 
-		console.log("initPos " + initPos);
-		console.log("prevPos " + prevPos);
-		console.log("lastPlay " + lastPlay);
+		if(this.scene.currentPiece.removed && this.scene.currentPiece.auxPosition != null
+			&& this.scene.currentPiece.secondTime){
+		this.scene.animatePiece([this.scene.currentPiece.auxPosition[0],this.scene.currentPiece.auxPosition[1]]);
+		this.currState = "animationPlay";
 
+	}
+	else {
+		if(this.scene.currentPiece.removed && this.scene.currentPiece.auxPosition != null){
+			this.scene.currentPiece.secondTime = true;
+		}
 		this.scene.animatePiece([lastPlay[0],lastPlay[2]]);
-		console.log("initPos " + initPos);
-		console.log("prevPos " + prevPos);
-		console.log("lastPlay " + lastPlay);
-		//this.scene.currentPiece.boardPosition = [finalPos[0][0],0.3,finalPos[0][1]];
+		this.currState = "animationPlay";
+	}
 		this.index++;
 	}
 	else{
 		this.scene.mode = "game";
-		this.index = 0;
+		this.currState = "menu";
 	}
 };
 
-Game.prototype.findPiece = function(finalPos, type) {
-	let inicialPos = this.moves[this.index].pointI;
-	var i = 0;
 
-	for(; i < this.whitePiecesArray.length; i++){
-		if(inicialPos.toString() == this.whitePiecesArray[i].initialPosition.toString()){
-			this.scene.currentPiece = this.whitePiecesArray[i];
-			return true;
-		}
-	}
-	if(i < 12)
-		return;
-
-	for(; i < this.blackPiecesArray.length; i++){
-		if(inicialPos.toString() == this.blackPiecesArray[i].initialPosition.toString()){
-			this.scene.currentPiece = this.blackPiecesArray[i];
-			return true;
-		}
-	}
-	return false;
-};
-
-
-// FUNCIONA PERFEITO
+/**
+ * Remove from board a eated piece
+ */
 Game.prototype.removePiece = function(x,z){
 	var newX = (z - 3) * 2.55;
 	var newZ = (x - 3) * 2.55;
@@ -405,10 +416,13 @@ Game.prototype.removePiece = function(x,z){
 			this.scene.winBlackPiece(this.blackPiecesArray[i]);
 			break;
 		}
-	}	
+	}
 }
 
-// FUNCIONA PERFEITO
+
+/**
+ * Check board diffs to verify if any piece was eated
+ */
 Game.prototype.checkBoardDiffs = function () {
 	for(var i = 0; i < this.board.length; i++){
 		for(var j = 0; j < this.board[i].length; j++){
@@ -419,7 +433,10 @@ Game.prototype.checkBoardDiffs = function () {
 	}
 }
 
-// FUNCIONA PERFEITO
+
+/**
+ * Select a piece according to server answer
+ */
 Game.prototype.selectPiece = function(type) {
 	var i = 0;
 
@@ -442,7 +459,10 @@ Game.prototype.selectPiece = function(type) {
 	}
 }
 
-// FUNCIONA PERFEITO
+
+/**
+ * Create pieces to game
+ */
 Game.prototype.createPieces = function() {
     var x = -15;
     var z = -5;
@@ -471,7 +491,9 @@ Game.prototype.createPieces = function() {
 };
 
 
-// FUNCIONA PERFEITO
+/**
+ * Display pieces
+ */
 Game.prototype.displayPieces = function() {
 	for(var w = 0; w < this.whitePiecesArray.length; w++){
 		if(this.turn != 0){
@@ -502,6 +524,9 @@ Game.prototype.displayPieces = function() {
 	}
 };
 
+/**
+ * Update pieces
+ */
 Game.prototype.update = function (delta) {
 
 	for(var i = 0; i < this.whitePiecesArray.length; i++){
@@ -523,22 +548,22 @@ Game.prototype.update = function (delta) {
 	if((this.scene.currentPiece != null) && this.scene.currentPiece.removed && this.scene.currentPiece.currAnimation.finish)
     	this.scene.currentPiece = null;
 
-    //console.log(this.scene.currentPiece);
 };
 
+/**
+ * Get the the game winner
+ */
 Game.prototype.endGameNow = function(){
     var winner = this.winner;
     this.scene.interface.stopTime = true;
     this.scene.interface.addWinner();
-    this.scene.resetGame();
-    console.log(this);
-
-    console.log(winner);
 };
 
-Game.prototype.display = function(){
 
-	
+/**
+ * Main function to display the game
+ */
+Game.prototype.display = function(){
 	if(this.currState != this.scene.lastStatus) {
 
 		switch(this.currState){
@@ -574,6 +599,10 @@ Game.prototype.display = function(){
             this.scene.currentPiece = null;
 };
 
+
+/**
+ * Check if all animations pieces are done
+ */
 Game.prototype.allAnimsDone = function(){
     for(var i = 0; i < this.whitePiecesArray.length; i++){
         if((this.whitePiecesArray[i].currAnimation != null) && (!this.whitePiecesArray[i].getAnimation().getStatus()))

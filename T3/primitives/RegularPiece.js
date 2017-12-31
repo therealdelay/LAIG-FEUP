@@ -12,6 +12,8 @@ function RegularPiece(scene, player, position) {
 	this.position = position;
     this.boardPosition = null;
     this.previousPosition = null;
+    this.auxPosition = null;
+    this.secondTime = false;
 
     this.isPlayed = false;
     this.selected = false;
