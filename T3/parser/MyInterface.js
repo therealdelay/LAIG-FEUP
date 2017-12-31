@@ -127,6 +127,14 @@ MyInterface.prototype.resetTimeout = function(){
 };
 
 /**
+ * Sets the gametime variable to 0
+ */
+MyInterface.prototype.resetGameTime = function(){
+	this.gameSec = 0;
+	this.gameMin = 0;
+};
+
+/**
  * When timeout occurs, ends the game
  */
 MyInterface.prototype.triggerTimeout = function(){
@@ -164,6 +172,10 @@ MyInterface.prototype.switchVisibility = function(value){
  * @param deltaTime
  */
 MyInterface.prototype.update = function(deltaTime){
+	console.log(this.gameSec);
+	console.log(this.gameMin);
+	console.log(this.timeout);
+	console.log(this.stopTime);
 	if(!this.stopTime){
 		if(!isNaN(deltaTime) && (this.scene.pause == false))
 			this.timeCounter = this.timeCounter + deltaTime/17;

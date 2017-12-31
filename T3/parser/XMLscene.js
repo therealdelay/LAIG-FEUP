@@ -615,6 +615,10 @@ XMLscene.prototype.startGame = function(){
 
 XMLscene.prototype.resetGame = function () {
     this.clearBoard();
+    this.interface.resetGameTime();
+    this.interface.resetTimeout();
+    this.interface.stopTime = true;
+    console.log(this.interface.stopTime);
     this.Game.whitePiecesArray = [];
     this.Game.blackPiecesArray = [];
     this.WhitePlayer = null;
